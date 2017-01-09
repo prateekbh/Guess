@@ -1,0 +1,12 @@
+.q{
+	font-size: 20px;
+}
+.sendButton{
+	position: fixed;
+	bottom: 16px;
+	right: 16px;
+}
+.progress .mdl-progress{
+	margin: auto;
+	z-index: 5;
+}
