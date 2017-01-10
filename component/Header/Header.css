@@ -1,0 +1,15 @@
+header{
+    display: flex;
+    height: 10vh;
+    background-color: #222;
+    box-shadow: 0 5px 8px -2px rgba(105, 104, 104, 0.84);
+    .settings{
+        flex: 2;
+    }
+    .logo {
+        flex: 8;
+    }
+    .coins {
+        flex: 2;
+    }
+}

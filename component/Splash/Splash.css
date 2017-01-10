@@ -7,20 +7,19 @@
 	top: 0;
 	left: 0;
 	z-index: 1100000;
-}
-
-.logo{
-	position: absolute;
-	left: 0;
-	right: 0;
-	height: 50%;
-	width: 50%;
-	margin: auto;
-	animation-name: bulbjump;
-	animation-duration: 4s;
-	animation-fill-mode: forwards;
-	animation-iteration-count: infinite;
-	animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+	.logo{
+		position: absolute;
+		left: 0;
+		right: 0;
+		height: 50%;
+		width: 50%;
+		margin: auto;
+		animation-name: bulbjump;
+		animation-duration: 4s;
+		animation-fill-mode: forwards;
+		animation-iteration-count: infinite;
+		animation-timing-function: cubic-bezier(0.86, 0, 0.07, 1);
+	}
 }
 
 @keyframes bulbjump{
