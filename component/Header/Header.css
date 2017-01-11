@@ -10,6 +10,13 @@ header{
         flex: 8;
     }
     .coins {
+        display: flex;
         flex: 2;
+        align-items: center;
+        justify-content: center;
+    }
+    .userCoins{
+        display: inline-block;
+        padding: 8px;
     }
 }

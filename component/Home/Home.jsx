@@ -5,12 +5,21 @@ import {connect} from 'preact-redux';
 import * as actions from '../../actions/word-actions';
 
 class Home extends Component {
+	constructor(){
+		super();
+		this.state = {
+			showSplash: true
+		};
+	}
 	componentDidUpdate(prevProps, state){
 		if(prevProps.wordReducer.wordsLoaded === false
 			&& this.props.wordReducer.wordsLoaded === true
 			&& this.props.wordReducer.words.length <25){
-				this.props.dispatch({
-					type: actions.FETCH_WORDS
+				// this.props.dispatch({
+				// 	type: actions.FETCH_WORDS
+				// });
+				this.setState({
+					showSplash: false
 				});
 			}
 	}
@@ -18,10 +27,11 @@ class Home extends Component {
 		return (
 			<div>
 				{
-					(!this.props.wordReducer.wordsLoaded || this.props.wordReducer.words.length < 25)
+					(!this.props.wordReducer.wordsLoaded || this.props.wordReducer.words.length == 0)
+						&& this.state.showSplash
 						&& <Splash/>
 				}
-				<Header/>
+				<Header userCoins={this.props.userReducer.coins}/>
 			</div>
 		);
 	}
@@ -30,5 +40,6 @@ class Home extends Component {
 export default connect((state)=>{
 	return {
 		wordReducer: state.wordReducer,
+		userReducer: state.userReducer,
 	};
 })(Home);

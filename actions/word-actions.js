@@ -5,5 +5,5 @@ const fetchWord = () => {
 }
 
 export {
-    FETCH_WORDS,
+    fetchWord,
 }

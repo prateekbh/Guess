@@ -47,20 +47,7 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        loaders: [
-          {
-            loader: 'babel',
-            query: {
-              presets: ['es2015']
-            }
-          },
-          {
-            loader: 'react-svg',
-            query: {
-              jsx: true
-            }
-          }
-        ]
+        loader: 'babel?presets[]=es2015,presets[]=react!svg-react'
       }
 	  ]
   },
