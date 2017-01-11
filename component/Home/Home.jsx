@@ -1,5 +1,6 @@
 import {h, Component} from 'preact';
 import Splash from '../Splash/Splash.jsx';
+import Header from '../Header/Header.jsx';
 import {connect} from 'preact-redux';
 import * as actions from '../../actions/word-actions';
 
@@ -20,6 +21,7 @@ class Home extends Component {
 					(!this.props.wordReducer.wordsLoaded || this.props.wordReducer.words.length < 25)
 						&& <Splash/>
 				}
+				<Header/>
 			</div>
 		);
 	}
