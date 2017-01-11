@@ -2,6 +2,7 @@ import {h, Component} from 'preact';
 import {Progress} from 'preact-mdl';
 import { connect } from 'preact-redux';
 import './header.css';
+import Coins from './coins.svg';
 
 export default class Header extends Component {
 	constructor(){
