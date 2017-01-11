@@ -1,5 +1,9 @@
-const LOAD_WORDS = 'LOAD_WORDS';
+const fetchWord = () => {
+    return (dispatch) => {
+
+    }
+}
 
 export {
-    LOAD_WORDS,
+    FETCH_WORDS,
 }
