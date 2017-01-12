@@ -1,5 +1,6 @@
 const MongoClient = require('mongodb').MongoClient;
-const dbUrl = 'mongodb://localhost:27017/exjs';
+const autoIncrement = require("mongodb-autoincrement");
+const dbUrl = 'mongodb://localhost:27017/guess';
 
 var _db;
 function db() {
@@ -10,11 +11,22 @@ function db() {
 }
 
 db.prototype.insertInCollection = function(collection, payload, callback) {
-  _db.collection(collection).save(payload, (err, result) => {
-    if (err) return console.log(err);
-    // console.log('saved to database');
-    callback(payload);
-  });
+	// validate(req.body)
+	var collec = _db.collection(collection);
+	// Check if word already exists
+	collec.find({word: payload.word}).toArray((err, results) => {
+		if (err) return callback(this.handleInsertionError(err));
+		if (results.length) return callback('Duplicate');
+		
+		autoIncrement.getNextSequence(_db, collection, (err, autoIndex) => {
+			// Get auto incremented Id
+			payload._id = autoIndex;
+			collec.insert(payload, (err, result) => {
+				if (err) return callback(this.handleInsertionError(err));
+    		return callback('Saved');
+			});
+		});
+	});
 }
 
 db.prototype.readCollection = function(collection, callback) {
@@ -24,6 +36,9 @@ db.prototype.readCollection = function(collection, callback) {
   });
 }
 
-module.exports = {
-  database: db,
-};
+db.prototype.handleInsertionError(err) {
+	console.log(err);
+	return 'Error';
+}
+
+module.exports = db;

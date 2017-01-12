@@ -1,21 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const https = require('https');
-const MongoClient = require('mongodb').MongoClient;
-
-// Connection URL 
-const url = 'mongodb://localhost:27017/myproject';
-let _db;
-let collections;
-// Use connect method to connect to the Server 
-MongoClient.connect(url, function(err, db) {
-  if(err === null)
-  {
-    console.log("Connected correctly to server");
-    _db = db;
-    collections = db.collection('documents');
-  }
-});
+const dbapi = require('./dbapi');
+const db = new dbapi.database();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -62,26 +49,15 @@ router.get('/search', function(req, response, next) {
 });
 
 router.post('/saveword', function(req, res) {
-  collections.find({
-    word: req.body.word
-  }).toArray(function(err,results) {
-    if(err == null && results.length == 0) {
-      collections.insert(req.body,function(err, results) {
-        if(err != null) {
-          res.statusCode = 500;
-          res.send('error');  
-        } else {
-          res.statusCode = 200;
-          res.send('saved');
-        }
-      });
-    } else if(err == null && results.length > 0) {
-        res.statusCode = 400;
-        res.send('duplicate word');  
-    } else {
-        res.statusCode = 500;
-        res.send('error');
-    }
-  })
+  var status = {
+    'Saved': 200,
+    'Duplicate': 400,
+    'Error': 500,
+  }
+  db.insertInCollection('games', req.body, (message) => {
+    res.statusCode = status[message];
+    res.send(message);
+  });
 });
+
 module.exports = router;
