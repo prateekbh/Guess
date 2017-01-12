@@ -3,11 +3,11 @@ const router = express.Router();
 const https = require('https');
 const MongoClient = require('mongodb').MongoClient;
 
-// Connection URL 
+// Connection URL
 const url = 'mongodb://localhost:27017/myproject';
 let _db;
 let collections;
-// Use connect method to connect to the Server 
+// Use connect method to connect to the Server
 MongoClient.connect(url, function(err, db) {
   if(err === null)
   {
@@ -30,7 +30,7 @@ router.get('/search', function(req, response, next) {
     path: '/v3/search/images?fields=id,title,thumb,referral_destinations&phrase='+req.query.q+'&sort_order=best',
     method: 'GET',
     headers: {
-      'Api-Key': '697wgfynhw53p7fzsw7dbder'
+      'Api-Key': '697wgfynhw53p7fzsw7dbder',
     }
   };
 
@@ -41,7 +41,7 @@ router.get('/search', function(req, response, next) {
       res.statusCode = 200;
       var resData = {
         'word': req.query.q,
-        images: [] 
+        images: []
       };
 
       data.images.forEach(item=>{
@@ -65,11 +65,13 @@ router.post('/saveword', function(req, res) {
   collections.find({
     word: req.body.word
   }).toArray(function(err,results) {
+    console.log(err);
     if(err == null && results.length == 0) {
       collections.insert(req.body,function(err, results) {
+        console.log(err);
         if(err != null) {
           res.statusCode = 500;
-          res.send('error');  
+          res.send('error');
         } else {
           res.statusCode = 200;
           res.send('saved');
@@ -77,7 +79,7 @@ router.post('/saveword', function(req, res) {
       });
     } else if(err == null && results.length > 0) {
         res.statusCode = 400;
-        res.send('duplicate word');  
+        res.send('duplicate word');
     } else {
         res.statusCode = 500;
         res.send('error');
