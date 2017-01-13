@@ -1,16 +1,13 @@
 import {h, Component} from 'preact';
-import Splash from '../Splash/Splash.jsx';
-import Header from '../Header/Header.jsx';
 import {connect} from 'preact-redux';
+import {Button} from 'preact-mdl';
+import {route} from 'preact-router';
+import Splash from '../Splash/Splash.jsx';
 import * as actions from '../../actions/word-actions';
+import PreviewTiles from '../PreviewTiles/PreviewTiles.jsx';
+import './Home.css';
 
 class Home extends Component {
-	constructor(){
-		super();
-		this.state = {
-			showSplash: true
-		};
-	}
 	componentDidUpdate(prevProps, state){
 		if(prevProps.wordReducer.wordsLoaded === false
 			&& this.props.wordReducer.wordsLoaded === true
@@ -18,20 +15,27 @@ class Home extends Component {
 				// this.props.dispatch({
 				// 	type: actions.FETCH_WORDS
 				// });
-				this.setState({
-					showSplash: false
-				});
 			}
+	}
+	startPlay(){
+		console.log('start playing');
+		route('/play');
 	}
 	render(){
 		return (
-			<div>
+			<div className='screen-home'>
 				{
 					(!this.props.wordReducer.wordsLoaded || this.props.wordReducer.words.length == 0)
-						&& this.state.showSplash
 						&& <Splash/>
 				}
-				<Header userCoins={this.props.userReducer.coins}/>
+				<div>
+					<PreviewTiles
+					images={this.props.wordReducer.words[0] && this.props.wordReducer.words[0].images}
+					level={this.props.userReducer.level}/>
+				</div>
+				<div className='container-play'>
+					<Button accent={true} raised={true} onCLick={this.startPlay.bind(this)}>Play</Button>
+				</div>
 			</div>
 		);
 	}

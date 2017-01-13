@@ -4,12 +4,11 @@ import { connect } from 'preact-redux';
 import './header.css';
 import Coins from '../../images/coins.svg';
 
-export default class Header extends Component {
+class Header extends Component {
 	constructor(){
 		super();
 	}
 	render() {
-		console.log(this.props);
 		return (
 			<header>
 					<div className="settings">
@@ -19,10 +18,16 @@ export default class Header extends Component {
 					<div className="coins">
 						<div>
 							<Coins height='25'/>
-							<div className="userCoins">{this.props.userCoins}</div>
+							<div className="userCoins mdl-typography--title">{this.props.userReducer.coins}</div>
 						</div>
 					</div>
 			</header>
 		);
 	}
 }
+
+export default connect((state)=>{
+	return {
+		userReducer: state.userReducer,
+	};
+})(Header);

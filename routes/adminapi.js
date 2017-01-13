@@ -1,6 +1,6 @@
 const express = require('express');
-const router = express.Router();
 const https = require('https');
+const router = express.Router();
 const bodyParser = require('body-parser')
 
 const mdb = require('./dbapi');
@@ -30,31 +30,30 @@ router.get('/search', function(req, response, next) {
     }
   };
 
-  var forwardRequest = https.request(options, (res) => {
-    res.on('data', (data) => {
-      data = JSON.parse(data);
+	const forwardRequest = https.request(options, (res) => {
+		res.on('data', (data) => {
+			data = JSON.parse(data);
 
-      res.statusCode = 200;
-      var resData = {
-        'word': req.query.q,
-        images: [] 
-      };
+			res.statusCode = 200;
+			const resData = {
+				word: req.query.q,
+				images: [],
+			};
 
-      data.images.forEach(item=>{
-        resData.images.push(item.display_sizes[0].uri);
+			data.images.forEach((item) => {
+				resData.images.push(item.display_sizes[0].uri);
+			});
 
-      });
+			response.setHeader('Content-type', 'application/json');
+			response.send(JSON.stringify(resData));
+		});
+	});
 
-      response.setHeader('Content-type', 'application/json');
-      response.send(JSON.stringify(resData));
-    });
-  });
-
-  forwardRequest.on('error', (e) => {
-    response.statusCode = 500;
-    response.send(e);
-  });
-  forwardRequest.end();
+	forwardRequest.on('error', (e) => {
+		response.statusCode = 500;
+		response.send(e);
+	});
+	forwardRequest.end();
 });
 
 router.post('/saveword', function(req, res) {
