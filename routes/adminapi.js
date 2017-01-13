@@ -1,15 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const https = require('https');
-const dbapi = require('./dbapi');
-const db = new dbapi.database();
+const bodyParser = require('body-parser')
 
-/* GET users listing. */
+const mdb = require('./dbapi');
+const db = new mdb.database();
+const gamesCollection = require('./config').gamesCollection;
+
+router.use(bodyParser.json())
+
 router.get('/', function(req, res, next) {
-  res.send('hi');
+  res.send('Admin API server is running.');
 });
 
-/* GET users listing. */
+router.get('/allgames', function(req, res, next) {
+  db.readCollection(gamesCollection, (results) => {
+  res.send(results);
+  });
+});
+
 router.get('/search', function(req, response, next) {
   var options = {
     hostname: 'api.gettyimages.com',
@@ -54,9 +63,8 @@ router.post('/saveword', function(req, res) {
     'Duplicate': 400,
     'Error': 500,
   }
-  db.insertInCollection('games', req.body, (message) => {
-    res.statusCode = status[message];
-    res.send(message);
+  db.insertInCollection(gamesCollection, req.body, (message) => {
+    res.status(status[message]).send(message);
   });
 });
 

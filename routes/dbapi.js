@@ -29,6 +29,16 @@ db.prototype.insertInCollection = function(collection, payload, callback) {
 	});
 }
 
+db.prototype.retrieveGamesFollowingId = function(collection, id, callback) {
+	this.readCollection(collection, (results) => {
+		var response = [];
+		for(var i in results) {
+			if (results[i]._id > id) response.push(results[i]);
+		}
+		callback(response);
+	});
+}
+
 db.prototype.readCollection = function(collection, callback) {
   _db.collection(collection).find().toArray((err, results) => {
     if (err) return console.log(err);
@@ -36,9 +46,11 @@ db.prototype.readCollection = function(collection, callback) {
   });
 }
 
-db.prototype.handleInsertionError(err) {
+db.prototype.handleInsertionError = function(err) {
 	console.log(err);
 	return 'Error';
 }
 
-module.exports = db;
+module.exports = {
+  database: db,
+};
