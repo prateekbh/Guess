@@ -33,13 +33,25 @@ export default class Header extends Component {
 	render() {
 		return (
 			<div className='platter'>
-                {
-                    this.state.letters.map(letter => {
-                        return(
-                            <div className="letter mdl-typography--title">{letter}</div>
-                        );
-                    })
-                }
+                <div className="letters">
+                    {
+                        this.state.letters.map(letter => {
+                            return(
+                                <div className="letter mdl-typography--title">
+                                    <div className="tap">{letter}</div>
+                                </div>
+                            );
+                        })
+                    }
+                </div>
+                <div className="hints">
+                    <div className="letter mdl-typography--title">
+                        <div className="tap">A</div>
+                    </div>
+                    <div className="letter mdl-typography--title">
+                        <div className="tap">B</div>
+                    </div>
+                </div>
 			</div>
 		);
 	}
