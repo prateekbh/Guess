@@ -1,13 +1,13 @@
 const express = require('express');
 const https = require('https');
 const router = express.Router();
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 const mdb = require('./dbapi');
-const db = new mdb.database();
+const db = new mdb.Database();
 const gamesCollection = require('./config').gamesCollection;
 
-router.use(bodyParser.json())
+router.use(bodyParser.json());
 
 router.get('/', function(req, res, next) {
   res.send('Admin API server is running.');
@@ -20,14 +20,14 @@ router.get('/allgames', function(req, res, next) {
 });
 
 router.get('/search', function(req, response, next) {
-  var options = {
+  let options = {
     hostname: 'api.gettyimages.com',
     port: 443,
     path: '/v3/search/images?fields=id,title,thumb,referral_destinations&phrase='+req.query.q+'&sort_order=best',
     method: 'GET',
     headers: {
-      'Api-Key': '697wgfynhw53p7fzsw7dbder'
-    }
+      'Api-Key': '697wgfynhw53p7fzsw7dbder',
+    },
   };
 
 	const forwardRequest = https.request(options, (res) => {
@@ -57,11 +57,11 @@ router.get('/search', function(req, response, next) {
 });
 
 router.post('/saveword', function(req, res) {
-  var status = {
+  let status = {
     'Saved': 200,
     'Duplicate': 400,
     'Error': 500,
-  }
+  };
   db.insertInCollection(gamesCollection, req.body, (message) => {
     res.status(status[message]).send(message);
   });
