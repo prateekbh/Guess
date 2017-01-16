@@ -18,7 +18,6 @@ class Home extends Component {
 			}
 	}
 	startPlay(){
-		console.log('start playing');
 		route('/play');
 	}
 	render(){
@@ -31,7 +30,7 @@ class Home extends Component {
 				<div>
 					<PreviewTiles
 					images={this.props.wordReducer.words[0] && this.props.wordReducer.words[0].images}
-					level={this.props.userReducer.level}/>
+					level={this.props.userReducer.level} mode='preview'/>
 				</div>
 				<div className='container-play'>
 					<Button accent={true} raised={true} onCLick={this.startPlay.bind(this)}>Play</Button>
