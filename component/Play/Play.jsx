@@ -30,7 +30,7 @@ class Play extends Component {
 				<PreviewTiles
 					images={this.props.wordReducer.words[0] && this.props.wordReducer.words[0].images} mode='play'/>
 				<div className="wordsection">
-					<GuessedWord word={this.props.wordReducer.words[0].word} />
+					<GuessedWord guess={this.props.wordReducer.words[0].guessedLetters} />
 					<LetterPlatter letters={this.props.wordReducer.words[0].scrabbledLetters}/>
 				</div>
 

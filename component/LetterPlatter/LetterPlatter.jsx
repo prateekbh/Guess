@@ -1,12 +1,19 @@
 import {h, Component} from 'preact';
 import {connect} from 'preact-redux';
 import {Button, Icon} from 'preact-mdl';
+import {ADD_LETTER_TO_GUESSED_WORD} from '../../actions/word-actions';
 
 import './LetterPlatter.css';
 
-export default class LetterPlatter extends Component {
+class LetterPlatter extends Component {
     sendLetter(index){
-        console.log(this.props.letters[index]);
+        this.props.dispatch({
+            type: ADD_LETTER_TO_GUESSED_WORD,
+            data: {
+                index,
+                letter: this.props.letters[index],
+            }
+        })
     }
 	render() {
 		return (
@@ -39,3 +46,7 @@ export default class LetterPlatter extends Component {
 		);
 	}
 }
+
+export default connect((state)=>{
+	return {};
+})(LetterPlatter);
