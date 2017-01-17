@@ -16,7 +16,7 @@ const initialState={
 };
 
 export default function wordReducer(state = initialState, action) {
-  const newState = Object.assign({},state);
+  const newState = Object.assign({}, state);
   switch (action.type) {
     case LOAD:
       return Object.assign({}, state, {wordsLoaded: true})

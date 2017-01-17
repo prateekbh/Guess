@@ -5,8 +5,8 @@ import createEngine from 'redux-storage-engine-localstorage';
 
 import * as reducers from '../reducers/';
 import * as storage from 'redux-storage';
-
-const engine = createEngine('game-data');
+import {SET_SCRABBLED_LETTERS} from '../actions/word-actions';
+const engine = createEngine('game-data', [], [SET_SCRABBLED_LETTERS]);
 const storageMiddleware = storage.createMiddleware(engine);
 const load = storage.createLoader(engine);
 

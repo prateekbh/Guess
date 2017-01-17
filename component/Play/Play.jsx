@@ -9,6 +9,7 @@ import PreviewTiles from '../PreviewTiles/PreviewTiles.jsx';
 import GuessedWord from '../GuessedWord/GuessedWord.jsx';
 import LetterPlatter from '../LetterPlatter/LetterPlatter.jsx';
 import {scrabble} from '../../utils/wordScrabbler';
+import {ADD_LETTER_TO_GUESSED_WORD} from '../../actions/word-actions';
 
 import './Play.css';
 
@@ -21,9 +22,6 @@ class Play extends Component {
 			});
 		}
 	}
-	componentWillRecieveProps(){
-		console.log('props',this.props);
-	}
 	render(){
 		return (
 			<div className='screen-play'>
@@ -31,7 +29,14 @@ class Play extends Component {
 					images={this.props.wordReducer.words[0] && this.props.wordReducer.words[0].images} mode='play'/>
 				<div className="wordsection">
 					<GuessedWord guess={this.props.wordReducer.words[0].guessedLetters} />
-					<LetterPlatter letters={this.props.wordReducer.words[0].scrabbledLetters}/>
+					<LetterPlatter
+						letters={this.props.wordReducer.words[0].scrabbledLetters}
+						onLetterSelect={(data)=>{
+							this.props.dispatch({
+								type: ADD_LETTER_TO_GUESSED_WORD,
+								data,
+							});
+						}}/>
 				</div>
 
 			</div>
