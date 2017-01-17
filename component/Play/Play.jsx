@@ -6,16 +6,34 @@ import Splash from '../Splash/Splash.jsx';
 import Header from '../Header/Header.jsx';
 import * as actions from '../../actions/word-actions';
 import PreviewTiles from '../PreviewTiles/PreviewTiles.jsx';
+import GuessedWord from '../GuessedWord/GuessedWord.jsx';
 import LetterPlatter from '../LetterPlatter/LetterPlatter.jsx';
+import {scrabble} from '../../utils/wordScrabbler';
+
 import './Play.css';
 
 class Play extends Component {
+	componentDidMount(){
+		if(this.props.wordReducer.words[0] && !this.props.wordReducer.words[0].scrabbledLetters){
+			this.props.dispatch({
+				type: actions.SET_SCRABBLED_LETTERS,
+				data: scrabble(this.props.wordReducer.words[0].word),
+			});
+		}
+	}
+	componentWillRecieveProps(){
+		console.log('props',this.props);
+	}
 	render(){
 		return (
 			<div className='screen-play'>
 				<PreviewTiles
 					images={this.props.wordReducer.words[0] && this.props.wordReducer.words[0].images} mode='play'/>
-				<LetterPlatter word={this.props.wordReducer.words[0].word}/>
+				<div className="wordsection">
+					<GuessedWord word={this.props.wordReducer.words[0].word} />
+					<LetterPlatter letters={this.props.wordReducer.words[0].scrabbledLetters}/>
+				</div>
+
 			</div>
 		);
 	}

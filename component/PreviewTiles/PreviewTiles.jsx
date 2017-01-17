@@ -1,6 +1,8 @@
 import {h, Component} from 'preact';
 import {Progress} from 'preact-mdl';
+import LevelBadge from '../LevelBadge/LevelBadge.jsx';
 import './PreviewTiles.css';
+
 
 export default class Header extends Component {
 	constructor(){
@@ -19,12 +21,7 @@ export default class Header extends Component {
 					})
 				}
 				{
-					this.props.mode == 'preview' &&
-					<div className="level">
-						<div className="mdl-typography--title">
-							{this.props.level}
-						</div>
-					</div>
+					this.props.mode == 'preview' && <LevelBadge level={this.props.level} />
 				}
 			</div>
 		);

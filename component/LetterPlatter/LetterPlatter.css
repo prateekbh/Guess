@@ -15,21 +15,23 @@
         font-weight: 700;
         padding: 8px;
         width: 16.66%;
-        .tap{
-            border: 3px solid #ccc;
+        button{
             border-radius: 3px;
-            display: flex;
             justify-content: center;
             align-items: center;
             height: 40px;
+            min-width: 0px;
+            width: 100%;
+            font-size: 20px;
+            font-weight: 300;
+            padding: 0 8px;
         }
     }
     .hints{
         .letter{
             width: 100%;
-            .tap{
-                background-color: #4CAF50;
-                border-color: #2E7D32;
+            button{
+                width: 100%;
             }
         }
     }

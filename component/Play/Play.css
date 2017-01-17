@@ -1,3 +1,12 @@
 .screen-play{
-
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    .play-tiles{
+        flex: 6;
+    }
+    .wordsection{
+        flex: 4;
+        align-items: center;
+    }
 }

@@ -1,9 +1,5 @@
-const fetchWord = () => {
-    return (dispatch) => {
-
-    }
-}
+const SET_SCRABBLED_LETTERS = 'SET_SCRABBLED_LETTERS';
 
 export {
-    fetchWord,
+    SET_SCRABBLED_LETTERS,
 }

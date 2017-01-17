@@ -1,6 +1,6 @@
 const initialState = {
   name: '',
-  coins: 0,
+  coins: 100,
   level: 1,
 }
 export default function userReducer(state = initialState, action) {

@@ -20,6 +20,12 @@ export default function wordReducer(state = initialState, action) {
     case LOAD:
       return Object.assign({}, state, {wordsLoaded: true})
     break;
+    case wordActions.SET_SCRABBLED_LETTERS:
+      const newState = Object.assign({}, state);
+      newState.words[0].scrabbledLetters = action.data;
+      newState.words[0].guessedLetters = newState.words[0].word.split('').map(e=>'');
+      return newState;
+    break;
     default:
       return state
   }

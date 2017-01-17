@@ -30,15 +30,6 @@
 		bottom: 0;
 		top: 0;
 		margin: auto;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		color: #000;
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		background-color: #FFD600;
-		box-shadow: 0px 0px 8px 4px #fff;
 	}
 	.mdl-typography--title{
 		font-size: 14px;
@@ -53,5 +44,6 @@
 	}
 	.pic{
 		height: auto;
+		min-height: 30vw;
 	}
 }

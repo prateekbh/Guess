@@ -1,9 +1,9 @@
 import {h, Component} from 'preact';
 import {Progress} from 'preact-mdl';
 import { connect } from 'preact-redux';
-import './header.css';
+import LevelBadge from '../LevelBadge/LevelBadge.jsx';
 import Coins from '../../images/coins.svg';
-
+import './header.css';
 class Header extends Component {
 	constructor(){
 		super();
@@ -14,6 +14,7 @@ class Header extends Component {
 					<div className="settings">
 					</div>
 					<div className="logo">
+						<LevelBadge level={this.props.userReducer.level} />
 					</div>
 					<div className="coins">
 						<div>
