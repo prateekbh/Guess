@@ -6,3 +6,7 @@ body{
     background-size: 46px;
     color: #fff;
 }
+
+.mdl-button--raised[disabled][disabled], .mdl-button--raised.mdl-button--disabled.mdl-button--disabled {
+    background-color: rgba(255,82,82,0.7);
+}

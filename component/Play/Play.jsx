@@ -31,6 +31,7 @@ class Play extends Component {
 					<GuessedWord guess={this.props.wordReducer.words[0].guessedLetters} />
 					<LetterPlatter
 						letters={this.props.wordReducer.words[0].scrabbledLetters}
+						guess={this.props.wordReducer.words[0].guessedLetters}
 						onLetterSelect={(data)=>{
 							this.props.dispatch({
 								type: ADD_LETTER_TO_GUESSED_WORD,

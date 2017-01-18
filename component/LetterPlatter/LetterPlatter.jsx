@@ -17,12 +17,18 @@ export default class LetterPlatter extends Component {
                 <div className="letters">
                     {
                         this.props.letters && this.props.letters.map((letter, index) => {
+                            let showLetter = true;
+                            this.props.guess.forEach(data => {
+                                if(data.index === index && letter === data.letter){
+                                    showLetter = false;
+                                }
+                            });
                             return(
                                 <div className="letter mdl-typography--title">
-                                    <Button accent={true} raised={true}
+                                    <Button accent={true} raised={true} disabled={!showLetter}
                                         onClick = {() => {
                                             this.sendLetter(index)}
-                                        }>{letter}</Button>
+                                        }>{showLetter?letter:''}</Button>
                                 </div>
                             );
                         })
