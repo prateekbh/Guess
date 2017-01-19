@@ -4,6 +4,12 @@
     right: 0;
     margin: auto;
     display: flex;
+    transition-duration: 1s;
+    transition-property: opacify;
+    will-change: opacify;
+    &.guessed{
+        opacity: 0.2;
+    }
     .letters{
         flex: 6;
     }

@@ -13,7 +13,7 @@ export default class LetterPlatter extends Component {
     }
 	render() {
 		return (
-			<div className='platter'>
+            <div className={this.props.isGuessed ? 'platter guessed': 'platter'}>
                 <div className="letters">
                     {
                         this.props.letters && this.props.letters.map((letter, index) => {

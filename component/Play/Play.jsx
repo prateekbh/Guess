@@ -8,12 +8,19 @@ import * as actions from '../../actions/word-actions';
 import PreviewTiles from '../PreviewTiles/PreviewTiles.jsx';
 import GuessedWord from '../GuessedWord/GuessedWord.jsx';
 import LetterPlatter from '../LetterPlatter/LetterPlatter.jsx';
+import VictorySplash from '../VictorySplash/VictorySplash.jsx';
 import {scrabble} from '../../utils/wordScrabbler';
 import {ADD_LETTER_TO_GUESSED_WORD, REMOVE_LETTER_TO_GUESSED_WORD} from '../../actions/word-actions';
 
 import './Play.css';
 
 class Play extends Component {
+	constructor(){
+		super();
+		this.state = {
+			won: false
+		};
+	}
 	componentDidMount(){
 		if(this.props.wordReducer.words[0] && !this.props.wordReducer.words[0].scrabbledLetters){
 			this.props.dispatch({
@@ -27,8 +34,10 @@ class Play extends Component {
 		this.props.wordReducer.words[0].guessedLetters.forEach(data=>{
 			guessedWord += data.letter;
 		});
-		if(this.props.wordReducer.words[0].word.toLowerCase() === guessedWord.toLowerCase()){
-			//alert('jeet gaye');
+		if(!this.state.won && this.props.wordReducer.words[0].word.toLowerCase() === guessedWord.toLowerCase()){
+			this.setState({
+				won: true,
+			});
 		}
 	}
 	render(){
@@ -45,6 +54,7 @@ class Play extends Component {
 							});
 						}} />
 					<LetterPlatter
+						isGuessed={this.state.won}
 						letters={this.props.wordReducer.words[0].scrabbledLetters}
 						guess={this.props.wordReducer.words[0].guessedLetters}
 						onLetterSelect={(data)=>{
@@ -53,6 +63,10 @@ class Play extends Component {
 								data,
 							});
 						}}/>
+					{
+						this.state
+					}
+					{this.state.won && <VictorySplash/>}
 				</div>
 
 			</div>
