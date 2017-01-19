@@ -2,6 +2,8 @@ var webpack = require("webpack");
 var path = require('path');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+let extractCSS = new ExtractTextPlugin('../css/[name].css');
+
 module.exports = {
   entry: {
    adminapp: './scripts/adminapp.js',
@@ -19,12 +21,12 @@ module.exports = {
       }
   },
   module: {
-    loaders: [
+    rules: [
       {
         loader: 'babel-loader',
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        query: {
+        options: {
           presets: ['es2015'],
           plugins:[
             ["transform-react-jsx", { "pragma": "h" }]
@@ -33,26 +35,30 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract(
-          'style-loader',
-          'css-loader!postcss-loader'
-        )
-      },
-      {
-          test: /\.(jpe?g|png|gif)(?:\?.*|)$/i,
-          loaders: [
-              'file?hash=sha512&digest=hex&name=[hash].[ext]',
-              'image-webpack'
-          ]
+        loader: extractCSS.extract({
+          fallbackLoader: 'style-loader',
+          loader: ['css-loader','postcss-loader']
+        }),
       },
       {
         test: /\.svg$/,
-        loader: 'babel?presets[]=es2015,presets[]=react!svg-react'
+        use: [
+          {
+            loader: 'babel-loader',
+            options: {
+              presets: ['es2015', 'react']
+            }
+          },
+          'svg-react-loader',
+        ]
       }
 	  ]
   },
   plugins: [
-      new ExtractTextPlugin("../css/[name].css"),
-      new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.js")
+      extractCSS,
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'vendor',
+        minChunks: 2,
+      })
   ]
 };
