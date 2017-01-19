@@ -8,7 +8,11 @@ export default class GuessedWord extends Component {
             <div className="guessed-word">
                 {
                     letters && letters.map( data => {
-                        return <div className="blank mdl-typography--title"> {data.letter} </div>
+                        return (
+                            <div className="blank mdl-typography--title" onClick={()=>{this.props.removeFromGuess(data)}}>
+                                    {data.letter}
+                            </div>
+                        );
                     })
                 }
             </div>

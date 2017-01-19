@@ -9,7 +9,7 @@ import PreviewTiles from '../PreviewTiles/PreviewTiles.jsx';
 import GuessedWord from '../GuessedWord/GuessedWord.jsx';
 import LetterPlatter from '../LetterPlatter/LetterPlatter.jsx';
 import {scrabble} from '../../utils/wordScrabbler';
-import {ADD_LETTER_TO_GUESSED_WORD} from '../../actions/word-actions';
+import {ADD_LETTER_TO_GUESSED_WORD, REMOVE_LETTER_TO_GUESSED_WORD} from '../../actions/word-actions';
 
 import './Play.css';
 
@@ -22,13 +22,28 @@ class Play extends Component {
 			});
 		}
 	}
+	componentDidUpdate(){
+		let guessedWord = '';
+		this.props.wordReducer.words[0].guessedLetters.forEach(data=>{
+			guessedWord += data.letter;
+		});
+		if(this.props.wordReducer.words[0].word.toLowerCase() === guessedWord.toLowerCase()){
+			//alert('jeet gaye');
+		}
+	}
 	render(){
 		return (
 			<div className='screen-play'>
 				<PreviewTiles
 					images={this.props.wordReducer.words[0] && this.props.wordReducer.words[0].images} mode='play'/>
 				<div className="wordsection">
-					<GuessedWord guess={this.props.wordReducer.words[0].guessedLetters} />
+					<GuessedWord guess={this.props.wordReducer.words[0].guessedLetters}
+						removeFromGuess={(data)=>{
+							this.props.dispatch({
+								type: REMOVE_LETTER_TO_GUESSED_WORD,
+								data,
+							});
+						}} />
 					<LetterPlatter
 						letters={this.props.wordReducer.words[0].scrabbledLetters}
 						guess={this.props.wordReducer.words[0].guessedLetters}
