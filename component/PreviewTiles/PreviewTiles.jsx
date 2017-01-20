@@ -12,7 +12,7 @@ export default class Header extends Component {
 		return (
 			<div className={this.props.mode+"-tiles"}>
 				{
-					this.props.images.map(e=> {
+					this.props.images && this.props.images.map(e=> {
 						return (
 							<div className="tile">
 								<img src={e} className="pic"/>
