@@ -12,9 +12,9 @@ class Home extends Component {
 		if(prevProps.wordReducer.wordsLoaded === false
 			&& this.props.wordReducer.wordsLoaded === true
 			&& this.props.wordReducer.words.length <25){
-				// this.props.dispatch({
-				// 	type: actions.FETCH_WORDS
-				// });
+				this.props.dispatch({
+					type: actions.fetchNewWords(this.props.wordReducer.lastWord || ''),
+				});
 			}
 	}
 	startPlay(){

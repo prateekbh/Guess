@@ -4,7 +4,8 @@ import { LOAD } from 'redux-storage';
 
 const initialState={
   wordsLoaded: false,
-  words:[]
+  words:[],
+  lastWord: null,
 };
 
 const emptyGuessedLetter = {
@@ -48,7 +49,7 @@ export default function wordReducer(state = initialState, action) {
       return newState;
     break;
     case gameActions.WORD_GUESSED:
-      newState.words = newState.words.shift();
+      newState.lastWord = newState.words.shift();
       return newState;
     break;
     default:

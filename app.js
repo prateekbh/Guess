@@ -24,6 +24,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())
 app.use(compression());
 app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/manifest', express.static(path.join(__dirname, 'manifest')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.use('/', userapp);
 app.use('/adminapp', adminapp);
