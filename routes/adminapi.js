@@ -1,13 +1,13 @@
 const express = require('express');
 const https = require('https');
 const router = express.Router();
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 
 const mdb = require('./dbapi');
 const db = new mdb.Database();
 const gamesCollection = require('./config').gamesCollection;
 
-router.use(bodyParser.json());
+// router.use(bodyParser.json());
 
 router.get('/', function(req, res, next) {
   res.send('Admin API server is running.');
@@ -62,8 +62,15 @@ router.post('/saveword', function(req, res) {
     'Duplicate': 400,
     'Error': 500,
   };
-  db.insertInCollection(gamesCollection, req.body, (message) => {
-    res.status(status[message]).send(message);
+  // validate(req.body)
+  db.checkWordExists(gamesCollection, req.body.word, (message) => {
+    if (message === false) {
+      db.insertInCollection(gamesCollection, req.body, (message) => {
+        res.status(status[message]).send(message);
+      });
+    } else {
+      res.status(status[message]).send(message);
+    }
   });
 });
 
