@@ -1,21 +1,22 @@
 const express = require('express');
 const https = require('https');
-const MongoClient = require('mongodb').MongoClient;
-
 const router = express.Router();
-// Connection URL
-const url = 'mongodb://localhost:27017/myproject';
-let collections;
-// Use connect method to connect to the Server
-MongoClient.connect(url, (err, db) => {
-	if (err === null) {
-		collections = db.collection('documents');
-	}
+const bodyParser = require('body-parser');
+
+const mdb = require('./dbapi');
+const db = new mdb.Database();
+const gamesCollection = require('./config').gamesCollection;
+
+router.use(bodyParser.json());
+
+router.get('/', function(req, res, next) {
+  res.send('Admin API server is running.');
 });
 
-/* GET users listing. */
-router.get('/', (req, res, next) => {
-	res.send('hi');
+router.get('/allgames', function(req, res, next) {
+  db.readCollection(gamesCollection, (results) => {
+  res.send(results);
+  });
 });
 
 /* GET users listing. */
@@ -55,27 +56,15 @@ router.get('/search', (req, response, next) => {
 	forwardRequest.end();
 });
 
-router.post('/saveword', (req, res) => {
-	collections.find({
-		word: req.body.word,
-	}).toArray((err, results) => {
-		if (err == null && results.length == 0) {
-			collections.insert(req.body, (err, results) => {
-				if (err != null) {
-					res.statusCode = 500;
-					res.send('error');
-				} else {
-					res.statusCode = 200;
-					res.send('saved');
-				}
-			});
-		} else if (err == null && results.length > 0) {
-			res.statusCode = 400;
-			res.send('duplicate word');
-		} else {
-			res.statusCode = 500;
-			res.send('error');
-		}
-	});
+router.post('/saveword', function(req, res) {
+  let status = {
+    'Saved': 200,
+    'Duplicate': 400,
+    'Error': 500,
+  };
+  db.insertInCollection(gamesCollection, req.body, (message) => {
+    res.status(status[message]).send(message);
+  });
 });
+
 module.exports = router;
