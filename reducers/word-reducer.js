@@ -51,18 +51,20 @@ export default function wordReducer(state = initialState, action) {
     break;
     case wordActions.REMOVE_LETTER_TO_GUESSED_WORD:
       const removalLetter = action.data;
-      newState.words[0].guessedLetters = newState.words[0].guessedLetters.map((data,index)=>{
+      const removalWord = Object.assign({}, state.words[0], {guessedLetters: Object.assign([],state.words[0].guessedLetters)});
+      removalWord.guessedLetters = removalWord.guessedLetters.map((data,index)=>{
         if (data.letter === removalLetter.letter && data.index === removalLetter.index) {
-          return Object.assign({}, state, {wordsLoaded: true});
+          return Object.assign({}, emptyGuessedLetter);
         } else {
-          return newState.words[0].guessedLetters[index];
+          return Object.assign({},newState.words[0].guessedLetters[index]);
         }
       });
-      return newState;
+      return Object.assign({}, state, {words : [removalWord, ...state.words.slice(1)]})
     break;
     case gameActions.WORD_GUESSED:
-      newState.lastWord = newState.words.shift();
-      return newState;
+      return Object.assign({}, state, {
+        words: [...state.words.slice(1)],
+      })
     break;
     default:
       return state

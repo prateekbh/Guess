@@ -29,11 +29,14 @@ class Play extends Component {
 			});
 		}
 	}
-	componentDidUpdate(){
+	componentDidUpdate(prevProps){
 		if(this.props.wordReducer.words[0] && !this.props.wordReducer.words[0].scrabbledLetters){
 			this.props.dispatch({
 				type: wordActions.SET_SCRABBLED_LETTERS,
 				data: scrabble(this.props.wordReducer.words[0].word),
+			});
+			this.setState({
+				won: false,
 			});
 		} else if(this.props.wordReducer.words[0] && this.props.wordReducer.words[0].scrabbledLetters){
 			let guessedWord = '';
@@ -77,15 +80,9 @@ class Play extends Component {
 									data,
 								});
 							}}/>
-						{
-							this.state
-						}
 						{this.state.won && <VictorySplash onContinue={()=>{
 							this.props.dispatch({
 								type: gameActions.WORD_GUESSED,
-							});
-							this.setState({
-								won: false,
 							});
 						}}/>}
 					</div>
