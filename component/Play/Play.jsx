@@ -31,12 +31,12 @@ class Play extends Component {
 	}
 	componentDidUpdate(prevProps){
 		if(this.props.wordReducer.words[0] && !this.props.wordReducer.words[0].scrabbledLetters){
+			this.setState({
+				won: false,
+			});
 			this.props.dispatch({
 				type: wordActions.SET_SCRABBLED_LETTERS,
 				data: scrabble(this.props.wordReducer.words[0].word),
-			});
-			this.setState({
-				won: false,
 			});
 		} else if(this.props.wordReducer.words[0] && this.props.wordReducer.words[0].scrabbledLetters){
 			let guessedWord = '';

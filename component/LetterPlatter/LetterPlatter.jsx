@@ -27,8 +27,8 @@ export default class LetterPlatter extends Component {
                                 <div className="letter mdl-typography--title">
                                     <Button accent={true} raised={true} disabled={!showLetter}
                                         onClick = {() => {
-                                            this.sendLetter(index)}
-                                        }>{showLetter?letter:''}</Button>
+                                            this.sendLetter(index);
+                                        }}>{showLetter?letter:''}</Button>
                                 </div>
                             );
                         })
