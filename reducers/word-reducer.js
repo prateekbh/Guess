@@ -13,11 +13,20 @@ const emptyGuessedLetter = {
   index: -1,
 };
 
+function addLetterToGuess(){
+
+}
+
 export default function wordReducer(state = initialState, action) {
   const newState = Object.assign({}, state);
   switch (action.type) {
     case LOAD:
       return Object.assign({}, state, {wordsLoaded: true});
+    break;
+    case wordActions.FETCH_WORDS_SUCCESS:
+      newState.words = newState.words.concat(action.data);
+      newState.lastWord = newState.words[newState.words.length - 1]._id;
+      return newState;
     break;
     case wordActions.SET_SCRABBLED_LETTERS:
       newState.words[0].scrabbledLetters = action.data;

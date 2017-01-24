@@ -1,6 +1,6 @@
 import {h, Component} from 'preact';
 import {connect} from 'preact-redux';
-import {Button} from 'preact-mdl';
+import {Button, Dialog} from 'preact-mdl';
 import {route} from 'preact-router';
 import Splash from '../Splash/Splash.jsx';
 import Header from '../Header/Header.jsx';
@@ -30,7 +30,12 @@ class Play extends Component {
 		}
 	}
 	componentDidUpdate(){
-		if (this.props.wordReducer.words[0]) {
+		if(this.props.wordReducer.words[0] && !this.props.wordReducer.words[0].scrabbledLetters){
+			this.props.dispatch({
+				type: wordActions.SET_SCRABBLED_LETTERS,
+				data: scrabble(this.props.wordReducer.words[0].word),
+			});
+		} else if(this.props.wordReducer.words[0] && this.props.wordReducer.words[0].scrabbledLetters){
 			let guessedWord = '';
 			this.props.wordReducer.words[0].guessedLetters.forEach(data=>{
 				guessedWord += data.letter;
@@ -40,6 +45,8 @@ class Play extends Component {
 					won: true,
 				});
 			}
+		} else if (!this.props.wordReducer.lastWord) {
+			route('/');
 		}
 	}
 	render(){
@@ -61,6 +68,9 @@ class Play extends Component {
 							isGuessed={this.state.won}
 							letters={this.props.wordReducer.words[0].scrabbledLetters}
 							guess={this.props.wordReducer.words[0].guessedLetters}
+							giveHint={() => {
+								this.hintDialog.showModal();
+							}}
 							onLetterSelect={(data)=>{
 								this.props.dispatch({
 									type: wordActions.ADD_LETTER_TO_GUESSED_WORD,
@@ -79,6 +89,23 @@ class Play extends Component {
 							});
 						}}/>}
 					</div>
+					<Dialog ref={hintDialog => {this.hintDialog = hintDialog;}}>
+						<Dialog.Title>Hint</Dialog.Title>
+						<Dialog.Content>
+							You will be charged 5 coins for the hint.
+						</Dialog.Content>
+						<Dialog.Actions>
+							<Button colored={true} onClick={()=>{
+								this.props.dispatch({
+									type: wordActions.GIVE_HINT,
+								});
+								this.hintDialog.base.close();
+							}}>Cool</Button>
+							<Button onClick={() => {
+								this.hintDialog.close();
+							}}>No!</Button>
+						</Dialog.Actions>
+					</Dialog>
 				</div>
 			);
 		} else {

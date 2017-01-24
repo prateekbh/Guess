@@ -36,7 +36,7 @@ export default class LetterPlatter extends Component {
                 </div>
                 <div className="hints">
                     <div className="letter mdl-typography--title">
-                        <Button colored={true} raised={true} icon>
+                        <Button colored={true} raised={true} icon onClick={this.props.giveHint}>
                             <Icon icon="favorite" />
                         </Button>
                     </div>

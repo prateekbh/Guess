@@ -11,10 +11,8 @@ class Home extends Component {
 	componentDidUpdate(prevProps, state){
 		if(prevProps.wordReducer.wordsLoaded === false
 			&& this.props.wordReducer.wordsLoaded === true
-			&& this.props.wordReducer.words.length <25){
-				this.props.dispatch({
-					type: actions.fetchNewWords(this.props.wordReducer.lastWord || ''),
-				});
+			&& this.props.wordReducer.words.length < 5){
+				this.props.dispatch(actions.fetchNewWords(this.props.wordReducer.lastWord || 0));
 			}
 	}
 	startPlay(){
