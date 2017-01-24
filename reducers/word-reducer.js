@@ -18,7 +18,7 @@ function addLetterToGuess(){
 }
 
 export default function wordReducer(state = initialState, action) {
-  const newState = Object.assign({}, state);
+  const newState = Object.assign({}, state, {words: [...state.words]});
   switch (action.type) {
     case LOAD:
       return Object.assign({}, state, {wordsLoaded: true});
@@ -37,14 +37,17 @@ export default function wordReducer(state = initialState, action) {
     break;
     case wordActions.ADD_LETTER_TO_GUESSED_WORD:
       let letterAdded = false;
-      newState.words[0].guessedLetters.forEach((data,index)=>{
+      const newWord = Object.assign({}, state.words[0], {guessedLetters: Object.assign([],state.words[0].guessedLetters)});
+      newWord.guessedLetters.forEach((data,index)=>{
         if (!data.letter && !letterAdded) {
-          newState.words[0].guessedLetters[index].letter = action.data.letter;
-          newState.words[0].guessedLetters[index].index = action.data.index;
+          newWord.guessedLetters[index] = {
+            letter : action.data.letter,
+            index : action.data.index,
+          };
           letterAdded = true;
         }
       });
-      return newState;
+      return Object.assign({}, state, {words : [newWord, ...state.words.slice(1)]})
     break;
     case wordActions.REMOVE_LETTER_TO_GUESSED_WORD:
       const removalLetter = action.data;
