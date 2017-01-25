@@ -2,6 +2,8 @@ import * as wordActions from '../actions/word-actions';
 import * as gameActions from '../actions/game-actions';
 import { LOAD } from 'redux-storage';
 
+import {getHintLetter} from '../utils/wordUtils';
+
 const initialState={
   wordsLoaded: false,
   words:[],
@@ -12,10 +14,6 @@ const emptyGuessedLetter = {
   letter: null,
   index: -1,
 };
-
-function addLetterToGuess(){
-
-}
 
 export default function wordReducer(state = initialState, action) {
   const newState = Object.assign({}, state, {words: [...state.words]});
@@ -65,6 +63,19 @@ export default function wordReducer(state = initialState, action) {
       return Object.assign({}, state, {
         words: [...state.words.slice(1)],
       })
+    break;
+    case wordActions.GIVE_HINT:
+      const hintWord = Object.assign({}, state.words[0], {guessedLetters: Object.assign([],state.words[0].guessedLetters)});
+      hintWord.guessedLetters = hintWord.guessedLetters.map((data, index)=>{
+        if(data.letter && data.letter.toLowerCase() === state.words[0].word.charAt(index).toLowerCase()){
+          return data;
+        } else {
+          return Object.assign({}, emptyGuessedLetter);
+        }
+      });
+      const hint = getHintLetter(state.words[0].word, hintWord.guessedLetters, hintWord.scrabbledLetters);
+      hintWord.guessedLetters[hint.inWordPosition] = hint;
+      return Object.assign({}, state, {words : [hintWord, ...state.words.slice(1)]})
     break;
     default:
       return state

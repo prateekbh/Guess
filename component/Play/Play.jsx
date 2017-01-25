@@ -10,7 +10,7 @@ import PreviewTiles from '../PreviewTiles/PreviewTiles.jsx';
 import GuessedWord from '../GuessedWord/GuessedWord.jsx';
 import LetterPlatter from '../LetterPlatter/LetterPlatter.jsx';
 import VictorySplash from '../VictorySplash/VictorySplash.jsx';
-import {scrabble} from '../../utils/wordScrabbler';
+import {scrabble} from '../../utils/wordUtils';
 
 import './Play.css';
 
@@ -72,7 +72,7 @@ class Play extends Component {
 							letters={this.props.wordReducer.words[0].scrabbledLetters}
 							guess={this.props.wordReducer.words[0].guessedLetters}
 							giveHint={() => {
-								this.hintDialog.showModal();
+								this.hintDialog.base.showModal();
 							}}
 							onLetterSelect={(data)=>{
 								this.props.dispatch({
@@ -96,7 +96,7 @@ class Play extends Component {
 								this.props.dispatch({
 									type: wordActions.GIVE_HINT,
 								});
-								this.hintDialog.base.close();
+								//this.hintDialog.base.close();
 							}}>Cool</Button>
 							<Button onClick={() => {
 								this.hintDialog.close();
