@@ -4,6 +4,7 @@ const REMOVE_LETTER_TO_GUESSED_WORD = 'REMOVE_LETTER_TO_GUESSED_WORD';
 const FETCH_WORDS_FAILED = 'FETCH_WORDS_FAILED';
 const FETCH_WORDS_SUCCESS = 'FETCH_WORDS_SUCCESS';
 const GIVE_HINT = 'GIVE_HINT';
+const REMOVE_WRONG_OPTIONS = 'REMOVE_WRONG_OPTIONS';
 function fetchNewWords(id){
     return dispatch => {
         fetch('/gamesapi/'+id)
@@ -29,4 +30,5 @@ export {
     FETCH_WORDS_FAILED,
     FETCH_WORDS_SUCCESS,
     GIVE_HINT,
+    REMOVE_WRONG_OPTIONS,
 }

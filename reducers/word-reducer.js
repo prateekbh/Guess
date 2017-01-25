@@ -27,11 +27,13 @@ export default function wordReducer(state = initialState, action) {
       return newState;
     break;
     case wordActions.SET_SCRABBLED_LETTERS:
-      newState.words[0].scrabbledLetters = action.data;
-      newState.words[0].guessedLetters = newState.words[0].word.split('').map(e=>{
+      const wordForScrabbledLetters = Object.assign({},state.words[0]);
+      wordForScrabbledLetters.scrabbledLetters = action.data;
+      wordForScrabbledLetters.guessedLetters = wordForScrabbledLetters.word.split('').map(e=>{
         return Object.assign({}, emptyGuessedLetter);
       });
-      return newState;
+      wordForScrabbledLetters.timeLapsed = 0;
+      return Object.assign({}, state, {words: [wordForScrabbledLetters, ...state.words.slice(1)]});
     break;
     case wordActions.ADD_LETTER_TO_GUESSED_WORD:
       let letterAdded = false;
@@ -54,7 +56,7 @@ export default function wordReducer(state = initialState, action) {
         if (data.letter === removalLetter.letter && data.index === removalLetter.index) {
           return Object.assign({}, emptyGuessedLetter);
         } else {
-          return Object.assign({},newState.words[0].guessedLetters[index]);
+          return Object.assign({},state.words[0].guessedLetters[index]);
         }
       });
       return Object.assign({}, state, {words : [removalWord, ...state.words.slice(1)]})
@@ -66,6 +68,7 @@ export default function wordReducer(state = initialState, action) {
     break;
     case wordActions.GIVE_HINT:
       const hintWord = Object.assign({}, state.words[0], {guessedLetters: Object.assign([],state.words[0].guessedLetters)});
+      // Remove all wrong guesses
       hintWord.guessedLetters = hintWord.guessedLetters.map((data, index)=>{
         if(data.letter && data.letter.toLowerCase() === state.words[0].word.charAt(index).toLowerCase()){
           return data;
@@ -75,7 +78,35 @@ export default function wordReducer(state = initialState, action) {
       });
       const hint = getHintLetter(state.words[0].word, hintWord.guessedLetters, hintWord.scrabbledLetters);
       hintWord.guessedLetters[hint.inWordPosition] = hint;
+      hintWord.minorHintGiven = true;
       return Object.assign({}, state, {words : [hintWord, ...state.words.slice(1)]})
+    break;
+    case wordActions.REMOVE_WRONG_OPTIONS:
+      const wrongLetterRemovalWord = Object.assign({}, state.words[0], {guessedLetters: Object.assign([],state.words[0].guessedLetters)});
+      // Remove all wrong guesses
+      wrongLetterRemovalWord.guessedLetters = wrongLetterRemovalWord.guessedLetters.map((data, index)=>{
+        if(data.letter && data.letter.toLowerCase() === state.words[0].word.charAt(index).toLowerCase()){
+          return data;
+        } else {
+          return Object.assign({}, emptyGuessedLetter);
+        }
+      });
+      let removalCount = 0;
+      while (removalCount < 4) {
+        const randomIndex = Math.floor(Math.random() * (wrongLetterRemovalWord.scrabbledLetters.length - 1));
+        if (wrongLetterRemovalWord.word.toUpperCase().indexOf(wrongLetterRemovalWord.scrabbledLetters[randomIndex]) === -1
+            && wrongLetterRemovalWord.scrabbledLetters[randomIndex] !== null) {
+          wrongLetterRemovalWord.scrabbledLetters[randomIndex] = null;
+          removalCount++;
+        }
+      }
+      wrongLetterRemovalWord.majorHintGiven = true;
+      return Object.assign({}, state, {words : [wrongLetterRemovalWord, ...state.words.slice(1)]})
+    break;
+    case gameActions.LOG_TIME:
+      const timeLoggingWord = Object.assign({}, state.words[0], {guessedLetters: Object.assign([],state.words[0].guessedLetters)});
+      timeLoggingWord.timeLapsed = (timeLoggingWord.timeLapsed || 0) + 1000;
+      return Object.assign({}, state, {words : [timeLoggingWord, ...state.words.slice(1)]})
     break;
     default:
       return state

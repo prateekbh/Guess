@@ -10,3 +10,7 @@ body{
 .mdl-button--raised[disabled][disabled], .mdl-button--raised.mdl-button--disabled.mdl-button--disabled {
     background-color: rgba(255,82,82,0.7);
 }
+
+.mdl-button--raised[disabled].mdl-button--colored.mdl-button--disabled{
+    background-color: rgba(0,150,136,0.7);
+}

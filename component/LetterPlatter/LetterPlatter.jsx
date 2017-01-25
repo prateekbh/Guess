@@ -25,7 +25,7 @@ export default class LetterPlatter extends Component {
                             });
                             return(
                                 <div className="letter mdl-typography--title">
-                                    <Button accent={true} raised={true} disabled={!showLetter}
+                                    <Button accent={true} raised={true} disabled={!showLetter || !letter}
                                         onClick = {() => {
                                             this.sendLetter(index);
                                         }}>{showLetter?letter:''}</Button>
@@ -36,12 +36,15 @@ export default class LetterPlatter extends Component {
                 </div>
                 <div className="hints">
                     <div className="letter mdl-typography--title">
-                        <Button colored={true} raised={true} icon onClick={this.props.giveHint}>
+                        <Button colored={true} raised={true} icon
+                            onClick={this.props.giveHint} disabled={this.props.minorHintGiven}>
                             <Icon icon="favorite" />
                         </Button>
                     </div>
                     <div className="letter mdl-typography--title">
-                        <Button colored={true} raised={true} icon>
+                        <Button
+                            colored={true} raised={true} icon
+                            onClick={this.props.removeWrongLetters} disabled={this.props.majorHintGiven}>
                             <Icon icon="delete" />
                         </Button>
                     </div>

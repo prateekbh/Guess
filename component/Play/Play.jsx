@@ -18,7 +18,11 @@ class Play extends Component {
 	constructor(){
 		super();
 		this.state = {
-			won: false
+			won: false,
+			hint: {
+				charge: 5,
+				action: wordActions.GIVE_HINT
+			}
 		};
 	}
 	componentDidMount(){
@@ -28,6 +32,15 @@ class Play extends Component {
 				data: scrabble(this.props.wordReducer.words[0].word),
 			});
 		}
+		setInterval(()=>{
+			if (!this.state.won) {
+				requestIdleCallback(()=>{
+					this.props.dispatch({
+						type: gameActions.LOG_TIME,
+					})
+				});
+			}
+		},1000);
 	}
 	componentDidUpdate(prevProps){
 		if(this.props.wordReducer.words[0] && !this.props.wordReducer.words[0].scrabbledLetters){
@@ -71,7 +84,24 @@ class Play extends Component {
 							isGuessed={this.state.won}
 							letters={this.props.wordReducer.words[0].scrabbledLetters}
 							guess={this.props.wordReducer.words[0].guessedLetters}
+							minorHintGiven={this.props.wordReducer.words[0].minorHintGiven}
+							majorHintGiven={this.props.wordReducer.words[0].majorHintGiven}
 							giveHint={() => {
+								this.setState({
+									hint: {
+										charge: 5,
+										action: wordActions.GIVE_HINT
+									}
+								});
+								this.hintDialog.base.showModal();
+							}}
+							removeWrongLetters={() => {
+								this.setState({
+									hint: {
+										charge: 10,
+										action: wordActions.REMOVE_WRONG_OPTIONS
+									}
+								});
 								this.hintDialog.base.showModal();
 							}}
 							onLetterSelect={(data)=>{
@@ -89,17 +119,17 @@ class Play extends Component {
 					<Dialog ref={hintDialog => {this.hintDialog = hintDialog;}}>
 						<Dialog.Title>Hint</Dialog.Title>
 						<Dialog.Content>
-							You will be charged 5 coins for the hint.
+							You will be charged {this.state.hint.charge} coins for this hint.
 						</Dialog.Content>
 						<Dialog.Actions>
 							<Button colored={true} onClick={()=>{
 								this.props.dispatch({
-									type: wordActions.GIVE_HINT,
+									type: this.state.hint.action,
 								});
-								//this.hintDialog.base.close();
+								this.hintDialog.base.close();
 							}}>Cool</Button>
 							<Button onClick={() => {
-								this.hintDialog.close();
+								this.hintDialog.base.close();
 							}}>No!</Button>
 						</Dialog.Actions>
 					</Dialog>
