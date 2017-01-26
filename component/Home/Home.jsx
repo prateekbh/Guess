@@ -4,10 +4,14 @@ import {Button} from 'preact-mdl';
 import {route} from 'preact-router';
 import Splash from '../Splash/Splash.jsx';
 import * as actions from '../../actions/word-actions';
+import * as userActions from '../../actions/user-actions';
 import PreviewTiles from '../PreviewTiles/PreviewTiles.jsx';
 import './Home.css';
 
 class Home extends Component {
+	constructor() {
+		super();
+	}
 	componentDidUpdate(prevProps, state){
 		if(prevProps.wordReducer.wordsLoaded === false
 			&& this.props.wordReducer.wordsLoaded === true
@@ -15,15 +19,23 @@ class Home extends Component {
 				this.props.dispatch(actions.fetchNewWords(this.props.wordReducer.lastWord || 0));
 			}
 	}
-	startPlay(){
+	startPlay() {
 		route('/play');
 	}
 	render(){
 		return (
 			<div className='screen-home'>
 				{
-					(!this.props.wordReducer.wordsLoaded || this.props.wordReducer.words.length == 0)
-						&& <Splash/>
+					(!this.props.wordReducer.wordsLoaded || this.props.wordReducer.words.length == 0 || !this.props.userReducer.name) &&
+						<Splash
+							showHome={this.showHome}
+							user={this.props.userReducer}
+							setUser={data=>{
+								this.props.dispatch({
+									type: userActions.SET_USER_DETAILS,
+									data,
+								})
+							}}/>
 				}
 				<div>
 					<PreviewTiles

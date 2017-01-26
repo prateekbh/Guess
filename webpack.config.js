@@ -27,10 +27,10 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         options: {
-          presets: ['es2015'],
+          presets: [['es2015', {"modules": false}]],
           plugins:[
             ["transform-react-jsx", { "pragma": "h" }]
-          ]
+          ],
         }
       },
       {

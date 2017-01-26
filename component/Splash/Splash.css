@@ -1,4 +1,4 @@
-.screen-splash{
+.screen-splash, .dummy-splash{
 	height: 100%;
 	width: 100%;
 	background: #333;
@@ -33,6 +33,7 @@
     margin: auto;
     left: 0;
     right: 0;
+	text-align: center;
 	.mdl-progress{
 		height: 3px;
 	}

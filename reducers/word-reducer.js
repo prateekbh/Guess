@@ -91,15 +91,12 @@ export default function wordReducer(state = initialState, action) {
           return Object.assign({}, emptyGuessedLetter);
         }
       });
-      let removalCount = 0;
-      while (removalCount < 4) {
-        const randomIndex = Math.floor(Math.random() * (wrongLetterRemovalWord.scrabbledLetters.length - 1));
-        if (wrongLetterRemovalWord.word.toUpperCase().indexOf(wrongLetterRemovalWord.scrabbledLetters[randomIndex]) === -1
-            && wrongLetterRemovalWord.scrabbledLetters[randomIndex] !== null) {
-          wrongLetterRemovalWord.scrabbledLetters[randomIndex] = null;
-          removalCount++;
-        }
-      }
+      const wordArray = wrongLetterRemovalWord.word.toUpperCase().split('');
+      let availableChoices = wrongLetterRemovalWord.scrabbledLetters.filter(letter => !wordArray.includes(letter));
+      availableChoices.forEach(letter => {
+        const letterIndex = wrongLetterRemovalWord.scrabbledLetters.indexOf(letter);
+        wrongLetterRemovalWord.scrabbledLetters[letterIndex] = null;
+      })
       wrongLetterRemovalWord.majorHintGiven = true;
       return Object.assign({}, state, {words : [wrongLetterRemovalWord, ...state.words.slice(1)]})
     break;
