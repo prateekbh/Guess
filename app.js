@@ -9,7 +9,7 @@ const userapp = require('./routes/userapp');
 const adminapp = require('./routes/adminapp');
 const adminapi = require('./routes/adminapi');
 const gamesapi = require('./routes/gamesapi');
-const compression = require('compression')
+const compression = require('compression');
 const app = express();
 app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
