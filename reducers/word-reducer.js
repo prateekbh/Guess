@@ -25,10 +25,10 @@ export default function wordReducer(state = initialState, action) {
       action.data.forEach(word => {
         newImages = newImages.concat(word.images);
       });
-      console.log(newImages);
       caches.open('word-images').then(cache=>{
         return cache.addAll(newImages);
       }).catch(err=>{
+        newState.pendingImages = newImages;
         // TODO: may be put the images in pending key and redo this on next init!
       })
       newState.words = newState.words.concat(action.data);
