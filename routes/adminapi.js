@@ -19,21 +19,21 @@ router.get('/allgames', function(req, res, next) {
   });
 });
 
-router.get('/search', function(req, response, next) {
-  let options = {
-    hostname: 'api.gettyimages.com',
-    port: 443,
-    path: '/v3/search/images?fields=id,title,thumb,referral_destinations&phrase='+req.query.q+'&sort_order=best',
-    method: 'GET',
-    headers: {
-      'Api-Key': '697wgfynhw53p7fzsw7dbder',
-    },
-  };
+/* GET users listing. */
+router.get('/search', (req, response, next) => {
+	const options = {
+		hostname: 'api.gettyimages.com',
+		port: 443,
+		path: '/v3/search/images?fields=id,title,thumb,referral_destinations&phrase='+ req.query.q +'&sort_order=best',
+		method: 'GET',
+		headers: {
+			'Api-Key': '697wgfynhw53p7fzsw7dbder',
+		},
+	};
 
 	const forwardRequest = https.request(options, (res) => {
 		res.on('data', (data) => {
 			data = JSON.parse(data);
-
 			res.statusCode = 200;
 			const resData = {
 				word: req.query.q,

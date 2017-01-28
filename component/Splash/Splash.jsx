@@ -1,20 +1,44 @@
 import {h, Component} from 'preact';
 import {Progress} from 'preact-mdl';
 import {connect} from 'preact-redux';
-
+import Logo from '../../images/Logo.svg';
 import './Splash.css';
 export default class Splash extends Component {
-	constructor(){
+	constructor() {
 		super();
+		this.state = {
+			isLoading: false,
+		}
+	}
+	login() {
+		const config = {
+			apiKey: "AIzaSyARpD2ZY6JV0yWtWuVXsHk08u5cSEnNaH8",
+			authDomain: "guess-f5b84.firebaseapp.com",
+			messagingSenderId: "892039919403"
+		};
+		this.setState({
+			isLoading: true,
+		});
+		firebase.initializeApp(config);
+		const provider = new firebase.auth.GoogleAuthProvider();
+		firebase.auth().signInWithPopup(provider).then(result=>{
+			this.props.setUser({
+				email: result.user.email,
+				name: result.user.displayName,
+			})
+		}).catch(err=>{
+			console.log('woops, cant get your profile!', err);
+		})
 	}
 	render() {
 		return (
 			<div className='screen-splash'>
-				<svg className='logo' fill="#2818B1" viewBox="0 0 24 24" >
-						<path clip-path="url(#b)" d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z"/>
-				</svg>
+				<Logo className='logo'/>
 				<div className="loading">
-					<Progress indeterminate={true}/>
+					{
+						(this.state.isLoading || this.props.user.name) ? <Progress indeterminate={true}/> :
+							<img className='signIn' src='/images/signin.png' onClick={this.login.bind(this)}/>
+					}
 				</div>
 			</div>
 		);

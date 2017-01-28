@@ -1,11 +1,44 @@
 .platter{
-    padding: 16px;
+    max-width: 400px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    display: flex;
+    transition-duration: 1s;
+    transition-property: opacify;
+    will-change: opacify;
+    &.guessed{
+        opacity: 0.2;
+    }
+    .letters{
+        flex: 6;
+    }
+    .hints{
+        flex: 1;
+    }
     .letter{
         display: inline-block;
         font-weight: 700;
-        border: 3px solid #ccc;
-        border-radius: 3px;
-        margin: 8px;
-        width: 20px;
+        padding: 8px;
+        width: 16.66%;
+        button{
+            border-radius: 3px;
+            justify-content: center;
+            align-items: center;
+            height: 40px;
+            min-width: 0px;
+            width: 100%;
+            font-size: 20px;
+            font-weight: 300;
+            padding: 0 8px;
+        }
+    }
+    .hints{
+        .letter{
+            width: 100%;
+            button{
+                width: 100%;
+            }
+        }
     }
 }

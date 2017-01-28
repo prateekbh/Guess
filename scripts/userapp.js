@@ -9,6 +9,7 @@ import Header from '../component/Header/Header.jsx';
 import Home from '../component/Home/Home.jsx';
 import Play from '../component/Play/Play.jsx';
 
+document.getElementById('app').innerHTML ='';
 render(
   <Provider store={UserStore}>
     <Layout>

@@ -1,6 +1,8 @@
 import {h, Component} from 'preact';
 import {Progress} from 'preact-mdl';
+import LevelBadge from '../LevelBadge/LevelBadge.jsx';
 import './PreviewTiles.css';
+
 
 export default class Header extends Component {
 	constructor(){
@@ -10,20 +12,16 @@ export default class Header extends Component {
 		return (
 			<div className={this.props.mode+"-tiles"}>
 				{
-					this.props.images.map(e=> {
+					this.props.images && this.props.images.map(e=> {
 						return (
-							<div className="tile" style={'background-image:url(' + e + ')'}>
+							<div className="tile">
+								<img src={e} className="pic"/>
 							</div>
 						)
 					})
 				}
 				{
-					this.props.mode == 'preview' &&
-					<div className="level">
-						<div className="mdl-typography--title">
-							{this.props.level}
-						</div>
-					</div>
+					this.props.mode == 'preview' && <LevelBadge level={this.props.level} />
 				}
 			</div>
 		);
