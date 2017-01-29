@@ -2,6 +2,7 @@ const MongoClient = require('mongodb').MongoClient;
 const autoIncrement = require('mongodb-autoincrement');
 const dbUrl = 'mongodb://localhost:27017/guess';
 
+const userCollection = 'users';
 let _db;
 
 /**
@@ -11,6 +12,34 @@ function db() {
   MongoClient.connect(dbUrl, function(err, database) {
     if (err) return console.log(err);
     _db = database;
+  });
+}
+
+db.prototype.checkUserExists = function(email, callback) {
+  _db.collection(userCollection).find({'email': email}).limit(1).toArray(function(err, results) {
+    if (err) {
+      console.log(err);
+      return callback(false);
+    }
+    if (results.length) {
+      console.log('User exists at _id: ' + results[0]._id);
+      callback(results[0]._id);
+    } else callback(false);
+  });
+}
+
+db.prototype.createUser = function(payload, callback) {
+  var user = {'name': payload['name']};
+  if (payload.hasOwnProperty('email')) {
+    user['email'] = payload['email'];
+  }
+  _db.collection(userCollection).insertOne(user, (err, result) => {
+    if (err) {
+      console.log(err);
+      return callback(false);
+    }
+    console.log('User created at _id: ' + result.ops[0]._id);
+    callback(result.ops[0]._id);
   });
 }
 
