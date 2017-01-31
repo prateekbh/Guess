@@ -2,7 +2,9 @@ import {h, Component} from 'preact';
 import {Progress, Button, Dialog, TextField} from 'preact-mdl';
 import {connect} from 'preact-redux';
 import Logo from '../../images/Logo.svg';
+import Toast from '../Toast/Toast.jsx';
 import './Splash.css';
+
 export default class Splash extends Component {
 	constructor() {
 		super();
@@ -10,25 +12,34 @@ export default class Splash extends Component {
 			isLoading: false,
 		}
 	}
-	login() {
-		const config = {
-			apiKey: "AIzaSyARpD2ZY6JV0yWtWuVXsHk08u5cSEnNaH8",
-			authDomain: "guess-f5b84.firebaseapp.com",
-			messagingSenderId: "892039919403"
-		};
-		this.setState({
-			isLoading: true,
+	componentDidMount(){
+		window.addEventListener('offline', () => {
+			this.toast.addToast('You are offline!');
 		});
-		firebase.initializeApp(config);
-		const provider = new firebase.auth.GoogleAuthProvider();
-		firebase.auth().signInWithPopup(provider).then(result=>{
-			this.props.setUser({
-				email: result.user.email,
-				name: result.user.displayName,
+	}
+	login() {
+		if (navigator.onLine) {
+			const config = {
+				apiKey: "AIzaSyARpD2ZY6JV0yWtWuVXsHk08u5cSEnNaH8",
+				authDomain: "guess-f5b84.firebaseapp.com",
+				messagingSenderId: "892039919403"
+			};
+			this.setState({
+				isLoading: true,
 			});
-		}).catch(err=>{
-			console.log('woops, cant get your profile!', err);
-		})
+			firebase.initializeApp(config);
+			const provider = new firebase.auth.GoogleAuthProvider();
+			firebase.auth().signInWithPopup(provider).then(result=>{
+				this.props.setUser({
+					email: result.user.email,
+					name: result.user.displayName,
+				});
+			}).catch(err=>{
+				console.log('woops, cant get your profile!', err);
+			});
+		} else {
+			this.offlineDialog.base.showModal();
+		}
 	}
 	render() {
 		return (
@@ -69,10 +80,10 @@ export default class Splash extends Component {
 						<Button colored={true} onClick={()=>{
 							const name = this.state.guestName;
 							if (name && name.length>1){
-								this.props.setUser({
+								navigator.onLine && this.props.setUser({
 									email: null,
 									name,
-								});
+								}) || this.offlineDialog.base.showModal();
 							}
 						}}>Done</Button>
 						<Button onClick={()=>{
@@ -80,6 +91,18 @@ export default class Splash extends Component {
 						}}>Cancel</Button>
 					</Dialog.Actions>
 				</Dialog>
+				<Dialog ref={offlineDialog => {this.offlineDialog = offlineDialog;}}>
+					<Dialog.Title>Offline!</Dialog.Title>
+					<Dialog.Content>
+						Woops, you need to be online for signing in.
+					</Dialog.Content>
+					<Dialog.Actions>
+						<Button colored={true} onClick={()=>{
+							this.offlineDialog.base.close();
+						}}>Okay</Button>
+					</Dialog.Actions>
+				</Dialog>
+				<Toast ref={toast => this.toast = toast}/>
 			</div>
 		);
 	}

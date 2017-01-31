@@ -9,7 +9,6 @@ const userapp = require('./routes/userapp');
 const adminapp = require('./routes/adminapp');
 const adminapi = require('./routes/adminapi');
 const gamesapi = require('./routes/gamesapi');
-const userapi = require('./routes/userapi');
 const compression = require('compression');
 const app = express();
 app.engine('mustache', mustacheExpress());
@@ -31,7 +30,6 @@ app.use('/', userapp);
 app.use('/adminapp', adminapp);
 app.use('/adminapi', adminapi);
 app.use('/gamesapi', gamesapi);
-app.use('/userapi', userapi);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
