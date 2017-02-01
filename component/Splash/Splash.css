@@ -23,6 +23,22 @@
 		background-color: rgb(255, 157, 50) !important;
 		background-image: none !important;
 	}
+	dialog .mdl-button{
+		width: 80px;
+	}
+	.mdl-button.mdl-js-button{
+		font-size: 14px;
+	}
+	.btn-guest,.btn-google {
+		.mdl-button{
+			background: #ddd;
+			text-transform: initial;
+			margin-top: 16px;
+		}
+	}
+	.btn-google .mdl-button{
+		background: #fff;
+	}
 }
 
 

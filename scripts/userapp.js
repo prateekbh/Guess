@@ -1,7 +1,7 @@
 import { h, render } from 'preact';
 import { Layout } from 'preact-mdl';
 import { Provider, connect } from 'preact-redux';
-import {Router} from 'preact-router';
+import {Router, Route} from 'preact-router';
 import UserStore from './user-store';
 import '../css/userapp.css';
 
@@ -15,8 +15,8 @@ render(
     <Layout>
       <Header/>
       <Router>
-        <Home path="/" />
-        <Play path="/play" />
+        <Home path='/' />
+        <Route path='/play' component={Play} hi='bye'/>
       </Router>
     </Layout>
   </Provider>,
