@@ -12,6 +12,7 @@ module.exports = {
   },
   output: {
     path: __dirname + '/public/js',
+    publicPath: '/public/js/',
     filename: '[name].js'
   },
   resolve: {
@@ -25,7 +26,7 @@ module.exports = {
       {
         loader: 'babel-loader',
         test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
+        exclude: /node_modules\/proptypes/,
         options: {
           presets: [['es2015', {"modules": false}]],
           plugins:[
