@@ -1,12 +1,17 @@
 const https = require('https');
+const mdb = require('./dbapi');
+const firebase = require('firebase');
+const config = require('./config');
 const express = require('express');
 const router = express.Router();
-
-const mdb = require('./dbapi');
 const db = new mdb.Database();
 
-const config = require('./config');
-
+const firebaseConfig = {
+  apiKey: 'AIzaSyARpD2ZY6JV0yWtWuVXsHk08u5cSEnNaH8',
+  authDomain: 'guess-f5b84.firebaseapp.com',
+  messagingSenderId: '892039919403'
+};
+const app = firebase.initializeApp(firebaseConfig);
 /*
 curl -H "Content-Type: application/json" -H "Accept: application/json" \
 -X POST \
@@ -30,39 +35,27 @@ router.post('/login', function(req, res, next) {
     createUser(req.body[config.NAME], undefined, res);
   } else res.status(400).send('Name or auth_token not provided.');
 });
-  
+
 let createUser = function(name, email, res) {
   db.createUser(name, email, (_id, name) => {
     if (_id) return loginResponse(_id, name, res);
-    res.status(500).send('Error occurred in user creation.');  
+    res.status(500).send('Error occurred in user creation.');
   });
-}
+};
 
 let loginResponse = function(_id, name, res) {
   res.cookie(config.COOKIE_NAME, _id.toString())
-    .send({'user' : {'name': name}});
-}
+    .send({'user': {'name': name}});
+};
 
 let getProfileFromGoogle = function(accessToken, callback) {
-  var options = {
-    host: 'content.googleapis.com',
-    path: '/plus/v1/people/me?key=' + config.GOOGLE_API_KEY,
-    headers: { 'Authorization': 'Bearer ' + accessToken}
-  }; 
-  var req = https.get(options, function(res) {
-    res.on('data', function(d) {
-      var jsonRes = JSON.parse(d);
-      // console.log(jsonRes);
-      if (jsonRes.hasOwnProperty('error')) {
-        console.log(jsonRes['error']);
-        return callback(false);
-      }
-      callback(jsonRes['displayName'], jsonRes['emails'][0]['value']);
-    });
-  }).on('error', (e) => {
-    console.error(e);
+  const credential = firebase.auth.GoogleAuthProvider.credential(accessToken);
+  firebase.auth().signInWithCredential(credential).then((result)=>{
+    callback(result.displayName, result.email);
+  }).catch(function(error) {
+    callback(false);
   });
-}
+};
 
 /*
 curl -H "Content-Type: application/json" \

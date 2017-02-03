@@ -13,6 +13,7 @@
     "debug": "~2.2.0",
     "eslint-config-google": "^0.7.1",
     "express": "~4.13.4",
+    "firebase": "^3.6.8",
     "jade": "~1.11.0",
     "mongodb": "^2.2.19",
     "mongodb-autoincrement": "^1.0.1",

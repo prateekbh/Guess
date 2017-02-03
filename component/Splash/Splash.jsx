@@ -31,8 +31,7 @@ export default class Splash extends Component {
 			const provider = new firebase.auth.GoogleAuthProvider();
 			firebase.auth().signInWithPopup(provider).then(result=>{
 				this.props.setUser({
-					email: result.user.email,
-					name: result.user.displayName,
+					authToken: result.credential.idToken,
 				});
 			}).catch(err=>{
 				console.log('woops, cant get your profile!', err);
@@ -80,10 +79,10 @@ export default class Splash extends Component {
 						<Button colored={true} onClick={()=>{
 							const name = this.state.guestName;
 							if (name && name.length>1){
-								navigator.onLine && this.props.setUser({
-									email: null,
+								navigator.onLine ? this.props.setUser({
+									authToken: null,
 									name,
-								}) || this.offlineDialog.base.showModal();
+								}) : this.offlineDialog.base.showModal();
 							}
 						}}>Done</Button>
 						<Button onClick={()=>{

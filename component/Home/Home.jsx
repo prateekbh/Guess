@@ -31,10 +31,11 @@ class Home extends Component {
 							showHome={this.showHome}
 							user={this.props.userReducer}
 							setUser={data=>{
-								this.props.dispatch({
-									type: userActions.SET_USER_DETAILS,
-									data,
-								})
+								if (data.authToken) {
+									this.props.dispatch(userActions.loginUser({ authToken: data.authToken }));
+								} else {
+									this.props.dispatch(userActions.loginUser({ name: data.name }));
+								}
 							}}/>
 				}
 				<div>
