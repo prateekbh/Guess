@@ -20,7 +20,7 @@ function loginUser({authToken, name}) {
         .then(res => {
             dispatchEvent({
                 type: SET_USER_DETAILS,
-                data: res,
+                data: res.user,
             });
         })
         .catch(err => {
