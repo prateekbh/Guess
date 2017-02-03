@@ -87,22 +87,26 @@ class Play extends Component {
 							minorHintGiven={this.props.wordReducer.words[0].minorHintGiven}
 							majorHintGiven={this.props.wordReducer.words[0].majorHintGiven}
 							giveHint={() => {
-								this.setState({
-									hint: {
-										charge: 5,
-										action: wordActions.GIVE_HINT
-									}
-								});
-								this.hintDialog.base.showModal();
+								if (this.props.userReducer.coins >= 5) {
+									this.setState({
+										hint: {
+											charge: 5,
+											action: wordActions.GIVE_HINT
+										}
+									});
+									this.hintDialog.base.showModal();
+								}
 							}}
 							removeWrongLetters={() => {
-								this.setState({
-									hint: {
-										charge: 10,
-										action: wordActions.REMOVE_WRONG_OPTIONS
-									}
-								});
-								this.hintDialog.base.showModal();
+								if (this.props.userReducer.coins >= 20) {
+									this.setState({
+										hint: {
+											charge: 20,
+											action: wordActions.REMOVE_WRONG_OPTIONS
+										}
+									});
+									this.hintDialog.base.showModal();
+								}
 							}}
 							onLetterSelect={(data)=>{
 								this.props.dispatch({
@@ -145,6 +149,7 @@ class Play extends Component {
 
 export default connect((state)=>{
 	return {
-		wordReducer: state.wordReducer
+		wordReducer: state.wordReducer,
+		userReducer: state.userReducer
 	};
 })(Play);

@@ -21,7 +21,7 @@ export default function userReducer(state = initialState, action) {
       return Object.assign({}, state, {coins: state.coins - 5});
     break;
     case wordActions.REMOVE_WRONG_OPTIONS:
-      return Object.assign({}, state, {coins: state.coins - 10});
+      return Object.assign({}, state, {coins: state.coins - 20});
     break;
     default:
       return state

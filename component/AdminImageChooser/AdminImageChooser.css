@@ -4,8 +4,9 @@
 	position: relative;
 	.img-thumb{
 		display: inline-block;
-		width:170px;
-		background-image-size:cover;
+		background-size: cover;
+		height: 125px;
+		width: 192px;
 	}
 	.tick{
 		position: absolute;

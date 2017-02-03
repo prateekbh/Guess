@@ -15,7 +15,7 @@ export default class Header extends Component {
 					this.props.images && this.props.images.map(e=> {
 						return (
 							<div className="tile">
-								<img src={e} className="pic"/>
+								<div className="pic" style={"background-image:url("+ e +")"} />
 							</div>
 						)
 					})

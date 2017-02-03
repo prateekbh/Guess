@@ -1,45 +1,52 @@
 const express = require('express');
-const https = require('https');
-const router = express.Router();
-
+const http = require('http');
 const mdb = require('./dbapi');
+const router = express.Router();
 const db = new mdb.Database();
-
-const gamesCollection = require('./config').gamesCollection;
 
 router.get('/search', (req, response, next) => {
   const options = {
-    hostname: 'api.gettyimages.com',
-    port: 443,
-    path: '/v3/search/images?fields=id,title,thumb,referral_destinations&phrase='+ req.query.q +'&sort_order=best',
+    hostname: 'api.pexels.com',
+    path: '/v1/search?query=' + req.query.q + '&per_page=100&page=1',
     method: 'GET',
     headers: {
-      'Api-Key': '697wgfynhw53p7fzsw7dbder',
+      'Authorization': process.env.PEXELS_KEY,
     },
   };
 
-  const forwardRequest = https.request(options, (res) => {
+  const forwardRequest = http.request(options, (res) => {
+    let fullRes ='';
     res.on('data', (data) => {
-      data = JSON.parse(data);
-      res.statusCode = 200;
-      const resData = {
-        word: req.query.q,
-        images: [],
-      };
-
-      data.images.forEach((item) => {
-        resData.images.push(item.display_sizes[0].uri);
-      });
-
+      fullRes += data;
+    });
+    res.on('end', ()=>{
       response.setHeader('Content-type', 'application/json');
-      response.send(JSON.stringify(resData));
+      try {
+        const data = JSON.parse(fullRes);
+        const resData = {
+          word: req.query.q,
+          images: [],
+        };
+
+        data.photos.forEach((item) => {
+          resData.images.push(item.src.medium);
+        });
+
+        res.statusCode = 200;
+        response.send(JSON.stringify(resData));
+      } catch(e) {
+        console.log(e);
+        response.statusCode = 500;
+        response.send({error: 'Server error'});
+      }
     });
   });
 
   forwardRequest.on('error', (e) => {
     response.statusCode = 500;
-    response.send(e);
+    response.send({error: e});
   });
+
   forwardRequest.end();
 });
 
