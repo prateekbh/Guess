@@ -1,10 +1,10 @@
 .play-tiles, .preview-tiles{
 	position: relative;
 	text-align: center;
-	width: 210px;
+	width: 100%;
 	left: 0;
 	right: 0;
-	margin: 50px auto;
+	margin: 40px auto;
 	&:after{
 		content: '';
 		display: table;
@@ -12,7 +12,7 @@
 	}
 	.tile{
 		position: relative;
-		width: 105px;
+		width: 50%;
 		float: left;
 		padding: 4px;
 	}
@@ -23,7 +23,6 @@
 		width: 100%;
 		background-size: cover;
 		background-position: center;
-		height: 9%;
 	}
 	.level{
 		position: absolute;
@@ -37,14 +36,19 @@
 		font-size: 14px;
 	}
 }
+.preview-tiles{
+	max-width: 300px;
+	.pic{
+		height: 15%;
+	}
+}
 .play-tiles{
-	width: 100%;
 	max-width: 400px;
 	min-width: 320px;
 	.tile{
 		width: 50%;
 	}
 	.pic{
-		height: 18%;
+		height: 20%;
 	}
 }

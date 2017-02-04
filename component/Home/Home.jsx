@@ -24,7 +24,7 @@ class Home extends Component {
 	}
 	render(){
 		return (
-			<div className='screen-home'>
+				<div className='screen-home'>
 				{
 					(!this.props.wordReducer.wordsLoaded || this.props.wordReducer.words.length == 0 || !this.props.userReducer.name) &&
 						<Splash

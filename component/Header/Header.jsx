@@ -1,12 +1,19 @@
 import {h, Component} from 'preact';
-import {Progress} from 'preact-mdl';
+import {Progress, Dialog, Button} from 'preact-mdl';
 import { connect } from 'preact-redux';
 import LevelBadge from '../LevelBadge/LevelBadge.jsx';
 import Coins from '../../images/coins.svg';
+import Notification from '../../images/notification.svg';
 import './header.css';
 class Header extends Component {
 	constructor(){
 		super();
+		this.state = {
+
+		}
+	}
+	showSettings(){
+		this.settingsDialog.base.showModal();
 	}
 	render() {
 		return (
@@ -22,6 +29,17 @@ class Header extends Component {
 							<div className="userCoins mdl-typography--title">{this.props.userReducer.coins}</div>
 						</div>
 					</div>
+					<Dialog ref={settingsDialog => {this.settingsDialog = settingsDialog;}}>
+						<Dialog.Title>Settings</Dialog.Title>
+						<Dialog.Content>
+								Do you want to get daily hints via push notification?
+						</Dialog.Content>
+						<Dialog.Actions>
+							<Button colored={true} onClick={() => {
+								this.hintDialog.base.close();
+							}}>Done</Button>
+						</Dialog.Actions>
+					</Dialog>
 			</header>
 		);
 	}

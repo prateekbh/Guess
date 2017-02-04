@@ -22,7 +22,7 @@ export default function wordReducer(state = initialState, action) {
     break;
     case wordActions.FETCH_WORDS_SUCCESS:
       let newImages = [];
-      action.data.forEach(word => {
+      action.data.words.forEach(word => {
         newImages = newImages.concat(word.images);
       });
       caches.open('word-images').then(cache=>{
@@ -31,7 +31,7 @@ export default function wordReducer(state = initialState, action) {
         newState.pendingImages = newImages;
         // TODO: may be put the images in pending key and redo this on next init!
       })
-      newState.words = newState.words.concat(action.data);
+      newState.words = newState.words.concat(action.data.words);
       newState.lastWord = newState.words[newState.words.length - 1]._id;
       return newState;
     break;
@@ -110,6 +110,9 @@ export default function wordReducer(state = initialState, action) {
       return Object.assign({}, state, {words : [wrongLetterRemovalWord, ...state.words.slice(1)]})
     break;
     case gameActions.LOG_TIME:
+      if (state.words.length < 1) {
+        return state;
+      }
       const timeLoggingWord = Object.assign({}, state.words[0], {guessedLetters: Object.assign([],state.words[0].guessedLetters)});
       timeLoggingWord.timeLapsed = (timeLoggingWord.timeLapsed || 0) + 1000;
       return Object.assign({}, state, {words : [timeLoggingWord, ...state.words.slice(1)]})

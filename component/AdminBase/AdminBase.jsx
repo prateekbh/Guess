@@ -26,27 +26,26 @@ export default class AdminBase extends Component {
 			}).catch(e=>{})
 		this.setState({
 			fetchingResults: true,
-			searchTerm: '',
-			chosenImages:[],
+			searchTerm: ''
 		});
 	}
 	chooseImage(e){
-		if(this.state.chosenImages.length < 4){
+		if(this.state.chosenImages.length < 4 && this.state.chosenImages.indexOf(e) === -1){
 			let newImages = this.state.chosenImages;
 			newImages.push(e);
 			this.setState({
 				chosenImages: newImages
 			});
-		} else if (this.state.chosenImages.indexOf(e) !== -1){
-			let newImages = this.state.chosenImages;
-			this.setState({
-				chosenImages: newImages.splice(this.state.chosenImages.indexOf(e),1)
-			});
 		}
 	}
 	sendWord(){
+		if(!this.state.actualWord){
+			alert('enter a word');
+			return;
+		}
+
 		const payload={
-			word:this.state.resultWord,
+			word:this.state.actualWord,
 			images:this.state.chosenImages
 		}
 		this.setState({
@@ -99,6 +98,24 @@ export default class AdminBase extends Component {
 						</Button>
 					</div>
 				}
+				<div className='chosen-toast'>
+					<div className="wordDetails">
+						<div className="word">
+							<TextField placeholder="word" value={this.state.actualWord} onChange={(e)=>{
+								this.setState({
+									actualWord: e.target.value
+								});
+							}} />
+						</div>
+						<div className="chosenImages">
+							{
+								this.state.chosenImages.map(img=>{
+									return <img width="80" src={img} alt="" className="img"/>;
+								})
+							}
+						</div>
+					</div>
+				</div>
 			</div>
 		);
 	}

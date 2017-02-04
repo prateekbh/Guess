@@ -1,4 +1,4 @@
-.screen-splash, .dummy-splash{
+.screen-splash{
 	height: 100%;
 	width: 100%;
 	background: #333;
@@ -6,14 +6,15 @@
 	top: 0;
 	left: 0;
 	z-index: 1100000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	.logo-container{
+		margin-top: -50%;
+	}
 	.logo{
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: 10%;
-		height: 50%;
 		width: 50%;
-		margin: auto;
 	}
 	.bufferbar{
 		background-color: #ccc;
@@ -44,7 +45,7 @@
 
 .loading{
     position: absolute;
-    bottom: 80px;
+    bottom: 5%;
     width: 80%;
     margin: auto;
     left: 0;

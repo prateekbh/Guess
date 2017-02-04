@@ -7,7 +7,7 @@ const GIVE_HINT = 'GIVE_HINT';
 const REMOVE_WRONG_OPTIONS = 'REMOVE_WRONG_OPTIONS';
 function fetchNewWords(id){
     return dispatch => {
-        fetch('/gamesapi/'+id)
+        fetch('/gamesapi/randomwords')
         .then(data => data.json())
         .then(data => {
             dispatch({
@@ -15,9 +15,10 @@ function fetchNewWords(id){
                 data,
             });
         })
-        .catch(err=>{
+        .catch(error=>{
             dispatch({
-                type: FETCH_WORDS_FAILED
+                type: FETCH_WORDS_FAILED,
+                error,
             });
         })
     }

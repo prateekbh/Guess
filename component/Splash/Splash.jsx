@@ -10,6 +10,8 @@ export default class Splash extends Component {
 		super();
 		this.state = {
 			isLoading: false,
+			stretchWindow: false,
+			winHeight: 0,
 		}
 	}
 	componentDidMount(){
@@ -40,10 +42,21 @@ export default class Splash extends Component {
 			this.offlineDialog.base.showModal();
 		}
 	}
+	sendGuestName() {
+		const name = this.state.guestName;
+		if (name && name.length>1){
+			navigator.onLine ? this.props.setUser({
+				authToken: null,
+				name,
+			}) : this.offlineDialog.base.showModal();
+		}
+	}
 	render() {
 		return (
-			<div className='screen-splash'>
-				<Logo className='logo'/>
+			<div className='screen-splash' style={this.state.stretchWindow ? 'height:' + this.state.winHeight + 'px' : ''}>
+				<div className="logo-container">
+					<Logo className='logo'/>
+				</div>
 				<div className="loading">
 					{
 						(this.state.isLoading || this.props.user.name) ? <Progress indeterminate={true}/> :
@@ -55,7 +68,12 @@ export default class Splash extends Component {
 								</div>
 								<div className='btn-guest'>
 									<Button raised={true} onClick={()=>{
-										this.nameDialog.base.showModal();
+										this.setState({
+											winHeight: window.innerHeight,
+											stretchWindow: true,
+										},() => {
+											this.nameDialog.base.showModal();
+										});
 									}}>
 										Continue as guest
 									</Button>
@@ -73,20 +91,23 @@ export default class Splash extends Component {
 								this.setState({
 									guestName: e.target.value,
 								})
+							}}
+							onKeyUp={e=>{
+								if (e.key === 'Enter') {
+									document.activeElement && document.activeElement.blur();
+									this.sendGuestName();
+								}
 							}}/>
 					</Dialog.Content>
 					<Dialog.Actions>
-						<Button colored={true} onClick={()=>{
-							const name = this.state.guestName;
-							if (name && name.length>1){
-								navigator.onLine ? this.props.setUser({
-									authToken: null,
-									name,
-								}) : this.offlineDialog.base.showModal();
-							}
-						}}>Done</Button>
+						<Button colored={true} onClick={this.sendGuestName.bind(this)}>Done</Button>
 						<Button onClick={()=>{
-							this.nameDialog.base.close();
+							this.setState({
+								winHeight: window.innerHeight,
+								stretchWindow: true,
+							},() => {
+								this.nameDialog.base.close();
+							});
 						}}>Cancel</Button>
 					</Dialog.Actions>
 				</Dialog>
