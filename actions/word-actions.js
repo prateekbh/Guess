@@ -23,6 +23,7 @@ function fetchNewWords(id){
         })
     }
 }
+
 export {
     SET_SCRABBLED_LETTERS,
     ADD_LETTER_TO_GUESSED_WORD,

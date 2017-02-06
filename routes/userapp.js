@@ -66,9 +66,9 @@ http://localhost:3000/recordstats
 */
 router.post('/recordstats', function(req, res, next) {
   if (!req.headers.hasOwnProperty('cookie')) {
-    res.status(400).send('Cookie not provided.');
+    return res.status(400).send('Cookie not provided.');
   }
-  var _id = req.headers['cookie'].substr(config.COOKIE_NAME.length + 1); // remove "cookieName="
+  const _id = req.headers['cookie'].substr(config.COOKIE_NAME.length + 1); // remove "cookieName="
   if (!req.body.hasOwnProperty('word_data'))
       return res.status(400).send('Words not provided');
 

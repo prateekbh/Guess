@@ -8,7 +8,7 @@ module.exports = {
   entry: {
    adminapp: './scripts/adminapp.js',
    userapp: './scripts/userapp.js',
-   vendor: ['preact', 'preact-router', 'preact-compat', 'preact-mdl','material-design-lite/material', 'redux', 'preact-redux',]
+   vendor: ['preact', 'preact-router', 'preact-compat', 'preact-mdl', 'material-design-lite/material', 'redux', 'preact-redux',]
   },
   output: {
     path: __dirname + '/public/js',

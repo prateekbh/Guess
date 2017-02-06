@@ -115,6 +115,8 @@ class Play extends Component {
 								});
 							}}/>
 						{this.state.won && <VictorySplash onContinue={()=>{
+							const word = this.props.wordReducer.words[0];
+							gameActions.saveTime(word.word, word.timeLapsed);
 							this.props.dispatch({
 								type: gameActions.WORD_GUESSED,
 							});
