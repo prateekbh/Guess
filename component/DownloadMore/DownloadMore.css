@@ -1,0 +1,29 @@
+.screen-download {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    .center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .face {
+        flex: 6;
+        width: 100%;
+        color: #fff;
+        flex-direction: column;
+    }
+    .text{
+        text-align: center;
+        padding: 16px;
+    }
+    .actions {
+        flex: 4;
+        width: 100%;
+        .mdl-button {
+            font-size: 18px;
+        }
+    }
+}

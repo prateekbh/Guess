@@ -10,6 +10,7 @@ import PreviewTiles from '../PreviewTiles/PreviewTiles.jsx';
 import GuessedWord from '../GuessedWord/GuessedWord.jsx';
 import LetterPlatter from '../LetterPlatter/LetterPlatter.jsx';
 import VictorySplash from '../VictorySplash/VictorySplash.jsx';
+import DownloadMore from '../DownloadMore/DownloadMore.jsx';
 import {scrabble} from '../../utils/wordUtils';
 
 import './Play.css';
@@ -143,7 +144,9 @@ class Play extends Component {
 			);
 		} else {
 			return (
-				<div></div>
+				<DownloadMore fetchWords={()=>{
+					this.props.dispatch(wordActions.fetchNewWords(this.props.wordReducer.lastWord || 0));
+				}}/>
 			);
 		}
 	}
