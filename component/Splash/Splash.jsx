@@ -44,6 +44,7 @@ export default class Splash extends Component {
 	}
 	sendGuestName() {
 		const name = this.state.guestName;
+		this.nameDialog.base.close();
 		if (name && name.length>1){
 			navigator.onLine ? this.props.setUser({
 				authToken: null,
@@ -92,6 +93,7 @@ export default class Splash extends Component {
 									guestName: e.target.value,
 								})
 							}}
+							value={this.state.guestName}
 							onKeyUp={e=>{
 								if (e.key === 'Enter') {
 									document.activeElement && document.activeElement.blur();

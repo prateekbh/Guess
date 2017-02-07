@@ -8,7 +8,7 @@ module.exports = {
   entry: {
    adminapp: './scripts/adminapp.js',
    userapp: './scripts/userapp.js',
-   vendor: ['preact', 'preact-router', 'preact-compat', 'preact-mdl', 'material-design-lite/material', 'redux', 'preact-redux',]
+   vendor: ['babel-regenerator-runtime', 'preact', 'preact-router', 'preact-compat', 'preact-mdl', 'material-design-lite/material', 'redux', 'preact-redux']
   },
   output: {
     path: __dirname + '/public/js',
@@ -26,11 +26,12 @@ module.exports = {
       {
         loader: 'babel-loader',
         test: /\.(js|jsx)$/,
-        exclude: /node_modules\/proptypes/,
+        exclude: /node_modules\/proptypes|scripts\/sw.js/,
         options: {
           presets: [['es2015', {"modules": false}]],
           plugins:[
-            ["transform-react-jsx", { "pragma": "h" }]
+            ["transform-react-jsx", { "pragma": "h" }],
+            "transform-async-to-generator",
           ],
         }
       },

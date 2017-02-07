@@ -117,10 +117,13 @@ class Play extends Component {
 							}}/>
 						{this.state.won && <VictorySplash onContinue={()=>{
 							const word = this.props.wordReducer.words[0];
-							gameActions.saveTime(word.word, word.timeLapsed);
+							gameActions.saveTime(word.word, word.timeLapsed, word.images);
 							this.props.dispatch({
 								type: gameActions.WORD_GUESSED,
 							});
+							if (this.props.wordReducer.words.length < 25) {
+								this.props.dispatch(wordActions.fetchNewWords(this.props.wordReducer.lastWord || 0));
+							}
 						}}/>}
 					</div>
 					<Dialog ref={hintDialog => {this.hintDialog = hintDialog;}}>

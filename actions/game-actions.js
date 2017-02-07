@@ -1,8 +1,12 @@
 const WORD_GUESSED  = 'WORD_GUESSED';
 const LOG_TIME = 'LOG_TIME';
 
-function saveTime(word_id, time) {
-    fetch('/recordstats',{
+async function saveTime(word_id, time, images) {
+    const cache = await caches.open("word-images");
+    images.forEach(image=>{
+        cache.delete(image);
+    });
+    return fetch('/recordstats',{
         method: 'POST',
         headers: new Headers({
             'Content-Type': 'application/json',

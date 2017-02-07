@@ -9,7 +9,13 @@ function fetchNewWords(id){
     return dispatch => {
         fetch('/gamesapi/randomwords')
         .then(data => data.json())
-        .then(data => {
+        .then(async (data) => {
+            let newImages = [];
+            data.words.forEach(word => {
+                newImages = newImages.concat(word.images);
+            });
+            const cache = await caches.open('word-images');
+            await cache.addAll(newImages);
             dispatch({
                 type: FETCH_WORDS_SUCCESS,
                 data,

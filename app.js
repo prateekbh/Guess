@@ -25,11 +25,16 @@ app.use(compression());
 app.use('/public', express.static(path.join(__dirname, 'public'), { maxAge: '1y' }));
 app.use('/manifest', express.static(path.join(__dirname, 'manifest'), { maxAge: '1y' }));
 app.use('/images', express.static(path.join(__dirname, 'images'), { maxAge: '1y' }));
+app.use('/sw', express.static(path.join(__dirname, 'sw')));
 
 app.use('/', userapp);
 app.use('/adminapp', adminapp);
 app.use('/adminapi', adminapi);
 app.use('/gamesapi', gamesapi);
+
+app.get('/sw.js',(req, res) => {
+  res.sendFile(__dirname +'/sw.js');
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
