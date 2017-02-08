@@ -1,8 +1,12 @@
-var webpack = require("webpack");
-var path = require('path');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+const webpack = require("webpack");
+const path = require('path');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ManifestPlugin = require('webpack-manifest-plugin');
+const WebpackMd5Hash = require('webpack-md5-hash');
+const serverUtils = require('./utils/serverUtils');
+const extractCSS = new ExtractTextPlugin('../css/[name].css');
 
-let extractCSS = new ExtractTextPlugin('../css/[name].css');
+const outputString = serverUtils.getEnv() === 'DEV' ? '[name].js' : '[name]-[chunkhash].js';
 
 module.exports = {
   entry: {
@@ -13,7 +17,7 @@ module.exports = {
   output: {
     path: __dirname + '/public/js',
     publicPath: '/public/js/',
-    filename: '[name].js'
+    filename: outputString,
   },
   resolve: {
       alias: {
@@ -61,6 +65,11 @@ module.exports = {
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
         minChunks: 2,
-      })
+      }),
+      new ManifestPlugin({
+        fileName: '../my-manifest.json',
+        basePath: '/',
+      }),
+      new WebpackMd5Hash()
   ]
 };
