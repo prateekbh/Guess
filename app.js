@@ -11,12 +11,12 @@ const adminapi = require('./routes/adminapi');
 const gamesapi = require('./routes/gamesapi');
 const compression = require('compression');
 const app = express();
+const fileRevs = require('./public/my-manifest.json');
+
 app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
 app.set('views', __dirname + '/views');
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -38,7 +38,11 @@ app.get('/sw.js',(req, res) => {
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  res.render('userapp', {});
+  res.render('userapp', {
+    vendorjs: fileRevs['vendor.js'],
+    userjs: fileRevs['userapp.js'],
+    usercss: fileRevs['userapp.css'],
+  });
 });
 
 // error handlers
@@ -59,7 +63,6 @@ if (app.get('env') === 'development') {
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-  console.log(err);
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,

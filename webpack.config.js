@@ -68,7 +68,7 @@ module.exports = {
       }),
       new ManifestPlugin({
         fileName: '../my-manifest.json',
-        basePath: '/',
+        basePath: '',
       }),
       new WebpackMd5Hash()
   ]
