@@ -3,6 +3,7 @@ const http = require('http');
 const mdb = require('./dbapi');
 const router = express.Router();
 const db = new mdb.Database();
+const config = require('./config');
 
 router.get('/search', (req, response, next) => {
   const options = {
@@ -53,9 +54,16 @@ router.get('/search', (req, response, next) => {
 /*
 curl -H "Content-Type: application/json" -H "Accept: application/json" \
 -X POST \
--d '{"word":"king","images":["URL1", "URL2"]}' http://localhost:3000/adminapi/saveword
+-d '{"word":"KIng","images":["URL1", "URL2"]}' http://localhost:3000/adminapi/saveword
 */
 router.post('/saveword', function(req, res) {
+  if (config.SAVEWORD_KEY_VALIDATION) {
+    if (!req.headers.hasOwnProperty('cookie')) {
+      return res.status(400).send('Cookie not provided.');
+    }
+    const sessionId = req.headers['cookie'].substr(config.COOKIE_NAME.length + 1); // remove "cookieName="
+    // if sessionId is not whitelisted, throw error
+  }
   let status = {
     'Saved': 200,
     'Duplicate': 400,

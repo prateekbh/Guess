@@ -6,6 +6,8 @@ module.exports = {
   // API config
   mongoDbUrl: 'mongodb://localhost:27017/guess',
   WORD_COUNT: 25,
+  SEND_ENCRYPTED_WORD: true,
+  SAVEWORD_KEY_VALIDATION: false,
 
   // API keys
   COOKIE_NAME: 'userid',

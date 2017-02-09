@@ -99,6 +99,7 @@ db.prototype.recordGameStats = function(userId, payload, callback) {
 }
 
 db.prototype.insertWordInCollection = function(payload, callback) {
+  payload.word = payload.word.toLowerCase();
   _db.collection(gamesCollection).insert(payload, (err, result) => {
     if (err) return callback(this.handleInsertionError(err));
     return callback('Saved');

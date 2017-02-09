@@ -22,7 +22,8 @@
     "morgan": "~1.7.0",
     "mustache-express": "^1.2.4",
     "preact-render-to-string": "^3.5.0",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "cryptr": "~2.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.6.0",
