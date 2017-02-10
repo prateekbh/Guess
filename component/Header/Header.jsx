@@ -4,7 +4,7 @@ import { connect } from 'preact-redux';
 import LevelBadge from '../LevelBadge/LevelBadge.jsx';
 import Coins from '../../images/coins.svg';
 import Notification from '../../images/notification.svg';
-import './header.css';
+import './Header.css';
 class Header extends Component {
 	constructor(){
 		super();
