@@ -4,7 +4,7 @@ const serverUtils = require('../utils/serverUtils');
 const MongoClient = mongodb.MongoClient;
 const gamesCollection = config.gamesCollection;
 const userCollection = config.userCollection;
-const dbUrl = config.mongoDbUrl;
+const dbUrl = process.env.DB_URL || config.mongoDbUrl;
 
 let _db;
 

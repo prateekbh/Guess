@@ -62,9 +62,12 @@ export default class AdminBase extends Component {
 			})
 		}).then( (res) => {
 			if(res.ok){
-				alert('saved')
+				alert('saved');
+				this.setState({
+					actualWord: ''
+				});
 			} else {
-				alert('errored')
+				alert('errored');
 			}
 		}).catch(e=>{});
 	}
