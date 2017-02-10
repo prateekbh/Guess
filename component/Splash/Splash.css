@@ -1,4 +1,4 @@
-.screen-splash{
+.screen-splash, .dummy-splash{
 	height: 100%;
 	width: 100%;
 	background: #333;
@@ -14,7 +14,7 @@
 		margin-top: -50%;
 	}
 	.logo{
-		width: 50%;
+		width: 150px;
 	}
 	.bufferbar{
 		background-color: #ccc;

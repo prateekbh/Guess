@@ -1,7 +1,6 @@
 import {h, Component} from 'preact';
 import {Progress, Button, Dialog, TextField} from 'preact-mdl';
 import {connect} from 'preact-redux';
-import Logo from '../../images/Logo.svg';
 import Toast from '../Toast/Toast.jsx';
 import './Splash.css';
 
@@ -59,7 +58,7 @@ export default class Splash extends Component {
 		return (
 			<div className='screen-splash' style={this.state.stretchWindow ? 'height:' + this.state.winHeight + 'px' : ''}>
 				<div className="logo-container">
-					<Logo className='logo'/>
+					<img src='/images/logo.svg' className='logo'/>
 				</div>
 				<div className="loading">
 					{
