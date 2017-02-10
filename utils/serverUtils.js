@@ -1,5 +1,5 @@
 function getEnv(){
-    return (process.env.ENV_VARIABLE === 'dev' || !process.env.ENV_VARIABLE) ? 'DEV' : 'PROD';
+    return (process.env.NODE_ENV === 'dev' || !process.env.NODE_ENV) ? 'DEV' : 'PROD';
 }
 
 
