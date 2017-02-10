@@ -29,7 +29,9 @@ export default class Header extends Component {
 					this.props.images && this.props.images.map((e, index)=> {
 						const imageStyle = "background-image:url("+ e +");";
 						return (
-							<div className={(index === this.state.largenedImageIndex) ? "large tile": "tile"}>
+							<div className={(index === this.state.largenedImageIndex) ? "large tile": "tile"}
+								style={(this.state.largenedImageIndex !== -1 &&
+									index !== this.state.largenedImageIndex) ? "opacity: 0.1" : ""}>
 								<div className="pic"
 									style={imageStyle}
 									onClick={this.enlargeImage.bind(this, index)}/>

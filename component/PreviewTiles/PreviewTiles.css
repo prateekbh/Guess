@@ -15,9 +15,9 @@
 		width: 50%;
 		float: left;
 		padding: 4px;
-		will-change: transform;
+		will-change: transform opacity;
 		transition-duration: 300ms;
-		transition-property: transform;
+		transition-property: transform opacity;
 	}
 	.pic{
 		border: 4px solid #455A64;
@@ -55,6 +55,9 @@
 	}
 	.pic{
 		height: 20%;
+	}
+	.large.tile{
+		z-index: 2;
 	}
 	.large.tile:nth-child(1) {
 		transform: translate3d(50%, 50%, 0) scale(1.8);
