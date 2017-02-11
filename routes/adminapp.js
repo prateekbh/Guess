@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-// const fileRevs = require('./public/my-manifest.json');
+const fileRevs = require('./public/my-manifest.json');
 
 /* GET users listing. */
 router.get('/', (req, res) => {

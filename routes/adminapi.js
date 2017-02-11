@@ -58,10 +58,9 @@ curl -H "Content-Type: application/json" -H "Accept: application/json" \
 */
 router.post('/saveword', function(req, res) {
   if (config.SAVEWORD_KEY_VALIDATION) {
-    if (!req.headers.hasOwnProperty('cookie')) {
+    if (!(config.COOKIE_NAME in req.cookies))
       return res.status(400).send('Cookie not provided.');
-    }
-    const sessionId = req.headers['cookie'].substr(config.COOKIE_NAME.length + 1); // remove "cookieName="
+    var sessionId = req.cookies[config.COOKIE_NAME];
     // if sessionId is not whitelisted, throw error
   }
   let status = {

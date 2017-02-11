@@ -70,7 +70,7 @@ router.post('/recordstats', function(req, res, next) {
   if (!req.body.hasOwnProperty('word_data'))
       return res.status(400).send('Words not provided');
 
-  const _id = req.cookies[config.COOKIE_NAME];
+  var _id = req.cookies[config.COOKIE_NAME];
   db.recordGameStats(_id, req.body, (err, error_msg) => {
     if (err) {
       if (error_msg) return res.status(400).send(error_msg);
