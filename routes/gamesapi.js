@@ -18,10 +18,10 @@ router.get('/randomwords', function(req, res, next) {
   db.getRandomWords(config.WORD_COUNT, (words) => {
     if (!words) return res.status(500).send('Error occurred.');
     if (config.SEND_ENCRYPTED_WORD) {
-      if (!req.headers.hasOwnProperty('cookie')) {
+      if (!(config.COOKIE_NAME in req.cookies))
         return res.status(400).send('Cookie not provided.');
-      }
-      const sessionId = req.headers['cookie'].substr(config.COOKIE_NAME.length + 1); // remove "cookieName="
+
+      const sessionId = req.cookies[config.COOKIE_NAME];
       // @todo Add validation that sessionId exists in users db
       cryptr = new Cryptr(sessionId);
       for (var i = 0; i < words.length; i++) {

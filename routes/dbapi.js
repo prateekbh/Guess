@@ -64,7 +64,15 @@ db.prototype.getUser = function(id, callback) {
 db.prototype.recordGameStats = function(userId, payload, callback) {
   _db.collection(userCollection).findOne({'_id': mongodb.ObjectID(userId)},
   (err, userDoc) => {
-    console.log(userDoc);
+    if (err) { // Server Error
+      console.log(err);
+      return callback(err, null /* error_msg */);
+    }
+    if (!userDoc) {
+      var error_msg = 'User with given _id doesn\'t exist';
+      console.log(error_msg);
+      return callback(true /* err */, error_msg);
+    }
     if (!userDoc.hasOwnProperty('word_data')) {
       // No stats as yet, simply set the word_data
       userDoc['word_data'] = payload['word_data'];
@@ -91,9 +99,9 @@ db.prototype.recordGameStats = function(userId, payload, callback) {
     (err, result) => {
       if (err) {
         console.log(err);
-        return callback(false);
+        return callback(err, null /* error_msg */);
       }
-      callback(true);
+      callback(null /* err */);
     });
   });
 }

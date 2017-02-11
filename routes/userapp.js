@@ -65,16 +65,18 @@ curl -H "Content-Type: application/json" \
 http://localhost:3000/recordstats
 */
 router.post('/recordstats', function(req, res, next) {
-  if (!req.headers.hasOwnProperty('cookie')) {
+  if (!(config.COOKIE_NAME in req.cookies))
     return res.status(400).send('Cookie not provided.');
-  }
-  const _id = req.headers['cookie'].substr(config.COOKIE_NAME.length + 1); // remove "cookieName="
   if (!req.body.hasOwnProperty('word_data'))
       return res.status(400).send('Words not provided');
 
-  db.recordGameStats(_id, req.body, (success) => {
-    if (success) return res.send('Stat recorded');
-    res.status(500).send('Error occurred in recording stat.');
+  const _id = req.cookies[config.COOKIE_NAME];
+  db.recordGameStats(_id, req.body, (err, error_msg) => {
+    if (err) {
+      if (error_msg) return res.status(400).send(error_msg);
+      res.status(500).send('Error occurred in recording stat.');
+    }
+    res.send('Stat recorded');
   });
 });
 
