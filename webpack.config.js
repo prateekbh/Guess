@@ -6,9 +6,11 @@ const WebpackMd5Hash = require('webpack-md5-hash');
 const serverUtils = require('./utils/serverUtils');
 const extractCSS = new ExtractTextPlugin('../css/[name].css');
 
-const outputString = serverUtils.getEnv() === 'DEV' ? '[name].js' : '[name]-[chunkhash].js';
+const prod = process.argv.indexOf('-p') !== -1;
+const outputString = prod ? '[name]-[chunkhash].js': '[name].js';
 
-module.exports = {
+
+const config = {
   entry: {
    adminapp: './scripts/adminapp.js',
    userapp: './scripts/userapp.js',
@@ -73,3 +75,20 @@ module.exports = {
       new WebpackMd5Hash()
   ]
 };
+
+
+if (prod) {
+  config.plugins.push(new webpack.DefinePlugin({
+      'process.env': {
+          'PROD': true
+      }
+  }));
+} else {
+  config.plugins.push(new webpack.DefinePlugin({
+      'process.env': {
+          'PROD': false
+      }
+  }));
+}
+
+module.exports = config;

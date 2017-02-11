@@ -9,9 +9,10 @@ const db = new mdb.Database();
 const firebaseConfig = {
   apiKey: 'AIzaSyARpD2ZY6JV0yWtWuVXsHk08u5cSEnNaH8',
   authDomain: 'guess-f5b84.firebaseapp.com',
-  messagingSenderId: '892039919403'
+  messagingSenderId: '892039919403',
 };
-const app = firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
+
 /*
 curl -H "Content-Type: application/json" -H "Accept: application/json" \
 -X POST \

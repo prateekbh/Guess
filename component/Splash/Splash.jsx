@@ -1,7 +1,6 @@
 import {h, Component} from 'preact';
 import {Progress, Button, Dialog, TextField} from 'preact-mdl';
 import {connect} from 'preact-redux';
-import Logo from '../../images/Logo.svg';
 import Toast from '../Toast/Toast.jsx';
 import './Splash.css';
 
@@ -20,27 +19,30 @@ export default class Splash extends Component {
 		});
 	}
 	login() {
-		if (navigator.onLine) {
-			const config = {
-				apiKey: "AIzaSyARpD2ZY6JV0yWtWuVXsHk08u5cSEnNaH8",
-				authDomain: "guess-f5b84.firebaseapp.com",
-				messagingSenderId: "892039919403"
-			};
-			this.setState({
-				isLoading: true,
-			});
-			firebase.initializeApp(config);
-			const provider = new firebase.auth.GoogleAuthProvider();
-			firebase.auth().signInWithPopup(provider).then(result=>{
-				this.props.setUser({
-					authToken: result.credential.idToken,
+		this.setState({
+			isLoading: true,
+		});
+		require.ensure('firebase', (require) => {
+			const firebase = require('firebase');
+			if (navigator.onLine) {
+				const config = {
+					apiKey: "AIzaSyARpD2ZY6JV0yWtWuVXsHk08u5cSEnNaH8",
+					authDomain: "guess-f5b84.firebaseapp.com",
+					messagingSenderId: "892039919403"
+				};
+				firebase.initializeApp(config);
+				const provider = new firebase.auth.GoogleAuthProvider();
+				firebase.auth().signInWithPopup(provider).then(result=>{
+					this.props.setUser({
+						authToken: result.credential.idToken,
+					});
+				}).catch(err=>{
+					console.log('woops, cant get your profile!', err);
 				});
-			}).catch(err=>{
-				console.log('woops, cant get your profile!', err);
-			});
-		} else {
-			this.offlineDialog.base.showModal();
-		}
+			} else {
+				this.offlineDialog.base.showModal();
+			}
+		});
 	}
 	sendGuestName() {
 		const name = this.state.guestName;
@@ -56,7 +58,7 @@ export default class Splash extends Component {
 		return (
 			<div className='screen-splash' style={this.state.stretchWindow ? 'height:' + this.state.winHeight + 'px' : ''}>
 				<div className="logo-container">
-					<Logo className='logo'/>
+					<img src='/images/logo.svg' className='logo'/>
 				</div>
 				<div className="loading">
 					{
