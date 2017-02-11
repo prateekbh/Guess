@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
-import createEngine from 'redux-storage-engine-localstorage';
+import createEngine from 'redux-storage-engine-indexed-db';
 import * as reducers from '../reducers/';
 import * as storage from 'redux-storage';
 import {SET_SCRABBLED_LETTERS} from '../actions/word-actions';
