@@ -14,10 +14,10 @@ goog.swlib.cacheRevisionedAssets([
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', () => self.clients.claim());
 
-goog.swlib.router.registerRoute('/', goog.swlib.staleWhileRevalidate({
+goog.swlib.router.registerRoute('/', goog.swlib.cacheFirst({
   cacheName: 'sw-precaching-revisioned',
 }));
-goog.swlib.router.registerRoute('/play', goog.swlib.staleWhileRevalidate({
+goog.swlib.router.registerRoute('/play', goog.swlib.cacheFirst({
   cacheName: 'sw-precaching-revisioned',
 }));
 goog.swlib.router.registerRoute(
