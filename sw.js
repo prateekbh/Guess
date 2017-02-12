@@ -13,10 +13,10 @@ goog.swlib.cacheRevisionedAssets([
 
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', () => self.clients.claim());
-goog.swlib.router.registerRoute('/', goog.swlib.cacheFirst({
+goog.swlib.router.registerRoute('/', goog.swlib.staleWhileRevalidate({
   cacheName: goog.swlib._revisionedCacheManager.getCacheName(),
 }));
-goog.swlib.router.registerRoute('/play', goog.swlib.cacheFirst({
+goog.swlib.router.registerRoute('/play', goog.swlib.staleWhileRevalidate({
   cacheName: goog.swlib._revisionedCacheManager.getCacheName(),
 }));
 goog.swlib.router.registerRoute(
