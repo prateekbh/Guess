@@ -65,7 +65,7 @@ export default class Splash extends Component {
 		return (
 			<div className='screen-splash' style={this.state.stretchWindow ? 'height:' + this.state.winHeight + 'px' : ''}>
 				<div className="logo-container">
-					<img src='/images/logo.svg' className='logo'/>
+					<img src='/images/logo.svg' className='logo' alt='guess logo'/>
 				</div>
 				<div className="loading">
 					{
