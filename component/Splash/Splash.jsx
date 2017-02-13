@@ -11,38 +11,45 @@ export default class Splash extends Component {
 			isLoading: false,
 			stretchWindow: false,
 			winHeight: 0,
+			enableSocialLogin: false,
 		}
 	}
 	componentDidMount(){
 		window.addEventListener('offline', () => {
 			this.toast.addToast('You are offline!');
 		});
+		require.ensure(['firebase/app.js','firebase/auth.js'], (require) => {
+			this.firebase = require('firebase/app.js');
+			require('firebase/auth.js');
+
+			this.setState({
+				enableSocialLogin: true,
+			});
+		});
 	}
 	login() {
 		this.setState({
 			isLoading: true,
 		});
-		require.ensure('firebase', (require) => {
-			const firebase = require('firebase');
-			if (navigator.onLine) {
-				const config = {
-					apiKey: "AIzaSyARpD2ZY6JV0yWtWuVXsHk08u5cSEnNaH8",
-					authDomain: "guess-f5b84.firebaseapp.com",
-					messagingSenderId: "892039919403"
-				};
-				firebase.initializeApp(config);
-				const provider = new firebase.auth.GoogleAuthProvider();
-				firebase.auth().signInWithPopup(provider).then(result=>{
-					this.props.setUser({
-						authToken: result.credential.idToken,
-					});
-				}).catch(err=>{
-					console.log('woops, cant get your profile!', err);
+		if (navigator.onLine) {
+			const config = {
+				apiKey: "AIzaSyARpD2ZY6JV0yWtWuVXsHk08u5cSEnNaH8",
+				authDomain: "guess-f5b84.firebaseapp.com",
+				messagingSenderId: "892039919403"
+			};
+			const firebase = this.firebase;
+			firebase.initializeApp(config);
+			const provider = new firebase.auth.GoogleAuthProvider();
+			firebase.auth().signInWithPopup(provider).then(result=>{
+				this.props.setUser({
+					authToken: result.credential.idToken,
 				});
-			} else {
-				this.offlineDialog.base.showModal();
-			}
-		});
+			}).catch(err=>{
+				console.log('woops, cant get your profile!', err);
+			});
+		} else {
+			this.offlineDialog.base.showModal();
+		}
 	}
 	sendGuestName() {
 		const name = this.state.guestName;
@@ -65,7 +72,7 @@ export default class Splash extends Component {
 						(this.state.isLoading || this.props.user.name) ? <Progress indeterminate={true}/> :
 							<div>
 								<div className='btn-google'>
-									<Button raised={true} onClick={this.login.bind(this)}>
+									<Button raised={true} onClick={this.login.bind(this)} disabled={!this.state.enableSocialLogin}>
 										<div>Sign in with Google</div>
 									</Button>
 								</div>
