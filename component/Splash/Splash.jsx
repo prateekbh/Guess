@@ -18,7 +18,7 @@ export default class Splash extends Component {
 		window.addEventListener('offline', () => {
 			this.toast.addToast('You are offline!');
 		});
-		require.ensure(['firebase/app.js','firebase/auth.js'], (require) => {
+		require.ensure(['firebase/app.js','firebase/auth.js', 'firebase/messaging.js'], (require) => {
 			this.firebase = require('firebase/app.js');
 			require('firebase/auth.js');
 

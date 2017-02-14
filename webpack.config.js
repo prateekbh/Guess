@@ -9,7 +9,6 @@ const extractCSS = new ExtractTextPlugin('../css/[name].css');
 const prod = process.argv.indexOf('-p') !== -1;
 const outputString = prod ? '[name]-[chunkhash].js': '[name].js';
 
-
 const config = {
   entry: {
    adminapp: './scripts/adminapp.js',

@@ -6,8 +6,8 @@ import * as reducers from '../reducers/';
 import * as storage from 'redux-storage';
 import {SET_SCRABBLED_LETTERS} from '../actions/word-actions';
 import {LOG_TIME} from '../actions/game-actions';
-import {decryptWord} from '../utils/wordUtils';
 let engine = createEngine('game-data');
+import jsBase from 'js-base64';
 
 function deleteWordsBeforeSaving(engine){
   async function cloneObject(state){
@@ -19,11 +19,14 @@ function deleteWordsBeforeSaving(engine){
   }
   return {
     load: async()=> {
+      let decryptr = jsBase.Base64;
       const state = await engine.load();
-      state.wordReducer.words = state.wordReducer.words.map(word => {
-        word.word = decryptWord(word.encrypted_word);
-        return word;
-      });
+      if (state && state.wordReducer && state.wordReducer.words) {
+        state.wordReducer.words = state.wordReducer.words.map(word => {
+          word.word = decryptr.decode(word.encrypted_word);
+          return word;
+        });
+      }
       return state;
     },
     save: async(state) => {

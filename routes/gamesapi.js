@@ -4,7 +4,7 @@ const router = express.Router();
 const mdb = require('./dbapi');
 const db = new mdb.Database();
 const config = require('./config');
-const Cryptr = require('cryptr');
+const jsBase = require('js-base64').Base64;
 
 router.get('/', function(req, res, next) {
   res.send('Games server is running.');
@@ -18,14 +18,8 @@ router.get('/randomwords', function(req, res, next) {
   db.getRandomWords(config.WORD_COUNT, (words) => {
     if (!words) return res.status(500).send('Error occurred.');
     if (config.SEND_ENCRYPTED_WORD) {
-      if (!(config.COOKIE_NAME in req.cookies))
-        return res.status(400).send('Cookie not provided.');
-
-      var sessionId = req.cookies[config.COOKIE_NAME];
-      // @todo Add validation that sessionId exists in users db
-      cryptr = new Cryptr(sessionId);
-      for (var i = 0; i < words.length; i++) {
-        words[i].encrypted_word = cryptr.encrypt(words[i].word);
+      for (let i = 0; i < words.length; i++) {
+        words[i].encrypted_word = jsBase.encode(words[i].word);
       }
     }
     res.send(JSON.stringify({'words': words}));

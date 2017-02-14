@@ -12,18 +12,19 @@
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
     "cookie-parser": "~1.4.3",
+    "cryptr": "~2.0.0",
     "debug": "~2.2.0",
     "eslint-config-google": "^0.7.1",
     "express": "~4.13.4",
     "firebase": "^3.6.8",
     "jade": "~1.11.0",
+    "js-base64": "^2.1.9",
     "mongodb": "^2.2.19",
     "mongodb-autoincrement": "^1.0.1",
     "morgan": "~1.7.0",
     "mustache-express": "^1.2.4",
     "preact-render-to-string": "^3.5.0",
-    "serve-favicon": "~2.3.0",
-    "cryptr": "~2.0.0"
+    "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.6.0",
@@ -74,6 +75,7 @@
     "svg-react-loader": "^0.3.7",
     "webpack": "^2.2.0",
     "webpack-manifest-plugin": "^1.1.0",
-    "webpack-md5-hash": "0.0.5"
+    "webpack-md5-hash": "0.0.5",
+    "webpack-visualizer-plugin": "^0.1.10"
   }
 }

@@ -1,4 +1,3 @@
-import Cryptr from 'cryptr';
 import {getUserId} from './userUtils.js';
 const allLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 const totalPlatterLength = 12;
@@ -51,19 +50,7 @@ function getHintLetter(word, guessedLetters, scrabbledLetters) {
 
 }
 
-function decryptWord(word) {
-    if (!cryptr) {
-        const userId = getUserId();
-        if (!userId) {
-            throw new Error("No User ID");
-        }
-        cryptr = new Cryptr(userId);
-    }
-    return cryptr.decrypt(word);
-}
-
 export {
     scrabble,
     getHintLetter,
-    decryptWord,
 }
