@@ -1,14 +1,8 @@
 importScripts('/sw/sw-helpers/sw-lib.js');
 
-goog.swlib.cacheRevisionedAssets([
-  {
-    url: '/',
-    revision: '1'
-  },
-  {
-    url: '/play',
-    revision: '2'
-  }
+goog.swlib.warmRuntimeCache([
+  '/',
+  '/play',
 ]);
 
 self.addEventListener('install', () => self.skipWaiting());

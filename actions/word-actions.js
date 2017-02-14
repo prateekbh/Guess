@@ -7,7 +7,9 @@ const GIVE_HINT = 'GIVE_HINT';
 const REMOVE_WRONG_OPTIONS = 'REMOVE_WRONG_OPTIONS';
 function fetchNewWords(id){
     return dispatch => {
-        fetch('/gamesapi/randomwords')
+        fetch('/gamesapi/randomwords',{
+            credentials: 'include',
+        })
         .then(data => data.json())
         .then(async (data) => {
             let newImages = [];

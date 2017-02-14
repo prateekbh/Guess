@@ -45,8 +45,9 @@ let createUser = function(name, email, res) {
 };
 
 let loginResponse = function(_id, name, res) {
-  res.cookie(config.COOKIE_NAME, _id.toString())
-    .send({'user': {'name': name}});
+  res.cookie(config.COOKIE_NAME, _id.toString(),
+    {expires: new Date(Date.now() + 365*24*60*60*1000)})
+      .send({'user': {'name': name}});
 };
 
 let getProfileFromGoogle = function(accessToken, callback) {
