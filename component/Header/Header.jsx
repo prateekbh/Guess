@@ -1,5 +1,5 @@
 import {h, Component} from 'preact';
-import {Progress, Dialog, Button} from 'preact-mdl';
+import {Progress, Dialog, Button, Icon} from 'preact-mdl';
 import { connect } from 'preact-redux';
 import LevelBadge from '../LevelBadge/LevelBadge.jsx';
 import Coins from '../../images/coins.svg';
@@ -8,9 +8,7 @@ import './Header.css';
 class Header extends Component {
 	constructor(){
 		super();
-		this.state = {
-
-		}
+		this.state = {}
 	}
 	showSettings(){
 		this.settingsDialog.base.showModal();
@@ -19,6 +17,9 @@ class Header extends Component {
 		return (
 			<header>
 					<div className="settings">
+						<Button icon onClick={()=>{this.hintsDialog.showModal()}}>
+                            <Icon icon="notifications_active"/>
+                        </Button>
 					</div>
 					<div className="logo">
 						<LevelBadge level={this.props.userReducer.level} />
@@ -29,15 +30,18 @@ class Header extends Component {
 							<div className="userCoins mdl-typography--title">{this.props.userReducer.coins}</div>
 						</div>
 					</div>
-					<Dialog ref={settingsDialog => {this.settingsDialog = settingsDialog;}}>
-						<Dialog.Title>Settings</Dialog.Title>
+					<Dialog ref={hintsDialog => {this.hintsDialog = hintsDialog;}}>
+						<Dialog.Title>Hint!</Dialog.Title>
 						<Dialog.Content>
 								Do you want to get daily hints via push notification?
 						</Dialog.Content>
 						<Dialog.Actions>
 							<Button colored={true} onClick={() => {
-								this.hintDialog.base.close();
-							}}>Done</Button>
+								this.hintsDialog.close();
+							}}>Yes</Button>
+							<Button onClick={() => {
+								this.hintsDialog.close();
+							}}>No</Button>
 						</Dialog.Actions>
 					</Dialog>
 			</header>

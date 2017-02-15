@@ -48,17 +48,17 @@ export default class Splash extends Component {
 				console.log('woops, cant get your profile!', err);
 			});
 		} else {
-			this.offlineDialog.base.showModal();
+			this.offlineDialog.showModal();
 		}
 	}
 	sendGuestName() {
 		const name = this.state.guestName;
-		this.nameDialog.base.close();
+		this.nameDialog.close();
 		if (name && name.length>1){
 			navigator.onLine ? this.props.setUser({
 				authToken: null,
 				name,
-			}) : this.offlineDialog.base.showModal();
+			}) : this.offlineDialog.showModal();
 		}
 	}
 	render() {
@@ -82,7 +82,7 @@ export default class Splash extends Component {
 											winHeight: window.innerHeight,
 											stretchWindow: true,
 										},() => {
-											this.nameDialog.base.showModal();
+											this.nameDialog.showModal();
 										});
 									}}>
 										Continue as guest
@@ -117,7 +117,7 @@ export default class Splash extends Component {
 								winHeight: window.innerHeight,
 								stretchWindow: true,
 							},() => {
-								this.nameDialog.base.close();
+								this.nameDialog.close();
 							});
 						}}>Cancel</Button>
 					</Dialog.Actions>
@@ -129,7 +129,7 @@ export default class Splash extends Component {
 					</Dialog.Content>
 					<Dialog.Actions>
 						<Button colored={true} onClick={()=>{
-							this.offlineDialog.base.close();
+							this.offlineDialog.close();
 						}}>Okay</Button>
 					</Dialog.Actions>
 				</Dialog>

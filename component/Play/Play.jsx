@@ -95,7 +95,7 @@ class Play extends Component {
 											action: wordActions.GIVE_HINT
 										}
 									});
-									this.hintDialog.base.showModal();
+									this.hintDialog.showModal();
 								}
 							}}
 							removeWrongLetters={() => {
@@ -106,7 +106,7 @@ class Play extends Component {
 											action: wordActions.REMOVE_WRONG_OPTIONS
 										}
 									});
-									this.hintDialog.base.showModal();
+									this.hintDialog.showModal();
 								}
 							}}
 							onLetterSelect={(data)=>{
@@ -136,10 +136,10 @@ class Play extends Component {
 								this.props.dispatch({
 									type: this.state.hint.action,
 								});
-								this.hintDialog.base.close();
+								this.hintDialog.close();
 							}}>Cool</Button>
 							<Button onClick={() => {
-								this.hintDialog.base.close();
+								this.hintDialog.close();
 							}}>No!</Button>
 						</Dialog.Actions>
 					</Dialog>
