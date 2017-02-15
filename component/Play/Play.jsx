@@ -42,6 +42,9 @@ class Play extends Component {
 				});
 			}
 		},1000);
+		requestFirebaseMessaging((messaging) => {
+			// todo: isten to firebase events
+		});
 	}
 	componentDidUpdate(prevProps){
 		if(this.props.wordReducer.words[0] && !this.props.wordReducer.words[0].scrabbledLetters){

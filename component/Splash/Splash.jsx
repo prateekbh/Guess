@@ -32,13 +32,8 @@ export default class Splash extends Component {
 			isLoading: true,
 		});
 		if (navigator.onLine) {
-			const config = {
-				apiKey: "AIzaSyARpD2ZY6JV0yWtWuVXsHk08u5cSEnNaH8",
-				authDomain: "guess-f5b84.firebaseapp.com",
-				messagingSenderId: "892039919403"
-			};
 			const firebase = this.firebase;
-			firebase.initializeApp(config);
+			firebase.initializeApp(window.firebaseConfig);
 			const provider = new firebase.auth.GoogleAuthProvider();
 			firebase.auth().signInWithPopup(provider).then(result=>{
 				this.props.setUser({

@@ -45,15 +45,21 @@
 				</div>
 			</div>
 		</div>
-		<script src="/public/js/{{vendorjs}}"></script>
-		<script src="/public/js/{{userjs}}"></script>
 		<script>
-			 if ('serviceWorker' in navigator) {
+			window.firebaseConfig = {
+				apiKey: "AIzaSyARpD2ZY6JV0yWtWuVXsHk08u5cSEnNaH8",
+				authDomain: "guess-f5b84.firebaseapp.com",
+				messagingSenderId: "892039919403"
+			};
+			if ('serviceWorker' in navigator) {
 				 navigator.serviceWorker.register('/sw.js', {scope: '/'}).then(reg=>{
+					 window.swReg = reg;
 					 console.log("Service worker registered");
 				 });
 			 }
 		</script>
+		<script src="/public/js/{{vendorjs}}"></script>
+		<script src="/public/js/{{userjs}}"></script>
 		<script>
 			document.onreadystatechange = function () {
 				if (document.readyState === "interactive") {
