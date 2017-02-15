@@ -19,12 +19,24 @@ class Header extends Component {
 		this.setState({
 			notificationsAvailable: !!window.swReg.pushManager
 		});
+	}
+	requestPermission(){
 		requestFirebaseMessaging((messaging) => {
-			this.setState({
-				firebaseLoaded: true,
+			messaging.requestPermission().then(()=>{
+				messaging.getToken()
+				.then(function(currentToken) {
+					if (currentToken) {
+						console.log(currentToken);
+						// sendTokenToServer(currentToken);
+						// updateUIForPushEnabled(currentToken);
+					}
+				}).catch(function(err) {
+					console.log('An error occurred while retrieving token. ', err);
+				});
+			}).catch(()=>{
+				//todo: Handle permission rejection
 			});
-			messaging.requestPermission();
-		});
+	  });
 	}
 	render() {
 		return (
@@ -49,23 +61,19 @@ class Header extends Component {
 						<Dialog.Title>Hint!</Dialog.Title>
 						<Dialog.Content>
 								{
-									this.state.firebaseLoaded && this.state.notificationsAvailable ?
+									this.state.notificationsAvailable ?
 										'Do you want to get daily hints via push notification?':
-										this.state.notificationsAvailable ?
-											<Spinner active={true}/>:
-											'Sorry your browser does not support Push Notifications!'
+										'Sorry your browser does not support Push Notifications!'
 								}
 						</Dialog.Content>
 						<Dialog.Actions>
 							{
-								this.state.firebaseLoaded && this.state.notificationsAvailable ?
+								this.state.notificationsAvailable ?
 									<div>
 										<Button onClick={() => {
 											this.hintsDialog.close();
 										}}>No</Button>
-										<Button colored={true} onClick={() => {
-											this.hintsDialog.close();
-										}}>Yes</Button>
+										<Button colored={true} onClick={this.requestPermission.bind(this)}>Yes</Button>
 
 									</div> :
 									<div>

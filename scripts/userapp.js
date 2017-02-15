@@ -1,7 +1,7 @@
 import { h, render } from 'preact';
 import { Layout } from 'preact-mdl';
 import { Provider, connect } from 'preact-redux';
-import {Router, Route} from 'preact-router';
+import {Router, Route, route} from 'preact-router';
 import {ROUTE_CHANGE} from '../actions/route-actions';
 import AsyncRoute from 'preact-router/async';
 import UserStore from './user-store';
@@ -19,10 +19,14 @@ render(
     <Layout>
       <Header/>
       <Router onChange={(e)=>{
-          UserStore.dispatch({
-            type: ROUTE_CHANGE,
-            route: e.url,
-          });
+          if (!e.previous && e.url!=='/') {
+            route('/', true);
+          } else {
+            UserStore.dispatch({
+              type: ROUTE_CHANGE,
+              route: e.url,
+            });
+          }
         }}>
           <Route path='/' component={Home}/>
           <AsyncRoute path='/play' component={getPlayScreen}/>

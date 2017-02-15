@@ -35,6 +35,7 @@ function deleteWordsBeforeSaving(engine){
         delete word.word;
         return word;
       });
+      delete newState.routeReducer;
       return engine.save(newState);
     }
   };
@@ -47,7 +48,7 @@ const load = storage.createLoader(engine);
 
 const reducer = storage.reducer(combineReducers(reducers));
 const logger = createLogger({
-  predicate: (getState, action) => action.type !== LOG_TIME && action.type !== 'REDUX_STORAGE_SAVE'
+  predicate: (getState, action) => action.type !== LOG_TIME
 });
 
 let middlewares = [thunk, storageMiddleware];
