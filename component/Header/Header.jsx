@@ -1,11 +1,13 @@
 import {h, Component} from 'preact';
 import {Progress, Dialog, Button, Icon, Spinner} from 'preact-mdl';
 import { connect } from 'preact-redux';
+import {requestFirebaseMessaging} from '../../utils/firebaseUtils';
+import {sendUserToken} from '../../actions/user-actions';
 import LevelBadge from '../LevelBadge/LevelBadge.jsx';
 import Coins from '../../images/coins.svg';
 import Notification from '../../images/notification.svg';
 import './Header.css';
-import {requestFirebaseMessaging} from '../../utils/firebaseUtils';
+
 class Header extends Component {
 	constructor(){
 		super();
@@ -24,17 +26,17 @@ class Header extends Component {
 		requestFirebaseMessaging((messaging) => {
 			messaging.requestPermission().then(()=>{
 				messaging.getToken()
-				.then(function(currentToken) {
-					if (currentToken) {
-						console.log(currentToken);
-						// sendTokenToServer(currentToken);
+				.then(function(token) {
+					if (token) {
+						console.log(token);
+						sendUserToken({token});
 						// updateUIForPushEnabled(currentToken);
 					}
 				}).catch(function(err) {
 					console.log('An error occurred while retrieving token. ', err);
 				});
 			}).catch(()=>{
-				//todo: Handle permission rejection
+				// TODO: Handle permission rejection
 			});
 	  });
 	}
