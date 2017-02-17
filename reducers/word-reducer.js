@@ -14,6 +14,16 @@ const emptyGuessedLetter = {
   index: -1,
 };
 
+function removeWrongGuesses(guessedLetters, word) {
+  return guessedLetters.map((data, index)=>{
+    if(data.letter && data.letter.toLowerCase() === word.charAt(index).toLowerCase()){
+      return data;
+    } else {
+      return Object.assign({}, emptyGuessedLetter);
+    }
+  });
+}
+
 export default function wordReducer(state = initialState, action) {
   const newState = Object.assign({}, state, {words: [...state.words]});
   switch (action.type) {
@@ -68,13 +78,7 @@ export default function wordReducer(state = initialState, action) {
     case wordActions.GIVE_HINT:
       const hintWord = Object.assign({}, state.words[0], {guessedLetters: Object.assign([],state.words[0].guessedLetters)});
       // Remove all wrong guesses
-      hintWord.guessedLetters = hintWord.guessedLetters.map((data, index)=>{
-        if(data.letter && data.letter.toLowerCase() === state.words[0].word.charAt(index).toLowerCase()){
-          return data;
-        } else {
-          return Object.assign({}, emptyGuessedLetter);
-        }
-      });
+      hintWord.guessedLetters = removeWrongGuesses(hintWord.guessedLetters, state.words[0].word);
       const hint = getHintLetter(state.words[0].word, hintWord.guessedLetters, hintWord.scrabbledLetters);
       hintWord.guessedLetters[hint.inWordPosition] = hint;
       hintWord.minorHintGiven = true;
@@ -83,13 +87,7 @@ export default function wordReducer(state = initialState, action) {
     case wordActions.REMOVE_WRONG_OPTIONS:
       const wrongLetterRemovalWord = Object.assign({}, state.words[0], {guessedLetters: Object.assign([],state.words[0].guessedLetters)});
       // Remove all wrong guesses
-      wrongLetterRemovalWord.guessedLetters = wrongLetterRemovalWord.guessedLetters.map((data, index)=>{
-        if(data.letter && data.letter.toLowerCase() === state.words[0].word.charAt(index).toLowerCase()){
-          return data;
-        } else {
-          return Object.assign({}, emptyGuessedLetter);
-        }
-      });
+      wrongLetterRemovalWord.guessedLetters = removeWrongGuesses(hintWord.guessedLetters, state.words[0].word);
       const wordArray = wrongLetterRemovalWord.word.toUpperCase().split('');
       let availableChoices = wrongLetterRemovalWord.scrabbledLetters.filter(letter => !wordArray.includes(letter));
       availableChoices.forEach(letter => {

@@ -3,7 +3,7 @@ importScripts('https://www.gstatic.com/firebasejs/3.6.9/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/3.6.9/firebase-messaging.js');
 
 goog.swlib.cacheRevisionedAssets([
-  '/images/icons/512x512.png',
+  '/images/icons/icon-512x512.png',
 ])
 
 goog.swlib.warmRuntimeCache([
@@ -33,7 +33,7 @@ messaging.setBackgroundMessageHandler(function(payload) {
   const notificationTitle = 'Guess!';
   const notificationOptions = {
     body: 'Free hint has arrived',
-    icon: '/images/icons/512x512.png'
+    icon: '/images/icons/icon-512x512.png'
   };
 
   return self.registration.showNotification(notificationTitle,

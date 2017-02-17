@@ -23,14 +23,14 @@ class Header extends Component {
 		});
 	}
 	requestPermission(){
+		const that = this;
 		requestFirebaseMessaging((messaging) => {
 			messaging.requestPermission().then(()=>{
 				messaging.getToken()
 				.then(function(token) {
 					if (token) {
-						console.log(token);
+						that.hintsDialog.close();
 						sendUserToken({token});
-						// updateUIForPushEnabled(currentToken);
 					}
 				}).catch(function(err) {
 					console.log('An error occurred while retrieving token. ', err);

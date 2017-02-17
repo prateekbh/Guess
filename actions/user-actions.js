@@ -30,7 +30,7 @@ function loginUser({authToken, name}) {
 }
 
 function sendUserToken({token}) {
-    fetch('https://iid.googleapis.com/iid/v1/'+token+'/rel/topics/hints', {
+    return fetch('https://iid.googleapis.com/iid/v1/'+token+'/rel/topics/hints', {
         method: 'POST',
         headers: new Headers({
             'Authorization': 'key=AIzaSyAMGNUInbu8eno5eq1hqyTnEC1QLWMTkGE'

@@ -5,6 +5,8 @@ const FETCH_WORDS_FAILED = 'FETCH_WORDS_FAILED';
 const FETCH_WORDS_SUCCESS = 'FETCH_WORDS_SUCCESS';
 const GIVE_HINT = 'GIVE_HINT';
 const REMOVE_WRONG_OPTIONS = 'REMOVE_WRONG_OPTIONS';
+const NOTIFICATION_HINT = 'NOTIFICATION_HINT';
+
 function fetchNewWords(id){
     return dispatch => {
         fetch('/gamesapi/randomwords',{
@@ -41,4 +43,5 @@ export {
     FETCH_WORDS_SUCCESS,
     GIVE_HINT,
     REMOVE_WRONG_OPTIONS,
+    NOTIFICATION_HINT,
 }

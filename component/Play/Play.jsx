@@ -44,7 +44,7 @@ class Play extends Component {
 			}
 		},1000);
 		requestFirebaseMessaging((messaging) => {
-
+			// TODO: add refresh token handler
 		});
 	}
 	componentDidUpdate(prevProps){

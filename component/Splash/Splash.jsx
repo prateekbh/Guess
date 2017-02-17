@@ -72,7 +72,7 @@ export default class Splash extends Component {
 									</Button>
 								</div>
 								<div className='btn-guest'>
-									<Button raised={true} onClick={()=>{
+									<Button className="hi" raised={true} onClick={()=>{
 										this.setState({
 											winHeight: window.innerHeight,
 											stretchWindow: true,

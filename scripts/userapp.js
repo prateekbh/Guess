@@ -3,7 +3,7 @@ import { Layout } from 'preact-mdl';
 import { Provider, connect } from 'preact-redux';
 import {Router, Route, route} from 'preact-router';
 import {ROUTE_CHANGE} from '../actions/route-actions';
-import AsyncRoute from 'preact-router/async';
+import AsyncRoute from 'preact-async-route';
 import UserStore from './user-store';
 import '../css/userapp.css';
 import Header from '../component/Header/Header.jsx';
