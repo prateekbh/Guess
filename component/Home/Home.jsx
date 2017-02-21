@@ -16,6 +16,12 @@ class Home extends Component {
 		if(!prevProps.userReducer.name && this.props.userReducer.name && this.props.wordReducer.words.length < 25){
 			this.props.dispatch(actions.fetchNewWords(this.props.wordReducer.lastWord || 0));
 		}
+		if(!prevProps.wordReducer.wordsLoaded && this.props.wordReducer.wordsLoaded
+			&& this.props.wordReducer.giveNotificateionHint) {
+			this.props.dispatch({
+				type: actions.NOTIFICATION_HINT,
+			});
+		}
 	}
 	startPlay() {
 		route('/play');

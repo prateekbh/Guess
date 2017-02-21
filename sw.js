@@ -1,9 +1,10 @@
 importScripts('/sw/sw-helpers/sw-lib.js');
+importScripts('https://cdn.rawgit.com/jakearchibald/idb-keyval/master/dist/idb-keyval-min.js');
 importScripts('https://www.gstatic.com/firebasejs/3.6.9/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/3.6.9/firebase-messaging.js');
 
 goog.swlib.cacheRevisionedAssets([
-  '/images/icons/icon-512x512.png',
+  '/images/logo.png',
 ])
 
 goog.swlib.warmRuntimeCache([
@@ -27,8 +28,11 @@ firebase.initializeApp({
 });
 const messaging = firebase.messaging();
 
-messaging.setBackgroundMessageHandler(function(payload) {
+messaging.setBackgroundMessageHandler(async function(payload) {
   console.log('[firebase-messaging-sw.js] Received background message ', payload);
+  const gameData = await idbKeyval.get('game-data');
+  gameData.wordReducer.giveNotificateionHint = true;
+  await idbKeyval.set('game-data', gameData);
   // Customize notification here
   const notificationTitle = 'Guess!';
   const notificationOptions = {
