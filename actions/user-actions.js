@@ -30,11 +30,15 @@ function loginUser({authToken, name}) {
 }
 
 function sendUserToken({token}) {
-    return fetch('https://iid.googleapis.com/iid/v1/'+token+'/rel/topics/hints', {
+    return fetch('/subscribe', {
         method: 'POST',
+        credentials: 'same-origin',
         headers: new Headers({
-            'Authorization': 'key=AIzaSyAMGNUInbu8eno5eq1hqyTnEC1QLWMTkGE'
-        })
+            'Content-Type': 'application/json',
+        }),
+        body: JSON.stringify({
+            token,
+        }),
     }).then(response => {
         if (response.status < 200 || response.status >= 400) {
             throw 'Error subscribing to topic: '+response.status + ' - ' + response.text();
@@ -42,17 +46,7 @@ function sendUserToken({token}) {
         return response.json();
     }).catch(error => {
         console.error(error);
-    })
-    // fetch('/registermessagingtoken', {
-    //     method: 'POST',
-    //     body: JSON.stringify({
-    //         token,
-    //     }),
-    //     headers: new Headers({
-    //         'Content-Type': 'application/json',
-    //     }),
-    //     credentials: 'same-origin',
-    // });
+    });
 }
 export {
     SET_USER_DETAILS,

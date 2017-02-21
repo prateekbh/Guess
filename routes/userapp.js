@@ -1,8 +1,8 @@
-const https = require('https');
 const mdb = require('./dbapi');
 const firebase = require('firebase');
 const config = require('./config');
 const express = require('express');
+const fetch = require('isomorphic-fetch');
 const router = express.Router();
 const db = new mdb.Database();
 
@@ -72,14 +72,35 @@ router.post('/recordstats', function(req, res, next) {
   if (!req.body.hasOwnProperty('word_data'))
       return res.status(400).send('Words not provided');
 
-  var _id = req.cookies[config.COOKIE_NAME];
-  db.recordGameStats(_id, req.body, (err, error_msg) => {
+  const _id = req.cookies[config.COOKIE_NAME];
+  db.recordGameStats(_id, req.body, (err, errorMsg) => {
     if (err) {
-      if (error_msg) return res.status(400).send(error_msg);
+      if (errorMsg) return res.status(400).send(errorMsg);
       res.status(500).send('Error occurred in recording stat.');
     }
     res.send('Stat recorded');
   });
+});
+
+router.post('/subscribe', (req, res) => {
+  if (!(config.COOKIE_NAME in req.cookies))
+    return res.status(400).send('Cookie not provided.');
+  if (!req.body.hasOwnProperty('token'))
+      return res.status(400).send('Token not provided');
+  const token = req.body['token'];
+  fetch('https://iid.googleapis.com/iid/v1/' + token + '/rel/topics/hints', {
+    method: 'POST',
+    headers: new Headers({
+      'Authorization': 'key=AIzaSyAMGNUInbu8eno5eq1hqyTnEC1QLWMTkGE',
+    }),
+  })
+    .then((response) => response.json())
+    .then((data)=>{
+      return res.send(JSON.stringify({done: true}));
+    })
+    .catch((e) => {
+      return res.send(JSON.stringify({done: false, error: true}));
+    });
 });
 
 // Helper endpoints

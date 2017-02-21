@@ -15,7 +15,7 @@ function getPlayScreen() {
 
 document.getElementById('app').innerHTML ='';
 window.addEventListener('offline', () => {
-  this.snackbar.base.MaterialSnackbar.showSnackbar({message: 'You are offline!'});
+  window.snackbar && window.snackbar.base.MaterialSnackbar.showSnackbar({message: 'You are offline!'});
 });
 render(
   <Provider store={UserStore}>
@@ -34,7 +34,7 @@ render(
           <Route path='/' component={Home}/>
           <AsyncRoute path='/play' component={getPlayScreen}/>
       </Router>
-      <Snackbar ref={snackbar => {this.snackbar = snackbar}}/>
+      <Snackbar ref={snackbar => {window.snackbar = snackbar}}/>
     </Layout>
   </Provider>,
   document.getElementById('app')
