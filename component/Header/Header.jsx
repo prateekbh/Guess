@@ -1,5 +1,5 @@
 import {h, Component} from 'preact';
-import {Progress, Dialog, Button, Icon, Spinner} from 'preact-mdl';
+import {Progress, Dialog, Button, Icon, Spinner, Snackbar} from 'preact-mdl';
 import { connect } from 'preact-redux';
 import {requestFirebaseMessaging} from '../../utils/firebaseUtils';
 import {sendUserToken} from '../../actions/user-actions';
@@ -30,13 +30,26 @@ class Header extends Component {
 				.then(function(token) {
 					if (token) {
 						that.hintsDialog.close();
-						sendUserToken({token});
+						sendUserToken({token})
+							.then(data=>{
+								this.snackbar.base.MaterialSnackbar.showSnackbar({
+									message: 'Awesome! We\'ll send you daily hints from now on!'
+								});
+							}).catch(function(err) {
+								this.snackbar.base.MaterialSnackbar.showSnackbar({
+									message: 'Some error occoured while registering you for Daily Hints'
+								});
+							});
 					}
 				}).catch(function(err) {
-					console.log('An error occurred while retrieving token. ', err);
+					this.snackbar.base.MaterialSnackbar.showSnackbar({
+						message: 'Some error occoured while registering you for Daily Hints'
+					});
 				});
 			}).catch(()=>{
-				// TODO: Handle permission rejection
+				this.snackbar.base.MaterialSnackbar.showSnackbar({
+					message: 'Sorry but we won\'t be able to give you daily hint now!'
+				});
 			});
 	  });
 	}
@@ -86,6 +99,7 @@ class Header extends Component {
 							}
 						</Dialog.Actions>
 					</Dialog>
+					<Snackbar ref={snackbar => {this.snackbar = snackbar}}/>
 			</header>
 		);
 	}

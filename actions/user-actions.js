@@ -37,9 +37,9 @@ function sendUserToken({token}) {
         })
     }).then(response => {
         if (response.status < 200 || response.status >= 400) {
-        throw 'Error subscribing to topic: '+response.status + ' - ' + response.text();
+            throw 'Error subscribing to topic: '+response.status + ' - ' + response.text();
         }
-        console.log('Subscribed to "'+topic+'"');
+        return response.json();
     }).catch(error => {
         console.error(error);
     })

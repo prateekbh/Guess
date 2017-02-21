@@ -1,7 +1,6 @@
 import {h, Component} from 'preact';
 import {Progress, Button, Dialog, TextField} from 'preact-mdl';
 import {connect} from 'preact-redux';
-import Toast from '../Toast/Toast.jsx';
 import './Splash.css';
 
 export default class Splash extends Component {
@@ -15,9 +14,6 @@ export default class Splash extends Component {
 		}
 	}
 	componentDidMount(){
-		window.addEventListener('offline', () => {
-			this.toast.addToast('You are offline!');
-		});
 		require.ensure(['firebase/app.js','firebase/auth.js', 'firebase/messaging.js'], (require) => {
 			this.firebase = require('firebase/app.js');
 			require('firebase/auth.js');
@@ -128,7 +124,6 @@ export default class Splash extends Component {
 						}}>Okay</Button>
 					</Dialog.Actions>
 				</Dialog>
-				<Toast ref={toast => this.toast = toast}/>
 			</div>
 		);
 	}

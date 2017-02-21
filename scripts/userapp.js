@@ -1,5 +1,5 @@
 import { h, render } from 'preact';
-import { Layout } from 'preact-mdl';
+import { Layout, Snackbar } from 'preact-mdl';
 import { Provider, connect } from 'preact-redux';
 import {Router, Route, route} from 'preact-router';
 import {ROUTE_CHANGE} from '../actions/route-actions';
@@ -14,6 +14,9 @@ function getPlayScreen() {
 }
 
 document.getElementById('app').innerHTML ='';
+window.addEventListener('offline', () => {
+  this.snackbar.base.MaterialSnackbar.showSnackbar({message: 'You are offline!'});
+});
 render(
   <Provider store={UserStore}>
     <Layout>
@@ -31,6 +34,7 @@ render(
           <Route path='/' component={Home}/>
           <AsyncRoute path='/play' component={getPlayScreen}/>
       </Router>
+      <Snackbar ref={snackbar => {this.snackbar = snackbar}}/>
     </Layout>
   </Provider>,
   document.getElementById('app')
