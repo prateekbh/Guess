@@ -75,13 +75,16 @@ export default function wordReducer(state = initialState, action) {
         words: [...state.words.slice(1)],
       })
     break;
+    case wordActions.NOTIFICATION_HINT:
     case wordActions.GIVE_HINT:
       const hintWord = Object.assign({}, state.words[0], {guessedLetters: Object.assign([],state.words[0].guessedLetters)});
       // Remove all wrong guesses
       hintWord.guessedLetters = removeWrongGuesses(hintWord.guessedLetters, state.words[0].word);
       const hint = getHintLetter(state.words[0].word, hintWord.guessedLetters, hintWord.scrabbledLetters);
       hintWord.guessedLetters[hint.inWordPosition] = hint;
-      hintWord.minorHintGiven = true;
+      if (action.type === wordActions.GIVE_HINT) {
+        hintWord.minorHintGiven = true;
+      }
       return Object.assign({}, state, {words : [hintWord, ...state.words.slice(1)]})
     break;
     case wordActions.REMOVE_WRONG_OPTIONS:
