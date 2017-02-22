@@ -6,7 +6,7 @@
     "start:dev": "node ./bin/www",
     "start": "npm run build:prod&&npm run start:dev",
     "build": "webpack",
-    "build:prod": "webpack -p"
+    "build:prod": "./node_modules/.bin/webpack -p"
   },
   "dependencies": {
     "babel-preset-stage-0": "^6.22.0",
