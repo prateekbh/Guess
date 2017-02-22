@@ -6,10 +6,9 @@
     "start:dev": "node ./bin/www",
     "start": "npm install && npm run build:prod && npm run start:dev",
     "build": "webpack",
-    "build:prod": "./node_modules/.bin/webpack -p"
+    "build:prod": "npm install && npm install --only=dev && ./node_modules/.bin/webpack -p"
   },
   "dependencies": {
-    "babel-preset-stage-0": "^6.22.0",
     "body-parser": "^1.15.2",
     "compression": "^1.6.2",
     "cookie-parser": "~1.4.3",
@@ -19,7 +18,6 @@
     "express": "~4.13.4",
     "firebase": "^3.6.8",
     "isomorphic-fetch": "^2.2.1",
-    "jade": "~1.11.0",
     "js-base64": "^2.1.9",
     "mongodb": "^2.2.19",
     "mongodb-autoincrement": "^1.0.1",
@@ -45,6 +43,7 @@
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-es2015-minimal": "^2.1.0",
     "babel-preset-es2015-native-modules": "^6.9.4",
+    "babel-preset-stage-0": "^6.22.0",
     "babel-preset-react": "^6.22.0",
     "babel-regenerator-runtime": "^6.5.0",
     "clean-webpack-plugin": "^0.1.15",
