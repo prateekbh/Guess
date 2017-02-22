@@ -38,10 +38,12 @@ app.get('/sw.js',(req, res) => {
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
+  let userCss = fileRevs['userapp.css'];
+  userCss = userCss.substr(userCss.lastIndexOf("/")+1);
   res.render('userapp', {
     vendorjs: fileRevs['vendor.js'],
     userjs: fileRevs['userapp.js'],
-    usercss: fileRevs['userapp.css'],
+    usercss: userCss,
   });
 });
 
