@@ -91,7 +91,7 @@ router.post('/subscribe', (req, res) => {
   fetch('https://iid.googleapis.com/iid/v1/' + token + '/rel/topics/hints', {
     method: 'POST',
     headers: new Headers({
-      'Authorization': 'key=AIzaSyAMGNUInbu8eno5eq1hqyTnEC1QLWMTkGE',
+      'Authorization': 'key=' + process.env.FCM_SERVER_KEY,
     }),
   })
     .then((response) => response.json())
