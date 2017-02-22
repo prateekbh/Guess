@@ -19,7 +19,6 @@ window.addEventListener("messaging available",()=>{
   if (window.messaging && !window.messagingEnabled) {
     window.messagingEnabled = true;
     messaging.onMessage(function(payload) {
-      console.log(UserStore);
       UserStore.dispatch({
         type: wordActions.NOTIFICATION_HINT,
       });

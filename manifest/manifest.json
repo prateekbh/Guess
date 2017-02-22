@@ -1,12 +1,13 @@
 {
   "name": "Guess",
   "short_name": "Guess",
+  "description": "An images based game where you have to guess what is common among all the images.",
   "theme_color": "#333333",
   "background_color": "#333333",
   "display": "fullscreen",
   "orientation": "portrait",
-  "Scope": "/",
-  "start_url": "/",
+  "scope": "/",
+  "start_url": "/?start=home",
   "gcm_sender_id": "103953800507",
   "icons": [
     {

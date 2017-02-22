@@ -44,6 +44,7 @@ class Play extends Component {
 			}
 		},1000);
 		requestFirebaseMessaging((messaging) => {
+			window.messaging = messaging;
 			window.dispatchEvent && window.dispatchEvent(new Event("messaging available"));
 		});
 	}
@@ -121,7 +122,7 @@ class Play extends Component {
 							}}/>
 						{this.state.won && <VictorySplash onContinue={()=>{
 							const word = this.props.wordReducer.words[0];
-							gameActions.saveTime(word.word, word.timeLapsed, word.images);
+							gameActions.saveTime(word._id, word.timeLapsed, word.images);
 							this.props.dispatch({
 								type: gameActions.WORD_GUESSED,
 							});

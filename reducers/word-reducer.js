@@ -90,7 +90,7 @@ export default function wordReducer(state = initialState, action) {
     case wordActions.REMOVE_WRONG_OPTIONS:
       const wrongLetterRemovalWord = Object.assign({}, state.words[0], {guessedLetters: Object.assign([],state.words[0].guessedLetters)});
       // Remove all wrong guesses
-      wrongLetterRemovalWord.guessedLetters = removeWrongGuesses(hintWord.guessedLetters, state.words[0].word);
+      wrongLetterRemovalWord.guessedLetters = removeWrongGuesses(wrongLetterRemovalWord.guessedLetters, state.words[0].word);
       const wordArray = wrongLetterRemovalWord.word.toUpperCase().split('');
       let availableChoices = wrongLetterRemovalWord.scrabbledLetters.filter(letter => !wordArray.includes(letter));
       availableChoices.forEach(letter => {

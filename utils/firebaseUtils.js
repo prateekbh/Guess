@@ -2,7 +2,7 @@ let isSwRegistered = false;
 function requestFirebaseMessaging(callback){
     require.ensure(['firebase/app.js','firebase/auth.js', 'firebase/messaging.js'], (require) => {
         let firebase = require('firebase/app.js');
-        require('firebase/messaging.js');
+        firebase.messaging = require('firebase/messaging.js');
         try {
             firebase.initializeApp(window.firebaseConfig);
         } catch (e) {
