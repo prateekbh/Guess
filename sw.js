@@ -5,6 +5,10 @@ importScripts('https://www.gstatic.com/firebasejs/3.6.9/firebase-messaging.js');
 
 goog.swlib.cacheRevisionedAssets([
   '/images/logo.png',
+  '/public/css/userapp-e610a3a40d50aebf99f6.css',
+  '/public/js/0-4b142d12f09568f95f60.js',
+  '/public/js/userapp-e610a3a40d50aebf99f6.js',
+  '/public/js/vendor-ce90025418faae738d99.js',
 ])
 
 goog.swlib.warmRuntimeCache([
@@ -14,12 +18,8 @@ goog.swlib.warmRuntimeCache([
 
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', () => self.clients.claim());
-goog.swlib.router.registerRoute('/', goog.swlib.staleWhileRevalidate({
-  cacheName: goog.swlib._revisionedCacheManager.getCacheName(),
-}));
-goog.swlib.router.registerRoute('/play', goog.swlib.staleWhileRevalidate({
-  cacheName: goog.swlib._revisionedCacheManager.getCacheName(),
-}));
+goog.swlib.router.registerRoute('/', goog.swlib.staleWhileRevalidate());
+goog.swlib.router.registerRoute('/play', goog.swlib.staleWhileRevalidate());
 goog.swlib.router.registerRoute(
   /https:\/\/images.pexels.com\//, goog.swlib.cacheFirst());
 

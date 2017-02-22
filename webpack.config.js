@@ -4,12 +4,12 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const ManifestPlugin = require('webpack-manifest-plugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
 const serverUtils = require('./utils/serverUtils');
-const extractCSS = new ExtractTextPlugin('../css/[name].css');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 const prod = process.argv.indexOf('-p') !== -1;
 const outputString = prod ? '[name]-[chunkhash].js': '[name].js';
-
+const cssOutputString = prod ? '../css/[name]-[chunkhash].css': '../css/[name].css';
+const extractCSS = new ExtractTextPlugin(cssOutputString);
 const config = {
   entry: {
    adminapp: './scripts/adminapp.js',
