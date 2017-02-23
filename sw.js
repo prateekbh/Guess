@@ -4,6 +4,7 @@ importScripts('https://www.gstatic.com/firebasejs/3.6.9/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/3.6.9/firebase-messaging.js');
 
 goog.swlib.cacheRevisionedAssets([
+  '/images/logo.svg',
   '/images/logo.png',
   '/public/css/userapp-e610a3a40d50aebf99f6.css',
   '/public/js/0-4b142d12f09568f95f60.js',
