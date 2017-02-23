@@ -8,13 +8,45 @@ import * as wordActions from '../actions/word-actions';
 import UserStore from './user-store';
 import '../css/userapp.css';
 import Header from '../component/Header/Header.jsx';
-import Home from '../component/Home/Home.jsx';
 import Blocker from '../component/Blocker/Blocker.jsx'
+
+function getHomeScreen() {
+  return System.import('../component/Home/Home.jsx').then(module => module.default);
+}
+
 function getPlayScreen() {
   return System.import('../component/Play/Play.jsx').then(module => module.default);
 }
 
-document.getElementById('app').innerHTML ='';
+let parent = document.getElementById('app');
+let root = parent.lastChild;
+
+render(
+  <Provider store={UserStore}>
+    <Layout>
+      <Header/>
+      <Router onChange={(e)=>{
+          if (!e.previous && e.url!=='/') {
+            route('/', true);
+          } else {
+            UserStore.dispatch({
+              type: ROUTE_CHANGE,
+              route: e.url,
+            });
+          }
+        }}>
+          <AsyncRoute path='/' component={getHomeScreen}/>
+          <AsyncRoute path='/play' component={getPlayScreen}/>
+      </Router>
+      <Snackbar ref={snackbar => {window.snackbar = snackbar}}/>
+      <Blocker />
+    </Layout>
+  </Provider>,
+  parent,
+  root
+);
+
+
 window.addEventListener("messaging available",()=>{
   if (window.messaging && !window.messagingEnabled) {
     window.messagingEnabled = true;
@@ -31,26 +63,3 @@ window.addEventListener("messaging available",()=>{
 window.addEventListener('offline', () => {
   window.snackbar && window.snackbar.base.MaterialSnackbar.showSnackbar({message: 'You are offline!'});
 });
-render(
-  <Provider store={UserStore}>
-    <Layout>
-      <Header/>
-      <Router onChange={(e)=>{
-          if (!e.previous && e.url!=='/') {
-            route('/', true);
-          } else {
-            UserStore.dispatch({
-              type: ROUTE_CHANGE,
-              route: e.url,
-            });
-          }
-        }}>
-          <Route path='/' component={Home}/>
-          <AsyncRoute path='/play' component={getPlayScreen}/>
-      </Router>
-      <Snackbar ref={snackbar => {window.snackbar = snackbar}}/>
-      <Blocker />
-    </Layout>
-  </Provider>,
-  document.getElementById('app')
-);

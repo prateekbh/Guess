@@ -27,6 +27,8 @@
 		<meta name="msapplication-TileColor" content="#ffffff">
 		<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 		<meta name="theme-color" content="#ffffff">
+		<script src="/public/js/{{vendorjs}}" defer></script>
+		<script src="/public/js/{{userjs}}" defer></script>
 	</head>
 	<body>
 		<div id="app">
@@ -58,8 +60,6 @@
 				 });
 			 }
 		</script>
-		<script src="/public/js/{{vendorjs}}"></script>
-		<script src="/public/js/{{userjs}}"></script>
 		<script>
 			document.onreadystatechange = function () {
 				if (document.readyState === "interactive") {
