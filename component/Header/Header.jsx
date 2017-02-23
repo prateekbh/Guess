@@ -2,7 +2,7 @@ import {h, Component} from 'preact';
 import {Progress, Dialog, Button, Icon, Spinner, Snackbar} from 'preact-mdl';
 import { connect } from 'preact-redux';
 import {requestFirebaseMessaging} from '../../utils/firebaseUtils';
-import {sendUserToken} from '../../actions/user-actions';
+import {sendUserToken, NOTIFICATION_SUBSCRIBED} from '../../actions/user-actions';
 import LevelBadge from '../LevelBadge/LevelBadge.jsx';
 import Coins from '../../images/coins.svg';
 import Notification from '../../images/notification.svg';
@@ -35,6 +35,10 @@ class Header extends Component {
 						that.hintsDialog.close();
 						sendUserToken({token})
 							.then(data=>{
+								that.dispatch({
+									type: NOTIFICATION_SUBSCRIBED,
+									data: {},
+								})
 								window.snackbar && window.snackbar.base.MaterialSnackbar.showSnackbar({
 									message: 'Awesome! We\'ll send you daily hints from now on!'
 								});

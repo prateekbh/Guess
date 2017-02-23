@@ -1,4 +1,5 @@
 const SET_USER_DETAILS='SET_USER_DETAILS';
+const NOTIFICATION_SUBSCRIBED='NOTIFICATION_SUBSCRIBED';
 
 function loginUser({authToken, name}) {
     let body = {};
@@ -51,6 +52,7 @@ function sendUserToken({token}) {
 }
 export {
     SET_USER_DETAILS,
+    NOTIFICATION_SUBSCRIBED,
     loginUser,
     sendUserToken,
 }

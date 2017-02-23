@@ -24,7 +24,7 @@ export default function userReducer(state = initialState, action) {
     case wordActions.REMOVE_WRONG_OPTIONS:
       return Object.assign({}, state, {coins: state.coins - 20});
     break;
-    case wordActions.NOTIFICATION_HINT:
+    case userActions.NOTIFICATION_SUBSCRIBED:
       return Object.assign({}, state, {notificationsSubscribed: true});
     break;
     default:
