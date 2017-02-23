@@ -40,12 +40,13 @@ function sendUserToken({token}) {
             token,
         }),
     }).then(response => {
-        if (response.status < 200 || response.status >= 400) {
+        if (!response.ok) {
             throw 'Error subscribing to topic: '+response.status + ' - ' + response.text();
         }
         return response.json();
     }).catch(error => {
         console.error(error);
+        throw error;
     });
 }
 export {

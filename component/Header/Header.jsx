@@ -16,6 +16,9 @@ class Header extends Component {
 			notificationsAvailable: false,
 		};
 	}
+	componentDidMount() {
+		document.querySelector('.dummy-splash').remove();
+	}
 	showSettings(){
 		this.hintsDialog.showModal();
 		this.setState({

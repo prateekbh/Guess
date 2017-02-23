@@ -9,6 +9,7 @@ import UserStore from './user-store';
 import '../css/userapp.css';
 import Header from '../component/Header/Header.jsx';
 import Blocker from '../component/Blocker/Blocker.jsx'
+import {sendUserToken} from '../actions/user-actions';
 
 function getHomeScreen() {
   return System.import('../component/Home/Home.jsx').then(module => module.default);
@@ -48,8 +49,21 @@ render(
 
 
 window.addEventListener("messaging available",()=>{
+  console.log('msg available');
   if (window.messaging && !window.messagingEnabled) {
     window.messagingEnabled = true;
+    messaging.onTokenRefresh(function() {
+      messaging.getToken()
+        .then(function(token) {
+					if (token) {
+						sendUserToken({token});
+					}
+				}).catch(function(err) {
+					window.snackbar && window.snackbar.base.MaterialSnackbar.showSnackbar({
+						message: 'Some error occoured while re-registering you for Daily Hints.'
+					});
+				});
+    });
     messaging.onMessage(function(payload) {
       UserStore.dispatch({
         type: wordActions.NOTIFICATION_HINT,

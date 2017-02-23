@@ -88,18 +88,27 @@ router.post('/subscribe', (req, res) => {
   if (!req.body.hasOwnProperty('token'))
       return res.status(400).send('Token not provided');
   const token = req.body['token'];
-  fetch('https://iid.googleapis.com/iid/v1/' + token + '/rel/topics/hints', {
+  const reqObject = {
     method: 'POST',
-    headers: new Headers({
+    headers: {
+      'Content-Type': 'application/json',
       'Authorization': 'key=' + process.env.FCM_SERVER_KEY,
+    },
+    body: JSON.stringify({
+      'to': '/topics/hints',
+      'notification': {},
     }),
-  })
-    .then((response) => response.json())
+  };
+
+  console.log(reqObject,'==================================');
+  fetch('https://iid.googleapis.com/iid/v1/' + token + '/rel/topics/hints', reqObject)
+    .then((response) => {console.log(response);return response.json()})
     .then((data)=>{
       return res.send(JSON.stringify({done: true}));
     })
     .catch((e) => {
-      return res.send(JSON.stringify({done: false, error: true}));
+      console.log(e);
+      return res.status(500).send(JSON.stringify({done: false, error: true}));
     });
 });
 
