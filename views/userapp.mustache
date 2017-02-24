@@ -1,12 +1,6 @@
 <html>
 	<head>
 		<title>Guess</title>
-		<link rel="preload" href="/public/js/{{vendorjs}}" as="script"/>
-		<link rel="preload" href="/public/js/{{userjs}}" as="script"/>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" type="text/css">
-    	<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-red.min.css" />
-		<link rel="stylesheet" href="/public/css/{{usercss}}">
 		<link rel="manifest" href="/manifest/manifest.json">
 		<link rel="apple-touch-icon" sizes="57x57" href="/images/apple-icon-57x57.png">
 		<link rel="apple-touch-icon" sizes="60x60" href="/images/apple-icon-60x60.png">
@@ -27,8 +21,12 @@
 		<meta name="msapplication-TileColor" content="#ffffff">
 		<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 		<meta name="theme-color" content="#ffffff">
+		<style>
+			{{{usercss}}}
+		</style>
 		<script src="/public/js/{{vendorjs}}" defer></script>
 		<script src="/public/js/{{userjs}}" defer></script>
+		<script src="/public/js/{{analyticsjs}}" defer></script>
 	</head>
 	<body>
 		<div id="app">
@@ -59,19 +57,10 @@
 					 console.log("Service worker registered");
 				 });
 			 }
-		</script>
-		<script>
-			document.onreadystatechange = function () {
-				if (document.readyState === "interactive") {
-					(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-					m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-					})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-					ga('create', 'UA-91863394-1', 'auto');
-					ga('send', 'pageview');
-				}
-			}
+			 loadCss = function (href){var doc=window.document;var ss=doc.createElement("link");var ref;var collection=window.document.getElementsByTagName("style");var ref=collection[collection.length-1];var sheets=doc.styleSheets;ss.rel="stylesheet";ss.href=href;ss.media="only x";function ready(cb){if(doc.body){return cb()}setTimeout(function(){ready(cb)})}ready(function(){ref.parentNode.insertBefore(ss,ref.nextSibling)});var onloadcssdefined=function(cb){var resolvedHref=ss.href;var i=sheets.length;while(i--){if(sheets[i].href===resolvedHref){return cb()}}setTimeout(function(){onloadcssdefined(cb)})};function loadCB(){if(ss.addEventListener){ss.removeEventListener("load",loadCB)}ss.media="all"}if(ss.addEventListener){ss.addEventListener("load",loadCB)}ss.onloadcssdefined=onloadcssdefined;onloadcssdefined(loadCB);return ss}
+			 loadCss('https://fonts.googleapis.com/icon?family=Material+Icons');
+			 loadCss('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+			 loadCss('https://code.getmdl.io/1.3.0/material.teal-red.min.css');
 		</script>
 	</body>
 </html>

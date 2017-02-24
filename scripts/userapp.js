@@ -7,6 +7,7 @@ import AsyncRoute from 'preact-async-route';
 import * as wordActions from '../actions/word-actions';
 import UserStore from './user-store';
 import '../css/userapp.css';
+import '../component/Splash/Splash.css';
 import Header from '../component/Header/Header.jsx';
 import Blocker from '../component/Blocker/Blocker.jsx'
 import {sendUserToken} from '../actions/user-actions';
@@ -21,11 +22,10 @@ function getPlayScreen() {
 
 let parent = document.getElementById('app');
 let root = parent.lastChild;
-
 render(
   <Provider store={UserStore}>
     <Layout>
-      <Header/>
+      {UserStore.getState().userReducer.name && <Header/>}
       <Router onChange={(e)=>{
           if (!e.previous && e.url!=='/') {
             route('/', true);
@@ -49,7 +49,6 @@ render(
 
 
 window.addEventListener("messaging available",()=>{
-  console.log('msg available');
   if (window.messaging && !window.messagingEnabled) {
     window.messagingEnabled = true;
     messaging.onTokenRefresh(function() {
@@ -74,6 +73,7 @@ window.addEventListener("messaging available",()=>{
     });
   }
 });
+
 window.addEventListener('offline', () => {
   window.snackbar && window.snackbar.base.MaterialSnackbar.showSnackbar({message: 'You are offline!'});
 });

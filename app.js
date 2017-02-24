@@ -5,6 +5,7 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const mustacheExpress = require('mustache-express');
+const fs = require('fs');
 const userapp = require('./routes/userapp');
 const adminapp = require('./routes/adminapp');
 const adminapi = require('./routes/adminapi');
@@ -25,7 +26,7 @@ app.use(compression());
 app.use('/public', express.static(path.join(__dirname, 'public'), { maxAge: '1y' }));
 app.use('/manifest', express.static(path.join(__dirname, 'manifest'), { maxAge: '1y' }));
 app.use('/images', express.static(path.join(__dirname, 'images'), { maxAge: '1y' }));
-app.use('/sw', express.static(path.join(__dirname, 'sw')));
+app.use('/sw', express.static(path.join(__dirname, 'sw'), { maxAge: '1y' }));
 
 app.use('/', userapp);
 app.use('/adminapp', adminapp);
@@ -36,13 +37,14 @@ app.get('/sw.js',(req, res) => {
   res.sendFile(__dirname +'/sw.js');
 })
 
-// catch 404 and forward to error handler
+//read userCss and inline it
+const userCss = fs.readFileSync(__dirname + '/public' + fileRevs['userapp.css'].substr(fileRevs['userapp.css'].indexOf('/')) , 'utf8');
+// master route
 app.use(function(req, res, next) {
-  let userCss = fileRevs['userapp.css'];
-  userCss = userCss.substr(userCss.lastIndexOf("/")+1);
   res.render('userapp', {
     vendorjs: fileRevs['vendor.js'],
     userjs: fileRevs['userapp.js'],
+    analyticsjs: fileRevs['analytics.js'],
     usercss: userCss,
   });
 });
