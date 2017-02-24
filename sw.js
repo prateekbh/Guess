@@ -15,9 +15,8 @@ goog.swlib.warmRuntimeCache([
   '/play',
 ]);
 
-self.addEventListener('install', () => self.skipWaiting());
-self.addEventListener('activate', () => self.clients.claim());
-goog.swlib.router.registerRoute('/', goog.swlib.staleWhileRevalidate());
+goog.swlib.router.registerRoute('/',
+    goog.swlib.staleWhileRevalidate());
 goog.swlib.router.registerRoute('/play', goog.swlib.staleWhileRevalidate());
 goog.swlib.router.registerRoute(/\/public\/css\//, goog.swlib.cacheFirst());
 goog.swlib.router.registerRoute(/\/public\/js\//, goog.swlib.cacheFirst());
@@ -26,7 +25,8 @@ goog.swlib.router.registerRoute(
     cacheName: 'word-images',
   }));
 
-
+self.addEventListener('install', () => self.skipWaiting());
+self.addEventListener('activate', () => self.clients.claim());
 
 firebase.initializeApp({
   'messagingSenderId': '678578574774'
