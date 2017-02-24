@@ -29,7 +29,7 @@ render(
       <Router onChange={(e)=>{
           if (!e.previous && e.url!=='/') {
             route('/', true);
-          } else {
+          } else if(e.previous) {
             GameStore.dispatch({
               type: ROUTE_CHANGE,
               route: e.url,
