@@ -1,6 +1,7 @@
 import {h, Component} from 'preact';
 import {Progress, Button, Dialog, TextField} from 'preact-mdl';
 import {connect} from 'preact-redux';
+import {requestFirebase} from '../../utils/firebaseUtils';
 import './Splash.css';
 
 export default class Splash extends Component {
@@ -14,10 +15,8 @@ export default class Splash extends Component {
 		}
 	}
 	componentDidMount(){
-		require.ensure(['firebase/app.js','firebase/auth.js', 'firebase/messaging.js'], (require) => {
-			this.firebase = require('firebase/app.js');
-			require('firebase/auth.js');
-
+		requestFirebase(({firebase}) => {
+			this.firebase = firebase;
 			this.setState({
 				enableSocialLogin: true,
 			});
@@ -29,7 +28,6 @@ export default class Splash extends Component {
 		});
 		if (navigator.onLine) {
 			const firebase = this.firebase;
-			firebase.initializeApp(window.firebaseConfig);
 			const provider = new firebase.auth.GoogleAuthProvider();
 			firebase.auth().signInWithPopup(provider).then(result=>{
 				this.props.setUser({

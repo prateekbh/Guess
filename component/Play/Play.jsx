@@ -12,7 +12,7 @@ import LetterPlatter from '../LetterPlatter/LetterPlatter.jsx';
 import VictorySplash from '../VictorySplash/VictorySplash.jsx';
 import DownloadMore from '../DownloadMore/DownloadMore.jsx';
 import {scrabble} from '../../utils/wordUtils';
-import {requestFirebaseMessaging} from '../../utils/firebaseUtils';
+import {requestFirebase} from '../../utils/firebaseUtils';
 
 import './Play.css';
 
@@ -43,7 +43,7 @@ class Play extends Component {
 				});
 			}
 		},1000);
-		requestFirebaseMessaging((messaging) => {
+		requestFirebase(({messaging}) => {
 			window.messaging = messaging;
 			window.dispatchEvent && window.dispatchEvent(new Event("messaging available"));
 		});

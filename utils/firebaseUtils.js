@@ -1,7 +1,8 @@
 let isSwRegistered = false;
-function requestFirebaseMessaging(callback){
+function requestFirebase(callback){
     require.ensure(['firebase/app.js','firebase/auth.js', 'firebase/messaging.js'], (require) => {
         let firebase = require('firebase/app.js');
+        firebase.auth = require('firebase/auth.js');
         firebase.messaging = require('firebase/messaging.js');
         try {
             firebase.initializeApp(window.firebaseConfig);
@@ -14,21 +15,21 @@ function requestFirebaseMessaging(callback){
         if (!!window.swReg && !isSwRegistered) {
             isSwRegistered = true;
             messaging.useServiceWorker(window.swReg);
-            callback(messaging);
+            callback({firebase, messaging});
         } else if (!isSwRegistered) {
             isSwRegistered = true;
             navigator.serviceWorker.ready.then(registration => {
                 messaging.useServiceWorker(window.swReg);
-                callback(messaging);
+                callback({firebase, messaging});
             }).catch(e => {
                 throw e;
             });
         } else {
-            callback(messaging);
+            callback({firebase, messaging});
         }
     });
 }
 
 export {
-    requestFirebaseMessaging,
+    requestFirebase,
 }
