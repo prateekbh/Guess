@@ -51,9 +51,11 @@ function getHintLetter(word, guessedLetters, scrabbledLetters) {
 }
 
 function fireImageFetchRequest(images){
+    const returningPromise = [];
     images.forEach(image => {
-        fetch(image);
-    })
+        returningPromise.push(fetch(image));
+    });
+    return returningPromise;
 }
 
 export {

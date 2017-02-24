@@ -53,7 +53,7 @@
     "postcss-loader": "^1.2.1",
     "postcss-smart-import": "^0.6.6",
     "preact": "^7.2.0",
-    "preact-async-route": "^1.0.0",
+    "preact-async-route": "^1.0.3",
     "preact-compat": "^3.9.4",
     "preact-mdl": "^2.2.0",
     "preact-redux": "^1.2.0",
