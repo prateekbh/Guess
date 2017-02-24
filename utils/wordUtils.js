@@ -50,7 +50,14 @@ function getHintLetter(word, guessedLetters, scrabbledLetters) {
 
 }
 
+function fireImageFetchRequest(images){
+    images.forEach(image => {
+        fetch(image);
+    })
+}
+
 export {
     scrabble,
     getHintLetter,
+    fireImageFetchRequest,
 }

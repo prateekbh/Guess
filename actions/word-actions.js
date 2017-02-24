@@ -6,6 +6,7 @@ const FETCH_WORDS_SUCCESS = 'FETCH_WORDS_SUCCESS';
 const GIVE_HINT = 'GIVE_HINT';
 const REMOVE_WRONG_OPTIONS = 'REMOVE_WRONG_OPTIONS';
 const NOTIFICATION_HINT = 'NOTIFICATION_HINT';
+import {fireImageFetchRequest} from '../utils/wordUtils';
 
 function fetchNewWords(id){
     return dispatch => {
@@ -18,8 +19,7 @@ function fetchNewWords(id){
             data.words.forEach(word => {
                 newImages = newImages.concat(word.images);
             });
-            const cache = await caches.open('word-images');
-            await cache.addAll(newImages);
+            fireImageFetchRequest(newImages);
             dispatch({
                 type: FETCH_WORDS_SUCCESS,
                 data,

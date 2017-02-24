@@ -5,7 +5,7 @@ import {Router, Route, route} from 'preact-router';
 import {ROUTE_CHANGE} from '../actions/route-actions';
 import AsyncRoute from 'preact-async-route';
 import * as wordActions from '../actions/word-actions';
-import UserStore from './user-store';
+import GameStore from './user-store';
 import '../css/userapp.css';
 import '../component/Splash/Splash.css';
 import Header from '../component/Header/Header.jsx';
@@ -23,14 +23,14 @@ function getPlayScreen() {
 let parent = document.getElementById('app');
 let root = parent.lastChild;
 render(
-  <Provider store={UserStore}>
+  <Provider store={GameStore}>
     <Layout>
-      {UserStore.getState().userReducer.name && <Header/>}
+      {GameStore.getState().wordReducer.wordsLoaded && <Header/>}
       <Router onChange={(e)=>{
           if (!e.previous && e.url!=='/') {
             route('/', true);
           } else {
-            UserStore.dispatch({
+            GameStore.dispatch({
               type: ROUTE_CHANGE,
               route: e.url,
             });

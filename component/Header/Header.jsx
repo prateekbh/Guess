@@ -38,7 +38,7 @@ class Header extends Component {
 								that.dispatch({
 									type: NOTIFICATION_SUBSCRIBED,
 									data: {},
-								})
+								});
 								window.snackbar && window.snackbar.base.MaterialSnackbar.showSnackbar({
 									message: 'Awesome! We\'ll send you daily hints from now on!'
 								});
@@ -49,11 +49,13 @@ class Header extends Component {
 							});
 					}
 				}).catch(function(err) {
+					that.hintsDialog.close();
 					window.snackbar && window.snackbar.base.MaterialSnackbar.showSnackbar({
 						message: 'Some error occoured while registering you for Daily Hints'
 					});
 				});
 			}).catch(()=>{
+				that.hintsDialog.close();
 				window.snackbar && window.snackbar.base.MaterialSnackbar.showSnackbar({
 					message: 'Sorry but we won\'t be able to give you daily hint now!'
 				});
