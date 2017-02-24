@@ -28,12 +28,12 @@ export default function wordReducer(state = initialState, action) {
   const newState = Object.assign({}, state, {words: [...state.words]});
   switch (action.type) {
     case LOAD:
-      const words = action.payload.wordReducer.words;
+      const words = action.payload.wordReducer && action.payload.wordReducer.words;
       let newImages = [];
-      words.forEach(word => {
+      words && words.forEach(word => {
           newImages = newImages.concat(word.images);
       });
-      fireImageFetchRequest(newImages);
+      newImages && fireImageFetchRequest(newImages);
       return Object.assign({}, state, {wordsLoaded: true});
     break;
     case wordActions.FETCH_WORDS_SUCCESS:
