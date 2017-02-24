@@ -63,6 +63,9 @@ class Header extends Component {
 	  });
 	}
 	render() {
+		if(!this.props.userReducer.name) {
+			return null;
+		}
 		return (
 			<header>
 				<div className="settings">

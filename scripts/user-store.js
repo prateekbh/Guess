@@ -7,6 +7,7 @@ import * as reducers from '../reducers/';
 import * as storage from 'redux-storage';
 import {SET_SCRABBLED_LETTERS} from '../actions/word-actions';
 import {LOG_TIME} from '../actions/game-actions';
+import {ROUTE_CHANGE} from '../actions/route-actions';
 let engine = createEngine('game-data');
 import jsBase from 'js-base64';
 
@@ -44,7 +45,7 @@ function deleteWordsBeforeSaving(engine){
 
 engine = deleteWordsBeforeSaving(engine);
 
-const storageMiddleware = storage.createMiddleware(engine, [LOG_TIME]);
+const storageMiddleware = storage.createMiddleware(engine, [LOG_TIME, ROUTE_CHANGE]);
 const load = storage.createLoader(engine);
 
 const reducer = storage.reducer(combineReducers(reducers));

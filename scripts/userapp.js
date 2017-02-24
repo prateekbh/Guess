@@ -25,7 +25,7 @@ let root = parent.lastChild;
 render(
   <Provider store={GameStore}>
     <Layout>
-      {GameStore.getState().wordReducer.wordsLoaded && <Header/>}
+      <Header/>
       <Router onChange={(e)=>{
           if (!e.previous && e.url!=='/') {
             route('/', true);
