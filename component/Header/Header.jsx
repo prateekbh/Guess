@@ -35,7 +35,7 @@ class Header extends Component {
 						that.hintsDialog.close();
 						sendUserToken({token})
 							.then(data=>{
-								that.dispatch({
+								that.props.dispatch({
 									type: NOTIFICATION_SUBSCRIBED,
 									data: {},
 								});
@@ -44,14 +44,14 @@ class Header extends Component {
 								});
 							}).catch(function(err) {
 								window.snackbar && window.snackbar.base.MaterialSnackbar.showSnackbar({
-									message: 'Some error occoured while registering you for Daily Hints'
+									message: 'Some error occoured while registering you for Daily Hints.'
 								});
 							});
 					}
 				}).catch(function(err) {
 					that.hintsDialog.close();
 					window.snackbar && window.snackbar.base.MaterialSnackbar.showSnackbar({
-						message: 'Some error occoured while registering you for Daily Hints'
+						message: 'Some error occoured while registering you for Daily Hints.'
 					});
 				});
 			}).catch(()=>{

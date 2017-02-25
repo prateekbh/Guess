@@ -41,7 +41,7 @@ messaging.setBackgroundMessageHandler(async function(payload) {
   // Customize notification here
   const notificationTitle = 'Guess!';
   const notificationOptions = {
-    body: 'Free hint has arrived',
+    body: 'Yay! Your free hint has arrived',
     icon: '/images/icons/icon-512x512.png'
   };
 
