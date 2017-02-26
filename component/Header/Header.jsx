@@ -27,12 +27,15 @@ class Header extends Component {
 	}
 	requestPermission(){
 		const that = this;
+		this.setState({
+			subscribingNotification: true,
+		});
 		requestFirebase(({messaging}) => {
 			messaging.requestPermission().then(()=>{
 				messaging.getToken()
 				.then(function(token) {
+					that.hintsDialog.close();
 					if (token) {
-						that.hintsDialog.close();
 						sendUserToken({token})
 							.then(data=>{
 								that.props.dispatch({
@@ -97,7 +100,9 @@ class Header extends Component {
 					<Dialog.Actions>
 						{
 							this.state.notificationsAvailable ?
-								<div>
+								this.state.subscribingNotification ?
+									<Spinner active={true}/>
+								:<div>
 									<Button onClick={() => {
 										this.hintsDialog.close();
 									}}>No</Button>
@@ -109,6 +114,7 @@ class Header extends Component {
 										this.hintsDialog.close();
 									}}>Cancel</Button>
 								</div>
+
 						}
 					</Dialog.Actions>
 				</Dialog>
