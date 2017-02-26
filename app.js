@@ -41,6 +41,9 @@ app.get('/sw.js',(req, res) => {
 const userCss = fs.readFileSync(__dirname + '/public' + fileRevs['userapp.css'].substr(fileRevs['userapp.css'].indexOf('/')) , 'utf8');
 // master route
 app.use(function(req, res, next) {
+  if (app.get('env') === 'development') {
+    const userCss = fs.readFileSync(__dirname + '/public' + fileRevs['userapp.css'].substr(fileRevs['userapp.css'].indexOf('/')) , 'utf8');
+  }
   res.render('userapp', {
     vendorjs: fileRevs['vendor.js'],
     userjs: fileRevs['userapp.js'],

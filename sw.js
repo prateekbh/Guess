@@ -1,5 +1,6 @@
 importScripts('/sw/sw-helpers/sw-lib.js');
-importScripts('https://cdn.rawgit.com/jakearchibald/idb-keyval/master/dist/idb-keyval-min.js');
+importScripts('/sw/sw-helpers/background-sync-queue.min.js');
+importScripts('/sw/sw-helpers/idb-keyval.js');
 importScripts('https://www.gstatic.com/firebasejs/3.6.9/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/3.6.9/firebase-messaging.js');
 
@@ -15,8 +16,9 @@ goog.swlib.warmRuntimeCache([
   '/play',
 ]);
 
-goog.swlib.router.registerRoute('/',
-    goog.swlib.staleWhileRevalidate());
+// goog.backgroundSyncQueue.initialize();
+
+goog.swlib.router.registerRoute('/', goog.swlib.staleWhileRevalidate());
 goog.swlib.router.registerRoute('/play', goog.swlib.staleWhileRevalidate());
 goog.swlib.router.registerRoute(/\/public\/css\//, goog.swlib.cacheFirst());
 goog.swlib.router.registerRoute(/\/public\/js\//, goog.swlib.cacheFirst());
@@ -24,6 +26,20 @@ goog.swlib.router.registerRoute(
   /https:\/\/images.pexels.com\//, goog.swlib.cacheFirst({
     cacheName: 'word-images',
   }));
+
+// const bgQueue = new goog.backgroundSyncQueue.BackgroundSyncQueue();
+
+// const requestWrapper = new goog.runtimeCaching.RequestWrapper({
+//   plugins: [bgQueue],
+// });
+
+// const route = new goog.routing.RegExpRoute({
+//   regExp: new RegExp(/\/recordstats/),
+//   handler: new goog.runtimeCaching.NetworkOnly({requestWrapper}),
+// });
+
+// // Register route for background sync
+// goog.swlib.router.registerRoute(route);
 
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', () => self.clients.claim());

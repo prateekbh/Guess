@@ -10,6 +10,7 @@ import '../css/userapp.css';
 import '../component/Splash/Splash.css';
 import Header from '../component/Header/Header.jsx';
 import Blocker from '../component/Blocker/Blocker.jsx'
+import Loading from '../component/Loading/Loading.jsx'
 import {sendUserToken} from '../actions/user-actions';
 
 function getHomeScreen() {
@@ -36,8 +37,8 @@ render(
             });
           }
         }}>
-          <AsyncRoute path='/' component={getHomeScreen}/>
-          <AsyncRoute path='/play' component={getPlayScreen}/>
+          <AsyncRoute path='/' component={getHomeScreen} loading={()=><Loading/>}/>
+          <AsyncRoute path='/play' component={getPlayScreen} loading={()=><Loading/>}/>
       </Router>
       <Snackbar ref={snackbar => {window.snackbar = snackbar}}/>
       <Blocker />
