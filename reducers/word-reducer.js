@@ -94,6 +94,9 @@ export default function wordReducer(state = initialState, action) {
       if (action.type === wordActions.GIVE_HINT) {
         hintWord.minorHintGiven = true;
       }
+      else if (action.type === wordActions.NOTIFICATION_HINT && state.giveNotificateionHint) {
+        delete state.giveNotificateionHint;
+      }
       return Object.assign({}, state, {words : [hintWord, ...state.words.slice(1)]})
     break;
     case wordActions.REMOVE_WRONG_OPTIONS:
