@@ -44,7 +44,7 @@ app.use(function(req, res, next) {
   if (app.get('env') === 'development') {
     const userCss = fs.readFileSync(__dirname + '/public' + fileRevs['userapp.css'].substr(fileRevs['userapp.css'].indexOf('/')) , 'utf8');
   } else {
-    if(!req.secure) {
+    if(req.protocol === 'http') {
       return res.redirect('https://' + req.headers.host + req.url);
     }
   }
