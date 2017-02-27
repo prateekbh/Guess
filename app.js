@@ -43,6 +43,10 @@ const userCss = fs.readFileSync(__dirname + '/public' + fileRevs['userapp.css'].
 app.use(function(req, res, next) {
   if (app.get('env') === 'development') {
     const userCss = fs.readFileSync(__dirname + '/public' + fileRevs['userapp.css'].substr(fileRevs['userapp.css'].indexOf('/')) , 'utf8');
+  } else {
+    if(!req.secure) {
+      return res.redirect('https://' + req.headers.host + req.url);
+    }
   }
   res.render('userapp', {
     vendorjs: fileRevs['vendor.js'],
