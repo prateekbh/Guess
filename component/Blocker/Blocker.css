@@ -1,0 +1,29 @@
+.blocker{
+	background-color: #333333;
+	display: table;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10000000;
+	&.unblocked{
+		display: none;
+	}
+	section.logo{
+		display: table-cell;
+		vertical-align: middle;
+		width: 30%;
+	}
+	section.text{
+		display: table-cell;
+		vertical-align: middle;
+		width: 70%;
+		height: 100%;
+		padding: 32px;
+	}
+	.description{
+		font-weight: 300;
+	}
+}

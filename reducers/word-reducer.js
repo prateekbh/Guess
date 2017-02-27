@@ -1,7 +1,7 @@
 import * as wordActions from '../actions/word-actions';
 import * as gameActions from '../actions/game-actions';
 import { LOAD } from 'redux-storage';
-import {getHintLetter} from '../utils/wordUtils';
+import {getHintLetter, fireImageFetchRequest} from '../utils/wordUtils';
 
 const initialState={
   wordsLoaded: false,
@@ -14,10 +14,29 @@ const emptyGuessedLetter = {
   index: -1,
 };
 
+function removeWrongGuesses(guessedLetters, word) {
+  return guessedLetters.map((data, index)=>{
+    if(data.letter && data.letter.toLowerCase() === word.charAt(index).toLowerCase()){
+      return data;
+    } else {
+      return Object.assign({}, emptyGuessedLetter);
+    }
+  });
+}
+
 export default function wordReducer(state = initialState, action) {
   const newState = Object.assign({}, state, {words: [...state.words]});
   switch (action.type) {
     case LOAD:
+      if (action.payload && action.payload.wordReducer
+        && action.payload.wordReducer.words) {
+          const words = action.payload.wordReducer.words;
+          let newImages = [];
+          words.forEach(word => {
+              newImages = newImages.concat(word.images);
+          });
+          fireImageFetchRequest(newImages);
+      }
       return Object.assign({}, state, {wordsLoaded: true});
     break;
     case wordActions.FETCH_WORDS_SUCCESS:
@@ -65,31 +84,25 @@ export default function wordReducer(state = initialState, action) {
         words: [...state.words.slice(1)],
       })
     break;
+    case wordActions.NOTIFICATION_HINT:
     case wordActions.GIVE_HINT:
       const hintWord = Object.assign({}, state.words[0], {guessedLetters: Object.assign([],state.words[0].guessedLetters)});
       // Remove all wrong guesses
-      hintWord.guessedLetters = hintWord.guessedLetters.map((data, index)=>{
-        if(data.letter && data.letter.toLowerCase() === state.words[0].word.charAt(index).toLowerCase()){
-          return data;
-        } else {
-          return Object.assign({}, emptyGuessedLetter);
-        }
-      });
+      hintWord.guessedLetters = removeWrongGuesses(hintWord.guessedLetters, state.words[0].word);
       const hint = getHintLetter(state.words[0].word, hintWord.guessedLetters, hintWord.scrabbledLetters);
       hintWord.guessedLetters[hint.inWordPosition] = hint;
-      hintWord.minorHintGiven = true;
+      if (action.type === wordActions.GIVE_HINT) {
+        hintWord.minorHintGiven = true;
+      }
+      else if (action.type === wordActions.NOTIFICATION_HINT && state.giveNotificateionHint) {
+        delete state.giveNotificateionHint;
+      }
       return Object.assign({}, state, {words : [hintWord, ...state.words.slice(1)]})
     break;
     case wordActions.REMOVE_WRONG_OPTIONS:
       const wrongLetterRemovalWord = Object.assign({}, state.words[0], {guessedLetters: Object.assign([],state.words[0].guessedLetters)});
       // Remove all wrong guesses
-      wrongLetterRemovalWord.guessedLetters = wrongLetterRemovalWord.guessedLetters.map((data, index)=>{
-        if(data.letter && data.letter.toLowerCase() === state.words[0].word.charAt(index).toLowerCase()){
-          return data;
-        } else {
-          return Object.assign({}, emptyGuessedLetter);
-        }
-      });
+      wrongLetterRemovalWord.guessedLetters = removeWrongGuesses(wrongLetterRemovalWord.guessedLetters, state.words[0].word);
       const wordArray = wrongLetterRemovalWord.word.toUpperCase().split('');
       let availableChoices = wrongLetterRemovalWord.scrabbledLetters.filter(letter => !wordArray.includes(letter));
       availableChoices.forEach(letter => {

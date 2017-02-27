@@ -1,4 +1,5 @@
 const SET_USER_DETAILS='SET_USER_DETAILS';
+const NOTIFICATION_SUBSCRIBED='NOTIFICATION_SUBSCRIBED';
 
 function loginUser({authToken, name}) {
     let body = {};
@@ -28,7 +29,30 @@ function loginUser({authToken, name}) {
         })
     }
 }
+
+function sendUserToken({token}) {
+    return fetch('/subscribe', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: new Headers({
+            'Content-Type': 'application/json',
+        }),
+        body: JSON.stringify({
+            token,
+        }),
+    }).then(response => {
+        if (!response.ok) {
+            throw 'Error subscribing to topic: '+response.status + ' - ' + response.text();
+        }
+        return response.json();
+    }).catch(error => {
+        console.error(error);
+        throw error;
+    });
+}
 export {
     SET_USER_DETAILS,
+    NOTIFICATION_SUBSCRIBED,
     loginUser,
+    sendUserToken,
 }

@@ -4,14 +4,17 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const ManifestPlugin = require('webpack-manifest-plugin');
 const WebpackMd5Hash = require('webpack-md5-hash');
 const serverUtils = require('./utils/serverUtils');
-const extractCSS = new ExtractTextPlugin('../css/[name].css');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-const outputString = serverUtils.getEnv() === 'DEV' ? '[name].js' : '[name]-[chunkhash].js';
-
-module.exports = {
+const prod = process.argv.indexOf('-p') !== -1;
+const outputString = prod ? '[name]-[chunkhash].js': '[name].js';
+const cssOutputString = prod ? '../css/[name]-[chunkhash].css': '../css/[name].css';
+const extractCSS = new ExtractTextPlugin(cssOutputString);
+const config = {
   entry: {
    adminapp: './scripts/adminapp.js',
    userapp: './scripts/userapp.js',
+   analytics: './scripts/analytics.js',
    vendor: ['babel-regenerator-runtime', 'preact', 'preact-router', 'preact-compat', 'preact-mdl', 'material-design-lite/material', 'redux', 'preact-redux']
   },
   output: {
@@ -61,6 +64,7 @@ module.exports = {
 	  ]
   },
   plugins: [
+      new CleanWebpackPlugin('./public'),
       extractCSS,
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
@@ -73,3 +77,20 @@ module.exports = {
       new WebpackMd5Hash()
   ]
 };
+
+
+if (prod) {
+  config.plugins.push(new webpack.DefinePlugin({
+      'process.env': {
+          'PROD': true
+      }
+  }));
+} else {
+  config.plugins.push(new webpack.DefinePlugin({
+      'process.env': {
+          'PROD': false
+      }
+  }));
+}
+
+module.exports = config;

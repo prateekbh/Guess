@@ -5,17 +5,21 @@ const FETCH_WORDS_FAILED = 'FETCH_WORDS_FAILED';
 const FETCH_WORDS_SUCCESS = 'FETCH_WORDS_SUCCESS';
 const GIVE_HINT = 'GIVE_HINT';
 const REMOVE_WRONG_OPTIONS = 'REMOVE_WRONG_OPTIONS';
+const NOTIFICATION_HINT = 'NOTIFICATION_HINT';
+import {fireImageFetchRequest} from '../utils/wordUtils';
+
 function fetchNewWords(id){
     return dispatch => {
-        fetch('/gamesapi/randomwords')
+        fetch('/gamesapi/randomwords',{
+            credentials: 'include',
+        })
         .then(data => data.json())
         .then(async (data) => {
             let newImages = [];
             data.words.forEach(word => {
                 newImages = newImages.concat(word.images);
             });
-            const cache = await caches.open('word-images');
-            await cache.addAll(newImages);
+            await Promise.all(fireImageFetchRequest(newImages));
             dispatch({
                 type: FETCH_WORDS_SUCCESS,
                 data,
@@ -39,4 +43,5 @@ export {
     FETCH_WORDS_SUCCESS,
     GIVE_HINT,
     REMOVE_WRONG_OPTIONS,
+    NOTIFICATION_HINT,
 }
