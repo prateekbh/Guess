@@ -1,17 +1,11 @@
 const https = require('https');
 const mdb = require('./dbapi');
-const firebase = require('firebase');
 const config = require('./config');
 const express = require('express');
 const router = express.Router();
 const db = new mdb.Database();
+const util = require('util');
 
-const firebaseConfig = {
-  apiKey: 'AIzaSyARpD2ZY6JV0yWtWuVXsHk08u5cSEnNaH8',
-  authDomain: 'guess-f5b84.firebaseapp.com',
-  messagingSenderId: '892039919403'
-};
-const app = firebase.initializeApp(firebaseConfig);
 /*
 curl -H "Content-Type: application/json" -H "Accept: application/json" \
 -X POST \
@@ -22,12 +16,14 @@ OR
 router.post('/login', function(req, res, next) {
   // Check if auth_token is provided
   if (req.body.hasOwnProperty(config.AUTH_TOKEN)) {
-    getProfileFromGoogle(req.body[config.AUTH_TOKEN], (googleName, email) => {
-      // Once email is retrieved, check if already exists in db
-      db.checkUserExists(email, (_id, name) => {
-        if (_id) return loginResponse(_id, name, res);
-        createUser(googleName, email, res);
-      });
+    util.getProfileFromGoogle(req.body[config.AUTH_TOKEN],
+      (err, googleName, email) => {
+        if (err) return;
+        // Once email is retrieved, check if already exists in db
+        db.checkUserExists(email, (_id, name) => {
+          if (_id) return loginResponse(_id, name, res);
+          createUser(googleName, email, res);
+        });
     });
   } else if (req.body.hasOwnProperty(config.NAME)
     && req.body[config.NAME].length != 0) {
@@ -46,15 +42,6 @@ let createUser = function(name, email, res) {
 let loginResponse = function(_id, name, res) {
   res.cookie(config.COOKIE_NAME, _id.toString())
     .send({'user': {'name': name}});
-};
-
-let getProfileFromGoogle = function(accessToken, callback) {
-  const credential = firebase.auth.GoogleAuthProvider.credential(accessToken);
-  firebase.auth().signInWithCredential(credential).then((result)=>{
-    callback(result.displayName, result.email);
-  }).catch(function(error) {
-    callback(false);
-  });
 };
 
 /*
