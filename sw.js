@@ -7,6 +7,7 @@ importScripts('https://www.gstatic.com/firebasejs/3.6.9/firebase-messaging.js');
 goog.swlib.cacheRevisionedAssets([
   '/images/logo.svg',
   '/images/logo.png',
+  '/images/surprised.svg',
   'https://fonts.googleapis.com/icon?family=Material+Icons',
   'https://fonts.googleapis.com/css?family=Roboto:300,400,500'
 ])
