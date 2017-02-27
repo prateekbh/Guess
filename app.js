@@ -13,6 +13,7 @@ const gamesapi = require('./routes/gamesapi');
 const compression = require('compression');
 const app = express();
 const fileRevs = require('./public/my-manifest.json');
+const forceSSL = require('express-force-ssl');
 
 app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
@@ -33,6 +34,10 @@ app.use('/adminapp', adminapp);
 app.use('/adminapi', adminapi);
 app.use('/gamesapi', gamesapi);
 
+if (app.get('env') !== 'development') {
+  app.use(forceSSL);
+}
+
 app.get('/sw.js',(req, res) => {
   res.sendFile(__dirname +'/sw.js');
 })
@@ -43,10 +48,6 @@ const userCss = fs.readFileSync(__dirname + '/public' + fileRevs['userapp.css'].
 app.use(function(req, res, next) {
   if (app.get('env') === 'development') {
     const userCss = fs.readFileSync(__dirname + '/public' + fileRevs['userapp.css'].substr(fileRevs['userapp.css'].indexOf('/')) , 'utf8');
-  } else {
-    if(req.protocol === 'http') {
-      return res.redirect('https://' + req.headers.host + req.url);
-    }
   }
   res.render('userapp', {
     vendorjs: fileRevs['vendor.js'],
