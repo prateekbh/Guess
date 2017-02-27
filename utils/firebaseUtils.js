@@ -18,7 +18,7 @@ function requestFirebase(callback){
             callback({firebase, messaging});
         } else if (!isSwRegistered) {
             isSwRegistered = true;
-            navigator.serviceWorker.ready.then(registration => {
+            navigator.serviceWorker && navigator.serviceWorker.ready.then(registration => {
                 messaging.useServiceWorker(window.swReg);
                 callback({firebase, messaging});
             }).catch(e => {
