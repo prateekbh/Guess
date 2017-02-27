@@ -7,9 +7,8 @@ const router = express.Router();
 const db = new mdb.Database();
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyARpD2ZY6JV0yWtWuVXsHk08u5cSEnNaH8',
-  authDomain: 'guess-f5b84.firebaseapp.com',
-  messagingSenderId: '892039919403',
+  apiKey: 'AIzaSyCRJlnu9RyOmtAjz_bq86bxtr6V5XJ9IPs',
+  authDomain: 'guess-ed75a.firebaseapp.com',
 };
 firebase.initializeApp(firebaseConfig);
 

@@ -4,6 +4,7 @@ import { Provider, connect } from 'preact-redux';
 import {Router, Route, route} from 'preact-router';
 import {ROUTE_CHANGE} from '../actions/route-actions';
 import AsyncRoute from 'preact-async-route';
+import fetch from 'unfetch'
 import * as wordActions from '../actions/word-actions';
 import GameStore from './user-store';
 import '../css/userapp.css';
@@ -12,6 +13,8 @@ import Header from '../component/Header/Header.jsx';
 import Blocker from '../component/Blocker/Blocker.jsx'
 import Loading from '../component/Loading/Loading.jsx'
 import {sendUserToken} from '../actions/user-actions';
+
+window.fetch = window.fetch || fetch;
 
 function getHomeScreen() {
   return System.import('../component/Home/Home.jsx').then(module => module.default);
