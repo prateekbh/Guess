@@ -4,6 +4,7 @@ const mdb = require('./dbapi');
 const router = express.Router();
 const db = new mdb.Database();
 const config = require('./config');
+const util = require('util');
 
 router.get('/search', (req, response, next) => {
   const options = {
@@ -61,23 +62,26 @@ router.post('/saveword', function(req, res) {
     if (!(config.COOKIE_NAME in req.cookies))
       return res.status(400).send('Cookie not provided.');
     var sessionId = req.cookies[config.COOKIE_NAME];
-    // if sessionId is not whitelisted, throw error
+    util.getProfileFromGoogle(sessionId,
+      (err, googleName, email) => {
+        if (err || config.WHITELISTED_ADMINS.indexOf(str) < 0) return;
+        let status = {
+          'Saved': 200,
+          'Duplicate': 400,
+          'Error': 500,
+        };
+        // validate(req.body)
+        db.checkWordExists(req.body.word, (message) => {
+          if (message === false) {
+            db.insertWordInCollection(req.body, (message) => {
+              res.status(status[message]).send(message);
+            });
+          } else {
+            res.status(status[message]).send(message);
+          }
+        });
+    });
   }
-  let status = {
-    'Saved': 200,
-    'Duplicate': 400,
-    'Error': 500,
-  };
-  // validate(req.body)
-  db.checkWordExists(req.body.word, (message) => {
-    if (message === false) {
-      db.insertWordInCollection(req.body, (message) => {
-        res.status(status[message]).send(message);
-      });
-    } else {
-      res.status(status[message]).send(message);
-    }
-  });
 });
 
 // Helper Endpoints

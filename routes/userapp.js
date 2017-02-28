@@ -1,16 +1,10 @@
 const mdb = require('./dbapi');
-const firebase = require('firebase');
 const config = require('./config');
 const express = require('express');
 const fetch = require('isomorphic-fetch');
 const router = express.Router();
 const db = new mdb.Database();
-
-const firebaseConfig = {
-  apiKey: 'AIzaSyCRJlnu9RyOmtAjz_bq86bxtr6V5XJ9IPs',
-  authDomain: 'guess-ed75a.firebaseapp.com',
-};
-firebase.initializeApp(firebaseConfig);
+const util = require('util');
 
 /*
 curl -H "Content-Type: application/json" -H "Accept: application/json" \
@@ -22,12 +16,14 @@ OR
 router.post('/login', function(req, res, next) {
   // Check if auth_token is provided
   if (req.body.hasOwnProperty(config.AUTH_TOKEN)) {
-    getProfileFromGoogle(req.body[config.AUTH_TOKEN], (googleName, email) => {
-      // Once email is retrieved, check if already exists in db
-      db.checkUserExists(email, (_id, name) => {
-        if (_id) return loginResponse(_id, name, res);
-        createUser(googleName, email, res);
-      });
+    util.getProfileFromGoogle(req.body[config.AUTH_TOKEN],
+      (err, googleName, email) => {
+        if (err) return;
+        // Once email is retrieved, check if already exists in db
+        db.checkUserExists(email, (_id, name) => {
+          if (_id) return loginResponse(_id, name, res);
+          createUser(googleName, email, res);
+        });
     });
   } else if (req.body.hasOwnProperty(config.NAME)
     && req.body[config.NAME].length != 0) {
@@ -47,15 +43,6 @@ let loginResponse = function(_id, name, res) {
   res.cookie(config.COOKIE_NAME, _id.toString(),
     {expires: new Date(Date.now() + 365*24*60*60*1000)})
       .send({'user': {'name': name}});
-};
-
-let getProfileFromGoogle = function(accessToken, callback) {
-  const credential = firebase.auth.GoogleAuthProvider.credential(accessToken);
-  firebase.auth().signInWithCredential(credential).then((result)=>{
-    callback(result.displayName, result.email);
-  }).catch(function(error) {
-    callback(false);
-  });
 };
 
 /*
@@ -125,5 +112,7 @@ router.get('/getuser/:id', function(req, res, next) {
     res.send(user);
   });
 });
+
+
 
 module.exports = router;
