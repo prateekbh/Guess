@@ -15,7 +15,7 @@ const config = {
    adminapp: './scripts/adminapp.js',
    userapp: './scripts/userapp.js',
    analytics: './scripts/analytics.js',
-   vendor: ['babel-regenerator-runtime', 'preact', 'preact-router', 'preact-compat', 'preact-mdl', 'material-design-lite/material', 'redux', 'preact-redux']
+   vendor: ['babel-regenerator-runtime', 'preact', 'preact-router', 'preact-compat', 'preact-mdl', 'material-design-lite/material', 'redux', 'preact-redux', './scripts/vendorcacheBurst']
   },
   output: {
     path: __dirname + '/public/js',
