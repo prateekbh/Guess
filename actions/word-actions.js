@@ -19,7 +19,12 @@ function fetchNewWords(id){
             data.words.forEach(word => {
                 newImages = newImages.concat(word.images);
             });
-            await Promise.all(fireImageFetchRequest(newImages));
+            try {
+                await Promise.all(fireImageFetchRequest(newImages));
+            }
+            catch(e) {
+
+            }
             dispatch({
                 type: FETCH_WORDS_SUCCESS,
                 data,
