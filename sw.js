@@ -32,7 +32,7 @@ goog.swlib.router.registerRoute(
 const bgQueue = new goog.backgroundSyncQueue.BackgroundSyncQueue();
 
 goog.swlib.router.registerRoute(
-  /\/recordstats/, goog.swlib.cacheFirst({
+  '/recordstats', goog.swlib.networkOnly({
     plugins: [bgQueue],
   }));
 

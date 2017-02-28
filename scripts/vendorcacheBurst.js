@@ -1,1 +1,1 @@
-window.guessVersion = 1;
+window.guessVersion = "1";
