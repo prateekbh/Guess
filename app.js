@@ -13,6 +13,7 @@ const gamesapi = require('./routes/gamesapi');
 const compression = require('compression');
 const app = express();
 const fileRevs = require('./public/my-manifest.json');
+const forceSSL = require('express-force-ssl');
 
 app.engine('mustache', mustacheExpress());
 app.set('view engine', 'mustache');
@@ -39,10 +40,14 @@ app.get('/sw.js',(req, res) => {
 
 //read userCss and inline it
 const userCss = fs.readFileSync(__dirname + '/public' + fileRevs['userapp.css'].substr(fileRevs['userapp.css'].indexOf('/')) , 'utf8');
-// master route
-app.use(function(req, res, next) {
+
+function serveIndex(req,res) {
   if (app.get('env') === 'development') {
     const userCss = fs.readFileSync(__dirname + '/public' + fileRevs['userapp.css'].substr(fileRevs['userapp.css'].indexOf('/')) , 'utf8');
+  } else {
+    if (req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'] !== 'https') {
+      return res.redirect('https://' + req.headers.host + req.url);
+    }
   }
   res.render('userapp', {
     vendorjs: fileRevs['vendor.js'],
@@ -50,7 +55,11 @@ app.use(function(req, res, next) {
     analyticsjs: fileRevs['analytics.js'],
     usercss: userCss,
   });
-});
+}
+
+// app routes
+app.get('/', serveIndex);
+app.get('/play', serveIndex);
 
 // error handlers
 

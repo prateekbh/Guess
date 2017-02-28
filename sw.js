@@ -1,5 +1,6 @@
+const swversion ='v3';
 importScripts('/sw/sw-helpers/sw-lib.js');
-//importScripts('/sw/sw-helpers/background-sync-queue.min.js');
+importScripts('/sw/sw-helpers/background-sync-queue.min.js');
 importScripts('/sw/sw-helpers/idb-keyval.js');
 importScripts('https://www.gstatic.com/firebasejs/3.6.9/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/3.6.9/firebase-messaging.js');
@@ -17,7 +18,7 @@ goog.swlib.warmRuntimeCache([
   '/play',
 ]);
 
-// goog.backgroundSyncQueue.initialize();
+goog.backgroundSyncQueue.initialize();
 
 goog.swlib.router.registerRoute('/', goog.swlib.staleWhileRevalidate());
 goog.swlib.router.registerRoute('/play', goog.swlib.staleWhileRevalidate());
@@ -28,19 +29,10 @@ goog.swlib.router.registerRoute(
     cacheName: 'word-images',
   }));
 
-// const bgQueue = new goog.backgroundSyncQueue.BackgroundSyncQueue();
-
-// const requestWrapper = new goog.runtimeCaching.RequestWrapper({
-//   plugins: [bgQueue],
-// });
-
-// const route = new goog.routing.RegExpRoute({
-//   regExp: new RegExp(/\/recordstats/),
-//   handler: new goog.runtimeCaching.NetworkOnly({requestWrapper}),
-// });
-
-// // Register route for background sync
-// goog.swlib.router.registerRoute(route);
+goog.swlib.router.registerRoute(
+  /\/recordstats/, goog.swlib.cacheFirst({
+    plugins: [bgQueue],
+  }));
 
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', () => self.clients.claim());
