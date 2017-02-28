@@ -2,7 +2,6 @@ const webpack = require("webpack");
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const ManifestPlugin = require('webpack-manifest-plugin');
-const WebpackMd5Hash = require('webpack-md5-hash');
 const serverUtils = require('./utils/serverUtils');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
@@ -73,8 +72,7 @@ const config = {
       new ManifestPlugin({
         fileName: '../my-manifest.json',
         basePath: '',
-      }),
-      new WebpackMd5Hash()
+      })
   ]
 };
 
