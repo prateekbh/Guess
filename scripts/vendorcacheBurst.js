@@ -1,0 +1,1 @@
+window.guessVersion = "1";
