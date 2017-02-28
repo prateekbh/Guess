@@ -1,4 +1,4 @@
-const swversion ='v3';
+const swversion ='v4';
 importScripts('/sw/sw-helpers/sw-lib.js');
 importScripts('/sw/sw-helpers/background-sync-queue.min.js');
 importScripts('/sw/sw-helpers/idb-keyval.js');
@@ -28,6 +28,8 @@ goog.swlib.router.registerRoute(
   /https:\/\/images.pexels.com\//, goog.swlib.cacheFirst({
     cacheName: 'word-images',
   }));
+
+const bgQueue = new goog.backgroundSyncQueue.BackgroundSyncQueue();
 
 goog.swlib.router.registerRoute(
   /\/recordstats/, goog.swlib.cacheFirst({
