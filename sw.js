@@ -23,7 +23,7 @@ goog.backgroundSyncQueue.initialize();
 goog.swlib.router.registerRoute('/', goog.swlib.staleWhileRevalidate());
 goog.swlib.router.registerRoute('/play', goog.swlib.staleWhileRevalidate());
 goog.swlib.router.registerRoute(/\/public\/css\//, goog.swlib.cacheFirst());
-goog.swlib.router.registerRoute(/\/public\/js\//, goog.swlib.staleWhileRevalidate());
+goog.swlib.router.registerRoute(/\/public\/js\//, goog.swlib.cacheFirst());
 goog.swlib.router.registerRoute(
   /https:\/\/images.pexels.com\//, goog.swlib.cacheFirst({
     cacheName: 'word-images',
