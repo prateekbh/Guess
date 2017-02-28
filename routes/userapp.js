@@ -7,11 +7,11 @@ const router = express.Router();
 const db = new mdb.Database();
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyARpD2ZY6JV0yWtWuVXsHk08u5cSEnNaH8',
-  authDomain: 'guess-f5b84.firebaseapp.com',
-  messagingSenderId: '892039919403'
+  apiKey: 'AIzaSyCRJlnu9RyOmtAjz_bq86bxtr6V5XJ9IPs',
+  authDomain: 'guess-ed75a.firebaseapp.com',
 };
-const app = firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
+
 /*
 curl -H "Content-Type: application/json" -H "Accept: application/json" \
 -X POST \
@@ -22,7 +22,9 @@ OR
 router.post('/login', function(req, res, next) {
   // Check if auth_token is provided
   if (req.body.hasOwnProperty(config.AUTH_TOKEN)) {
-    getProfileFromGoogle(req.body[config.AUTH_TOKEN], (googleName, email) => {
+    getProfileFromGoogle(req.body[config.AUTH_TOKEN],
+      (err, googleName, email) => {
+        if (err) return res.status(500).send('Error Occurred in retrieving profile.');
       // Once email is retrieved, check if already exists in db
       db.checkUserExists(email, (_id, name) => {
         if (_id) return loginResponse(_id, name, res);
@@ -51,9 +53,9 @@ let loginResponse = function(_id, name, res) {
 let getProfileFromGoogle = function(accessToken, callback) {
   const credential = firebase.auth.GoogleAuthProvider.credential(accessToken);
   firebase.auth().signInWithCredential(credential).then((result)=>{
-    callback(result.displayName, result.email);
+    callback(null, result.displayName, result.email);
   }).catch(function(error) {
-    callback(false);
+    callback(error);
   });
 };
 
