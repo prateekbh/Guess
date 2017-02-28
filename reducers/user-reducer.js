@@ -6,6 +6,7 @@ const initialState = {
   name: '',
   coins: 100,
   level: 1,
+  notificationsSubscribed: false,
 }
 export default function userReducer(state = initialState, action) {
   switch (action.type) {
@@ -22,6 +23,9 @@ export default function userReducer(state = initialState, action) {
     break;
     case wordActions.REMOVE_WRONG_OPTIONS:
       return Object.assign({}, state, {coins: state.coins - 20});
+    break;
+    case userActions.NOTIFICATION_SUBSCRIBED:
+      return Object.assign({}, state, {notificationsSubscribed: true});
     break;
     default:
       return state

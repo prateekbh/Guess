@@ -12,6 +12,7 @@ import LetterPlatter from '../LetterPlatter/LetterPlatter.jsx';
 import VictorySplash from '../VictorySplash/VictorySplash.jsx';
 import DownloadMore from '../DownloadMore/DownloadMore.jsx';
 import {scrabble} from '../../utils/wordUtils';
+import {requestFirebase} from '../../utils/firebaseUtils';
 
 import './Play.css';
 
@@ -42,6 +43,10 @@ class Play extends Component {
 				});
 			}
 		},1000);
+		requestFirebase(({messaging}) => {
+			window.messaging = messaging;
+			window.dispatchEvent && window.dispatchEvent(new Event("messaging available"));
+		});
 	}
 	componentDidUpdate(prevProps){
 		if(this.props.wordReducer.words[0] && !this.props.wordReducer.words[0].scrabbledLetters){
@@ -95,7 +100,7 @@ class Play extends Component {
 											action: wordActions.GIVE_HINT
 										}
 									});
-									this.hintDialog.base.showModal();
+									this.hintDialog.showModal();
 								}
 							}}
 							removeWrongLetters={() => {
@@ -106,7 +111,7 @@ class Play extends Component {
 											action: wordActions.REMOVE_WRONG_OPTIONS
 										}
 									});
-									this.hintDialog.base.showModal();
+									this.hintDialog.showModal();
 								}
 							}}
 							onLetterSelect={(data)=>{
@@ -117,7 +122,7 @@ class Play extends Component {
 							}}/>
 						{this.state.won && <VictorySplash onContinue={()=>{
 							const word = this.props.wordReducer.words[0];
-							gameActions.saveTime(word.word, word.timeLapsed, word.images);
+							gameActions.saveTime(word._id, word.timeLapsed, word.images);
 							this.props.dispatch({
 								type: gameActions.WORD_GUESSED,
 							});
@@ -136,10 +141,10 @@ class Play extends Component {
 								this.props.dispatch({
 									type: this.state.hint.action,
 								});
-								this.hintDialog.base.close();
+								this.hintDialog.close();
 							}}>Cool</Button>
 							<Button onClick={() => {
-								this.hintDialog.base.close();
+								this.hintDialog.close();
 							}}>No!</Button>
 						</Dialog.Actions>
 					</Dialog>

@@ -1,10 +1,6 @@
 <html>
 	<head>
 		<title>Guess</title>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-		<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500" type="text/css">
-    	<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-red.min.css" />
-		<link rel="stylesheet" href="/public/css/{{usercss}}">
 		<link rel="manifest" href="/manifest/manifest.json">
 		<link rel="apple-touch-icon" sizes="57x57" href="/images/apple-icon-57x57.png">
 		<link rel="apple-touch-icon" sizes="60x60" href="/images/apple-icon-60x60.png">
@@ -25,22 +21,46 @@
 		<meta name="msapplication-TileColor" content="#ffffff">
 		<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 		<meta name="theme-color" content="#ffffff">
+		<style>
+			{{{usercss}}}
+		</style>
+		<script src="/public/js/{{vendorjs}}" defer></script>
+		<script src="/public/js/{{userjs}}" defer></script>
+		<script src="/public/js/{{analyticsjs}}" defer></script>
 	</head>
 	<body>
 		<div id="app">
-			<div class="dummy-splash">
-				<img src='/images/logo.svg' class='logo'/>
+			<div class="mdl-layout__container">
+				<div class="mdl-layout mdl-js-layout is-small-screen is-upgraded">
+					<div class="screen-home">
+						<div class="dummy-splash">
+							<div class="logo-container">
+								<img src='/images/logo.svg' alt="guess logo" class='logo'/>
+							</div>
+							<div class="loading" >
+								<noscript>Javascript is needed for this game</noscript>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<script src="https://www.gstatic.com/firebasejs/3.6.7/firebase.js"></script>
-		<script src="/public/js/{{vendorjs}}"></script>
-		<script src="/public/js/{{userjs}}"></script>
 		<script>
-			 if ('serviceWorker' in navigator) {
+			window.firebaseConfig = {
+				"apiKey": "AIzaSyCRJlnu9RyOmtAjz_bq86bxtr6V5XJ9IPs",
+				"authDomain": "guess-ed75a.firebaseapp.com",
+				"messagingSenderId": "678578574774"
+			};
+			if ('serviceWorker' in navigator) {
 				 navigator.serviceWorker.register('/sw.js', {scope: '/'}).then(reg=>{
+					 window.swReg = reg;
 					 console.log("Service worker registered");
 				 });
 			 }
+			 loadCss = function (href){var doc=window.document;var ss=doc.createElement("link");var ref;var collection=window.document.getElementsByTagName("style");var ref=collection[collection.length-1];var sheets=doc.styleSheets;ss.rel="stylesheet";ss.href=href;ss.media="only x";function ready(cb){if(doc.body){return cb()}setTimeout(function(){ready(cb)})}ready(function(){ref.parentNode.insertBefore(ss,ref.nextSibling)});var onloadcssdefined=function(cb){var resolvedHref=ss.href;var i=sheets.length;while(i--){if(sheets[i].href===resolvedHref){return cb()}}setTimeout(function(){onloadcssdefined(cb)})};function loadCB(){if(ss.addEventListener){ss.removeEventListener("load",loadCB)}ss.media="all"}if(ss.addEventListener){ss.addEventListener("load",loadCB)}ss.onloadcssdefined=onloadcssdefined;onloadcssdefined(loadCB);return ss}
+			 loadCss('https://fonts.googleapis.com/icon?family=Material+Icons');
+			 loadCss('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+			 loadCss('https://code.getmdl.io/1.3.0/material.teal-red.min.css');
 		</script>
 	</body>
 </html>

@@ -14,7 +14,7 @@ export default class DownloadMore extends Component {
 			this.setState({
 				dialogMessage: 'You dont have an active Internet connection!!!'
 			}, () => {
-				this.dialog.base.showModal();
+				this.dialog.showModal();
 			});
 		}
 	}
@@ -44,7 +44,7 @@ export default class DownloadMore extends Component {
 				</Dialog.Content>
 				<Dialog.Actions>
 					<Button onClick={() => {
-						this.dialog.base.close();
+						this.dialog.close();
 					}}>No!</Button>
 				</Dialog.Actions>
 			</Dialog>

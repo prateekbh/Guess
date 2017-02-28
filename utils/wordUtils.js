@@ -1,5 +1,8 @@
+import {getUserId} from './userUtils.js';
 const allLetters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 const totalPlatterLength = 12;
+let cryptr;
+
 function scrabble(word){
     word = word.toUpperCase();
     const wordLength = word.length;
@@ -47,7 +50,16 @@ function getHintLetter(word, guessedLetters, scrabbledLetters) {
 
 }
 
+function fireImageFetchRequest(images){
+    const returningPromise = [];
+    images.forEach(image => {
+        returningPromise.push(fetch(image));
+    });
+    return returningPromise;
+}
+
 export {
     scrabble,
     getHintLetter,
+    fireImageFetchRequest,
 }

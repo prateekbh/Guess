@@ -62,9 +62,12 @@ export default class AdminBase extends Component {
 			})
 		}).then( (res) => {
 			if(res.ok){
-				alert('saved')
+				alert('saved');
+				this.setState({
+					actualWord: ''
+				});
 			} else {
-				alert('errored')
+				alert('errored');
 			}
 		}).catch(e=>{});
 	}
@@ -101,7 +104,7 @@ export default class AdminBase extends Component {
 				<div className='chosen-toast'>
 					<div className="wordDetails">
 						<div className="word">
-							<TextField placeholder="word" value={this.state.actualWord} onChange={(e)=>{
+							<TextField placeholder="word" maxlength="8" value={this.state.actualWord} onChange={(e)=>{
 								this.setState({
 									actualWord: e.target.value
 								});
