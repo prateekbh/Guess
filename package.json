@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "build": "webpack"
+    "build": "webpack",
+    "release": "webpack -p && git add . && git commit -am 'release' && git push origin release"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
