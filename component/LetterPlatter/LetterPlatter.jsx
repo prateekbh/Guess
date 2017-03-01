@@ -41,11 +41,11 @@ export default class LetterPlatter extends Component {
                             <Icon icon="favorite" />
                         </Button>
                     </div>
-                    <div className="letter mdl-typography--title">
+                    <div className="letter bulbHint mdl-typography--title">
                         <Button
                             colored={true} raised={true} icon
                             onClick={this.props.removeWrongLetters} disabled={this.props.majorHintGiven}>
-                            <Icon icon="delete" />
+                            <Icon icon="wb_incandescent" />
                         </Button>
                     </div>
                 </div>
