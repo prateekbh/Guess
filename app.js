@@ -34,10 +34,6 @@ app.use('/adminapp', adminapp);
 app.use('/adminapi', adminapi);
 app.use('/gamesapi', gamesapi);
 
-if (app.get('env') !== 'development') {
-  app.use(forceSSL);
-}
-
 app.get('/sw.js',(req, res) => {
   res.sendFile(__dirname +'/sw.js');
 })
