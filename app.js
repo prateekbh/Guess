@@ -40,8 +40,8 @@ app.get('/sw.js',(req, res) => {
 
 //read userCss and inline it
 const userCss = fs.readFileSync(__dirname + '/public' + fileRevs['userapp.css'].substr(fileRevs['userapp.css'].indexOf('/')) , 'utf8');
-
 function serveIndex(req,res) {
+
   if (app.get('env') === 'development') {
     const userCss = fs.readFileSync(__dirname + '/public' + fileRevs['userapp.css'].substr(fileRevs['userapp.css'].indexOf('/')) , 'utf8');
   } else {

@@ -31,10 +31,17 @@ goog.swlib.router.registerRoute(
 
 const bgQueue = new goog.backgroundSyncQueue.BackgroundSyncQueue();
 
-goog.swlib.router.registerRoute(
-  '/recordstats', goog.swlib.networkOnly({
+const bgQRoute = new goog.swlib.Route({
+  match: ({url})=>{
+    return url.href.indexOf('/recordstats') !== -1;
+  },
+  method: 'POST',
+  handler: goog.swlib.networkOnly({
     plugins: [bgQueue],
-  }));
+  }),
+});
+
+goog.swlib.router.registerRoute(bgQRoute);
 
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', () => self.clients.claim());
