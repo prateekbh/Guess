@@ -1,3 +1,4 @@
+const swversion ='v4';
 importScripts('/sw/sw-helpers/sw-lib.js');
 importScripts('/sw/sw-helpers/background-sync-queue.min.js');
 importScripts('/sw/sw-helpers/idb-keyval.js');
@@ -22,7 +23,7 @@ goog.backgroundSyncQueue.initialize();
 goog.swlib.router.registerRoute('/', goog.swlib.staleWhileRevalidate());
 goog.swlib.router.registerRoute('/play', goog.swlib.staleWhileRevalidate());
 goog.swlib.router.registerRoute(/\/public\/css\//, goog.swlib.cacheFirst());
-goog.swlib.router.registerRoute(/\/public\/js\//, goog.swlib.cacheFirst());
+goog.swlib.router.registerRoute(/\/public\/js\//, goog.swlib.staleWhileRevalidate());
 goog.swlib.router.registerRoute(
   /https:\/\/images.pexels.com\//, goog.swlib.cacheFirst({
     cacheName: 'word-images',
@@ -30,10 +31,17 @@ goog.swlib.router.registerRoute(
 
 const bgQueue = new goog.backgroundSyncQueue.BackgroundSyncQueue();
 
-// Register route for background sync
-goog.swlib.router.registerRoute(/\/recordstats/, goog.swlib.networkFirst({
-    plugins: [bgQueue]
-  }));
+const bgQRoute = new goog.swlib.Route({
+  match: ({url})=>{
+    return url.href.indexOf('/recordstats') !== -1;
+  },
+  method: 'POST',
+  handler: goog.swlib.networkOnly({
+    plugins: [bgQueue],
+  }),
+});
+
+goog.swlib.router.registerRoute(bgQRoute);
 
 self.addEventListener('install', () => self.skipWaiting());
 self.addEventListener('activate', () => self.clients.claim());

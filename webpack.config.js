@@ -2,7 +2,6 @@ const webpack = require("webpack");
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const ManifestPlugin = require('webpack-manifest-plugin');
-const WebpackMd5Hash = require('webpack-md5-hash');
 const serverUtils = require('./utils/serverUtils');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
@@ -15,7 +14,7 @@ const config = {
    adminapp: './scripts/adminapp.js',
    userapp: './scripts/userapp.js',
    analytics: './scripts/analytics.js',
-   vendor: ['babel-regenerator-runtime', 'preact', 'preact-router', 'preact-compat', 'preact-mdl', 'material-design-lite/material', 'redux', 'preact-redux']
+   vendor: ['babel-regenerator-runtime', 'preact', 'preact-router', 'preact-compat', 'preact-mdl', 'material-design-lite/material', 'redux', 'preact-redux', './scripts/vendorcacheBurst']
   },
   output: {
     path: __dirname + '/public/js',
@@ -73,8 +72,7 @@ const config = {
       new ManifestPlugin({
         fileName: '../my-manifest.json',
         basePath: '',
-      }),
-      new WebpackMd5Hash()
+      })
   ]
 };
 

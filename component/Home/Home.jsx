@@ -27,10 +27,13 @@ class Home extends Component {
 		route('/play');
 	}
 	render(){
+		if (!this.props.wordReducer.wordsLoaded) {
+			return null;
+		}
 		return (
 				<div className='screen-home'>
 				{
-					(!this.props.wordReducer.wordsLoaded || this.props.wordReducer.words.length == 0 || !this.props.userReducer.name) &&
+					(this.props.wordReducer.words.length == 0 || !this.props.userReducer.name) &&
 						<Splash
 							showHome={this.showHome}
 							user={this.props.userReducer}
