@@ -74,6 +74,7 @@ class Header extends Component {
 				<div className="settings">
 					{ this.props.routeReducer.currentRoute === '/play' &&
 						!this.props.userReducer.notificationsSubscribed &&
+						navigator.serviceWorker &&
 						<Button icon onClick={this.showSettings.bind(this)}>
 							<Icon icon="notifications_active"/>
 						</Button>
