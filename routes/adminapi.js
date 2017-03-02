@@ -60,10 +60,10 @@ curl -H "Content-Type: application/json" -H "Accept: application/json" \
 router.post('/saveword', function(req, res) {
   if (!(config.COOKIE_NAME in req.cookies))
   return res.status(400).send('Cookie not provided.');
-  var sessionId = req.cookies[config.COOKIE_NAME];
+  const sessionId = req.cookies[config.COOKIE_NAME];
   db.getUser(sessionId, (user) => {
     if (user === false || user === 'No User.') return res.status(500).send('Error Occurred');
-    if (config.WHITELISTED_ADMINS.indexOf(user.email) < 0) return res.status(400);
+    if (config.WHITELISTED_ADMINS.indexOf(user.email) < 0) return res.status(400).send('Invalid user');
     let status = {
       'Saved': 200,
       'Duplicate': 400,
