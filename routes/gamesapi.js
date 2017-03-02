@@ -11,8 +11,8 @@ router.get('/', function(req, res, next) {
 });
 
 /*
-curl -H "Cookie: userid=588d937f009f04028792504e" \
-http://localhost:3000/gamesapi/randomwords
+curl -H "Cookie: userid=123" \
+http://localhost:8080/gamesapi/randomwords
 */
 router.get('/randomwords', function(req, res, next) {
   db.getRandomWords(config.WORD_COUNT, (words) => {
