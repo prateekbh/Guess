@@ -52,7 +52,7 @@ class Play extends Component {
 			window.messaging = messaging;
 			window.dispatchEvent && window.dispatchEvent(new Event("messaging available"));
 		});
-		if (dialogPolyfill) {
+		if (window.dialogPolyfill) {
 			dialogPolyfill.registerDialog(this.hintDialog.base);
 		}
 	}

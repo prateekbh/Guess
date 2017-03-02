@@ -21,7 +21,7 @@ export default class Splash extends Component {
 				enableSocialLogin: true,
 			});
 		});
-		if (dialogPolyfill) {
+		if (window.dialogPolyfill) {
 			dialogPolyfill.registerDialog(this.nameDialog.base);
 			dialogPolyfill.registerDialog(this.offlineDialog.base);
 		}
