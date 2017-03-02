@@ -41,7 +41,7 @@ app.get('/sw.js',(req, res) => {
 //read userCss and inline it
 const userCss = fs.readFileSync(__dirname + '/public' + fileRevs['userapp.css'].substr(fileRevs['userapp.css'].indexOf('/')) , 'utf8');
 function serveIndex(req,res) {
-
+  const isSafari = /^((?!chrome|android).)*safari/i.test(req.get('User-Agent'));
   if (app.get('env') === 'development') {
     const userCss = fs.readFileSync(__dirname + '/public' + fileRevs['userapp.css'].substr(fileRevs['userapp.css'].indexOf('/')) , 'utf8');
   } else {
@@ -49,12 +49,16 @@ function serveIndex(req,res) {
       return res.redirect('https://' + req.headers.host + req.url);
     }
   }
-  res.render('userapp', {
+  const renderOptions = {
     vendorjs: fileRevs['vendor.js'],
     userjs: fileRevs['userapp.js'],
     analyticsjs: fileRevs['analytics.js'],
     usercss: userCss,
-  });
+  };
+  if (isSafari) {
+    renderOptions.addPolyfill=true;
+  }
+  res.render('userapp', renderOptions);
 }
 
 // app routes

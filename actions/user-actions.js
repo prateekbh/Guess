@@ -12,9 +12,9 @@ function loginUser({authToken, name}) {
         fetch('/login',{
             method: 'POST',
             body: JSON.stringify(body),
-            headers: new Headers({
+            headers: {
                 'Content-Type': 'application/json',
-            }),
+            },
             credentials: 'same-origin',
         })
         .then(data => data.json())
