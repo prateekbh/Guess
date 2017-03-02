@@ -63,16 +63,16 @@ router.post('/saveword', function(req, res) {
   const sessionId = req.cookies[config.COOKIE_NAME];
   db.getUser(sessionId, (user) => {
     if (user === false || user === 'No User.') return res.status(500).send('Error Occurred');
+    console.log(config.WHITELISTED_ADMINS, user.email);
     if (config.WHITELISTED_ADMINS.indexOf(user.email) < 0) return res.status(400).send('Invalid user');
     let status = {
       'Saved': 200,
       'Duplicate': 400,
       'Error': 500,
     };
-    // validate(req.body)
     db.checkWordExists(req.body.word, (message) => {
       if (message === false) {
-        var payload = req.body;
+        const payload = req.body;
         payload.author = user.email;
         db.insertWordInCollection(payload, (message) => {
           res.status(status[message]).send(message);
