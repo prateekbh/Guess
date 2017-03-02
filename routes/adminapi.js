@@ -54,29 +54,33 @@ router.get('/search', (req, response, next) => {
 /*
 curl -H "Content-Type: application/json" -H "Accept: application/json" \
 -X POST \
+-H "Cookie: userid=123" \
 -d '{"word":"KIng","images":["URL1", "URL2"]}' http://localhost:3000/adminapi/saveword
 */
 router.post('/saveword', function(req, res) {
-  if (config.SAVEWORD_KEY_VALIDATION) {
-    if (!(config.COOKIE_NAME in req.cookies))
-      return res.status(400).send('Cookie not provided.');
-    var sessionId = req.cookies[config.COOKIE_NAME];
-    // if sessionId is not whitelisted, throw error
-  }
-  let status = {
-    'Saved': 200,
-    'Duplicate': 400,
-    'Error': 500,
-  };
-  // validate(req.body)
-  db.checkWordExists(req.body.word, (message) => {
-    if (message === false) {
-      db.insertWordInCollection(req.body, (message) => {
+  if (!(config.COOKIE_NAME in req.cookies))
+  return res.status(400).send('Cookie not provided.');
+  var sessionId = req.cookies[config.COOKIE_NAME];
+  db.getUser(sessionId, (user) => {
+    if (user === false || user === 'No User.') return res.status(500).send('Error Occurred');
+    if (config.WHITELISTED_ADMINS.indexOf(user.email) < 0) return res.status(400);
+    let status = {
+      'Saved': 200,
+      'Duplicate': 400,
+      'Error': 500,
+    };
+    // validate(req.body)
+    db.checkWordExists(req.body.word, (message) => {
+      if (message === false) {
+        var payload = req.body;
+        payload.author = user.email;
+        db.insertWordInCollection(payload, (message) => {
+          res.status(status[message]).send(message);
+        });
+      } else {
         res.status(status[message]).send(message);
-      });
-    } else {
-      res.status(status[message]).send(message);
-    }
+      }
+    });
   });
 });
 
