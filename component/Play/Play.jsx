@@ -44,7 +44,7 @@ class Play extends Component {
 				if (window.requestIdleCallback) {
 					requestIdleCallback(this.addTimeCount.bind(this));
 				} else {
-					this.addTimeCount.bind(this);
+					this.addTimeCount();
 				}
 			}
 		},1000);
