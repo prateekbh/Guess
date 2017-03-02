@@ -27,6 +27,11 @@ class Play extends Component {
 			}
 		};
 	}
+	addTimeCount(){
+		this.props.dispatch({
+			type: gameActions.LOG_TIME,
+		});
+	}
 	componentDidMount(){
 		if(this.props.wordReducer.words[0] && !this.props.wordReducer.words[0].scrabbledLetters){
 			this.props.dispatch({
@@ -36,17 +41,20 @@ class Play extends Component {
 		}
 		setInterval(()=>{
 			if (!this.state.won) {
-				requestIdleCallback(()=>{
-					this.props.dispatch({
-						type: gameActions.LOG_TIME,
-					})
-				});
+				if (window.requestIdleCallback) {
+					requestIdleCallback(this.addTimeCount.bind(this));
+				} else {
+					this.addTimeCount.bind(this);
+				}
 			}
 		},1000);
 		requestFirebase(({messaging}) => {
 			window.messaging = messaging;
 			window.dispatchEvent && window.dispatchEvent(new Event("messaging available"));
 		});
+		if (window.dialogPolyfill) {
+			dialogPolyfill.registerDialog(this.hintDialog.base);
+		}
 	}
 	componentDidUpdate(prevProps){
 		if(this.props.wordReducer.words[0] && !this.props.wordReducer.words[0].scrabbledLetters){

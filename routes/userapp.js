@@ -5,7 +5,7 @@ const express = require('express');
 const fetch = require('isomorphic-fetch');
 const router = express.Router();
 const db = new mdb.Database();
-
+const env = process.env.NODE_ENV || 'development';
 const firebaseConfig = {
   apiKey: 'AIzaSyCRJlnu9RyOmtAjz_bq86bxtr6V5XJ9IPs',
   authDomain: 'guess-ed75a.firebaseapp.com',
@@ -101,9 +101,11 @@ router.post('/subscribe', (req, res) => {
     }),
   };
 
-  console.log(reqObject,'==================================');
   fetch('https://iid.googleapis.com/iid/v1/' + token + '/rel/topics/hints', reqObject)
-    .then((response) => {console.log(response);return response.json()})
+    .then((response) => {
+      console.log(response);
+      return response.json();
+    })
     .then((data)=>{
       return res.send(JSON.stringify({done: true}));
     })
@@ -116,9 +118,13 @@ router.post('/subscribe', (req, res) => {
 // Helper endpoints
 // curl http://localhost:3000/allusers
 router.get('/allusers', function(req, res, next) {
-  db.readCollection('users', (results) => {
-    res.send(results);
-  });
+  if(env === 'development') {
+    db.readCollection('users', (results) => {
+      res.send(results);
+    });
+  } else {
+    res.status(500).send('No');
+  }
 });
 
 // curl http://localhost:3000/getuser/588ebf8ef8c2925da254f565

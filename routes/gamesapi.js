@@ -5,7 +5,7 @@ const mdb = require('./dbapi');
 const db = new mdb.Database();
 const config = require('./config');
 const jsBase = require('js-base64').Base64;
-
+const env = process.env.NODE_ENV || 'development';
 router.get('/', function(req, res, next) {
   res.send('Games server is running.');
 });
@@ -29,9 +29,13 @@ router.get('/randomwords', function(req, res, next) {
 // Helper endpoints
 // curl http://localhost:3000/gamesapi/allwords
 router.get('/allwords', function(req, res, next) {
-  db.readCollection(config.gamesCollection, (results) => {
-    res.send(results);
-  });
+  if(env === 'development') {
+    db.readCollection(config.gamesCollection, (results) => {
+      res.send(results);
+    });
+  } else {
+    res.status(500).send('No');
+  }
 });
 
 module.exports = router;
