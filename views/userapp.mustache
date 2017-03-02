@@ -24,6 +24,11 @@
 		<style>
 			{{{usercss}}}
 		</style>
+		{{#addPolyfill}}
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.7/dialog-polyfill.min.css">
+			<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.4.7/dialog-polyfill.min.js"></script>
+		{{/addPolyfill}}
 		<script src="/public/js/{{vendorjs}}" defer></script>
 		<script src="/public/js/{{userjs}}" defer></script>
 		<script src="/public/js/{{analyticsjs}}" defer></script>
