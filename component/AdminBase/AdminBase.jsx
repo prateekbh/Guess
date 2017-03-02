@@ -59,7 +59,8 @@ export default class AdminBase extends Component {
 			body: JSON.stringify(payload),
 			headers: new Headers({
 				'content-type': 'application/json'
-			})
+			}),
+			credentials: 'include',
 		}).then( (res) => {
 			if(res.ok){
 				alert('saved');
