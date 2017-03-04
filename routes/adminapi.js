@@ -57,12 +57,43 @@ router.get('/search', (req, response, next) => {
 /*
 curl -H "Content-Type: application/json" -H "Accept: application/json" \
 -X POST \
--H "Cookie: userid=58b716159d72162c64379d98" \
--d '{"words": [{"word":"dfg1","images":["URL1", "URL2"]}, {"word":"ghj","images":["URL1", "URL2"]}]}' http://localhost:8080/adminapi/saveword
-Or
+-H "Cookie: userid=123" \
 -d '{"word":"KIng","images":["URL1", "URL2"]}' http://localhost:8080/adminapi/saveword
 */
 router.post('/saveword', function(req, res) {
+  if (!(config.COOKIE_NAME in req.cookies))
+  return res.status(400).send('Cookie not provided.');
+  const sessionId = req.cookies[config.COOKIE_NAME];
+  db.getUser(sessionId, (user) => {
+    if (user === false || user === 'No User.') return res.status(500).send('Error Occurred');
+    if (config.WHITELISTED_ADMINS.indexOf(user.email) < 0) return res.status(400).send('Invalid user');
+    let status = {
+      'Saved': 200,
+      'Duplicate': 400,
+      'Error': 500,
+    };
+    // validate(req.body)
+    db.checkWordExists(req.body.word, (message) => {
+      if (message === false) {
+        var payload = req.body;
+        payload.author = user.email;
+        db.insertWordInCollection(payload, (message) => {
+          res.status(status[message]).send(message);
+        });
+      } else {
+        res.status(status[message]).send(message);
+      }
+    });
+  });
+});
+
+/*
+curl -H "Content-Type: application/json" -H "Accept: application/json" \
+-X POST \
+-H "Cookie: userid=123" \
+-d '{"words": [{"word":"dfg1","images":["URL1", "URL2"]}, {"word":"ghj","images":["URL1", "URL2"]}]}' http://localhost:8080/adminapi/saveword
+*/
+router.post('/bulksave', function(req, res) {
   if (!(config.COOKIE_NAME in req.cookies))
   return res.status(400).send('Cookie not provided.');
   const sessionId = req.cookies[config.COOKIE_NAME];
@@ -73,13 +104,10 @@ router.post('/saveword', function(req, res) {
       return res.status(400).send('Invalid user');
 
     let dbPromises = [];
-    // Depending on whether or not its a batch call
-    if (req.body.hasOwnProperty('words')) {
-      for (var i = 0; i < req.body.words.length; i++) {
-        dbPromises.push(saveWord(req.body.words[i], user.email)); // words[i] = {word: 'orange', images: [1, 2]}
-      }
-    } else if (req.body.hasOwnProperty('word')) {
+    if (req.body.hasOwnProperty('word')) {
       dbPromises.push(saveWord(req.body, user.email));
+    } else {
+      res.status(400).send('Invalid request format');
     }
 
     Promise.all(dbPromises).then((results) => {
@@ -123,6 +151,7 @@ router.get('/makegames', (req, res, next) => {
       res.status(500).send('Error Occurred');
       return console.log(err);
     }
+    data = data.replace(/(?:\r\n|\r|\n)/g, '').replace(/( )/g, '');
     evalute(data, wordcount, res);
   });
 });
@@ -135,6 +164,8 @@ function evalute(data, wordcount, res) {
     let word = words[i];
     // remove \n which may have crept in the last word
     if (word.slice(-1) === '\n') word = word.slice(0, word.length - 1);
+    if (word.length < 4) continue;
+
     dbLookups.push(new Promise((resolve, reject) => {
       db.checkWordExists(word, (err, found) => {
         if (err) return reject(err);
