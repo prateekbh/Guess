@@ -110,15 +110,15 @@ db.prototype.recordGameStats = function(userId, payload, callback) {
 db.prototype.insertWordInCollection = function(payload, callback) {
   payload.word = payload.word.toLowerCase();
   _db.collection(gamesCollection).insert(payload, (err, result) => {
-    if (err) return callback(this.handleInsertionError(err));
-    return callback('Saved');
+    if (err) return callback(err);
+    callback(null, 'Saved');
   });
 };
 
-db.prototype.checkWordExists = function(words, callback) {
-  _db.collection(gamesCollection).find({word: words}).toArray((err, results) => {
-    if (err) return callback(this.handleInsertionError(err));
-    callback(results.length ? 'Duplicate' : false);
+db.prototype.checkWordExists = function(query, callback) {
+  _db.collection(gamesCollection).find({word: query.toLowerCase()}).toArray((err, results) => {
+    if (err) return callback(err);
+    callback(null, results.length ? true : false);
   });
 }
 

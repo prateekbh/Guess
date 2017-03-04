@@ -116,7 +116,7 @@ router.post('/subscribe', (req, res) => {
 });
 
 // Helper endpoints
-// curl http://localhost:3000/allusers
+// curl http://localhost:8080/allusers
 router.get('/allusers', function(req, res, next) {
   if(env === 'development') {
     db.readCollection('users', (results) => {

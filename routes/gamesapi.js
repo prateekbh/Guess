@@ -27,7 +27,7 @@ router.get('/randomwords', function(req, res, next) {
 });
 
 // Helper endpoints
-// curl http://localhost:3000/gamesapi/allwords
+// curl http://localhost:8080/gamesapi/allwords
 router.get('/allwords', function(req, res, next) {
   if(env === 'development') {
     db.readCollection(config.gamesCollection, (results) => {
