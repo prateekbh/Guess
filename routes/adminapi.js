@@ -130,26 +130,39 @@ router.get('/makegames', (req, res, next) => {
 var wordsProcessed = 0;
 function evalute(data, wordcount, res) {
   let words = data.split(',');
-  let resData = {words: []};
-  let pexelCalls = [];
-  for (var i = wordsProcessed; i < words.length && pexelCalls.length < wordcount; i++) {
+  let dbLookups = [];
+  for (var i = wordsProcessed; i < words.length && dbLookups.length < wordcount; i++) {
     let word = words[i];
     // remove \n which may have crept in the last word
     if (word.slice(-1) === '\n') word = word.slice(0, word.length - 1);
-    resData.words.push({word: [word], images: []});
-    // API calls to pexel
-    pexelCalls.push(pexelReq(word));
-    wordsProcessed += 1;
+    dbLookups.push(new Promise((resolve, reject) => {
+      db.checkWordExists(word, (err, found) => {
+        if (err) return reject(err);
+        resolve({'found': found, 'word': word});
+      });
+    }));
   }
 
-  Promise.all(pexelCalls).then((results) => {
-    for (var j = 0; j < results.length; j++) {
-      if (!results[j].body.hasOwnProperty('photos')) continue;
-      results[j].body.photos.slice(0, 4).forEach((item) => {
-        resData.words[j].images.push(item.src.medium);
-      });
+  Promise.all(dbLookups).then((results) => {
+    let resData = {words: []};
+    let pexelCalls = [];
+    for (var i = 0; i < results.length; i++) {
+      if (!results[i].found) {
+        resData.words.push({word: results[i].word, images: []});
+        // API calls to pexel
+        pexelCalls.push(pexelReq(results[i].word));
+        wordsProcessed += 1;
+      }
     }
-    res.send(JSON.stringify(resData));
+    Promise.all(pexelCalls).then((results) => {
+      for (var j = 0; j < results.length; j++) {
+        if (!results[j].body.hasOwnProperty('photos')) continue;
+        results[j].body.photos.slice(0, 4).forEach((item) => {
+          resData.words[j].images.push(item.src.medium);
+        });
+      }
+      res.send(JSON.stringify(resData));
+    });
   });
 }
 
