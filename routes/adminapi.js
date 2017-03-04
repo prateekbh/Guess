@@ -200,7 +200,7 @@ function evalute(data, wordcount, res) {
 function pexelReq(word) {
   return request
     .get('http://api.pexels.com/v1/search?query=' + word + '&per_page=100&page=1')
-    .set('Authorization', '563492ad6f9170000100000126a09af23c9f427540345ce903dd238e')
+    .set('Authorization', process.env.PEXELS_KEY)
 }
 
 // Helper Endpoints
