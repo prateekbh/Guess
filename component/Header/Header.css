@@ -8,7 +8,7 @@ header{
         flex: 2;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         .mdl-button{
             width: 64px;
             height: 64px;
@@ -29,6 +29,7 @@ header{
     .userCoins{
         display: inline-block;
         padding: 8px;
+        padding-right: 16px;
         vertical-align: middle;
         font-size: 16px;
         font-weight: 300;
