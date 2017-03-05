@@ -72,3 +72,16 @@
 		transform: translate3d(-50%, -50%, 0) scale(1.8);
 	}
 }
+
+@media (min-width: 800px) {
+	.preview-tiles{
+		.pic{
+			height: 120px;
+		}
+	}
+	.play-tiles{
+		.pic{
+			height: 160px;
+		}
+	}
+}
