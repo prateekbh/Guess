@@ -104,7 +104,7 @@ export default function wordReducer(state = initialState, action) {
       // Remove all wrong guesses
       wrongLetterRemovalWord.guessedLetters = removeWrongGuesses(wrongLetterRemovalWord.guessedLetters, state.words[0].word);
       const wordArray = wrongLetterRemovalWord.word.toUpperCase().split('');
-      let availableChoices = wrongLetterRemovalWord.scrabbledLetters.filter(letter => !wordArray.includes(letter));
+      let availableChoices = wrongLetterRemovalWord.scrabbledLetters.filter(letter => wordArray.indexOf(letter) === -1);
       availableChoices.forEach(letter => {
         const letterIndex = wrongLetterRemovalWord.scrabbledLetters.indexOf(letter);
         wrongLetterRemovalWord.scrabbledLetters[letterIndex] = null;
