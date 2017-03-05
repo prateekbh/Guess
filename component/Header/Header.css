@@ -15,7 +15,7 @@ header{
         }
     }
     .logo {
-        flex: 6;
+        flex: 4;
         display: flex;
         align-self: center;
         justify-content: center;
@@ -24,7 +24,7 @@ header{
         display: flex;
         flex: 2;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-end;
     }
     .userCoins{
         display: inline-block;
