@@ -24,10 +24,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser())
 app.use(compression());
-app.use('/public', express.static(path.join(__dirname, 'public'), { maxAge: '1y' }));
-app.use('/manifest', express.static(path.join(__dirname, 'manifest'), { maxAge: '1y' }));
-app.use('/images', express.static(path.join(__dirname, 'images'), { maxAge: '1y' }));
-app.use('/sw', express.static(path.join(__dirname, 'sw'), { maxAge: '1y' }));
+
+const cachingOption = (app.get('env') === 'development') ? {} :  { maxAge: '1y' };
+
+app.use('/public', express.static(path.join(__dirname, 'public'), cachingOption));
+app.use('/manifest', express.static(path.join(__dirname, 'manifest'), cachingOption));
+app.use('/images', express.static(path.join(__dirname, 'images'), cachingOption));
+app.use('/sw', express.static(path.join(__dirname, 'sw'), cachingOption));
 
 app.use('/', userapp);
 app.use('/adminapp', adminapp);
@@ -55,7 +58,7 @@ function serveIndex(req,res) {
     analyticsjs: fileRevs['analytics.js'],
     usercss: userCss,
   };
-  if (isSafari) {
+  if (isSafari || req.get('User-Agent').indexOf('Edge') !== -1) {
     renderOptions.addPolyfill=true;
   }
   res.render('userapp', renderOptions);
