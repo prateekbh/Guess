@@ -58,7 +58,7 @@ function serveIndex(req,res) {
     analyticsjs: fileRevs['analytics.js'],
     usercss: userCss,
   };
-  if (isSafari) {
+  if (isSafari || req.get('User-Agent').indexOf('Edge') !== -1) {
     renderOptions.addPolyfill=true;
   }
   res.render('userapp', renderOptions);
