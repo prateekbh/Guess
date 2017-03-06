@@ -5,7 +5,7 @@
   "scripts": {
     "start": "./node_modules/.bin/forever ./bin/www",
     "build": "webpack",
-    "release": "webpack -p && git add . && git commit -am 'release' && git push origin release"
+    "release": "webpack -p && webpack --config webpack.sw.js -p && git add . && git commit -am 'release' && git push origin release"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
