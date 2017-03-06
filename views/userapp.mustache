@@ -80,7 +80,7 @@
 			 window.addEventListener('beforeinstallprompt', function(e) {
 				console.log('beforeinstallprompt Event fired');
 				e.preventDefault();
-				ga('send', 'event', 'Engagement', 'Defer');
+				ga('send', 'event', 'Engagement', 'A2HS', 'Defer');
 				// Stash the event so it can be triggered later.
 				deferredPrompt = e;
 				return false;
