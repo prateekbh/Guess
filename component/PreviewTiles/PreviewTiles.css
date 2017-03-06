@@ -76,12 +76,12 @@
 @media (min-width: 800px) {
 	.preview-tiles{
 		.pic{
-			height: 120px;
+			height: 110px;
 		}
 	}
 	.play-tiles{
 		.pic{
-			height: 160px;
+			height: 150px;
 		}
 	}
 }
