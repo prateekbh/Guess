@@ -78,21 +78,7 @@ class Play extends Component {
 					won: true,
 				}, () => {
 					if (this.state.wordsGuessed > 2 && window.deferredPrompt) {
-						deferredPrompt.prompt();
-
-						deferredPrompt.userChoice.then(function(choiceResult) {
-
-							if(choiceResult.outcome == 'dismissed') {
-								ga('send', 'event', 'Engagement', 'A2HS', 'Rejected');
-							}
-							else {
-								ga('send', 'event', 'Engagement', 'A2HS', 'Accepted');
-							}
-
-							// We no longer need the prompt.  Clear it up.
-							window.deferredPrompt = null;
-						});
-
+						this.a2hsDialog.showModal();
 					}
 				});
 			}
@@ -176,6 +162,33 @@ class Play extends Component {
 							<Button onClick={() => {
 								this.hintDialog.close();
 							}}>No!</Button>
+						</Dialog.Actions>
+					</Dialog>
+					<Dialog ref={a2hsDialog => {this.a2hsDialog = a2hsDialog;}}>
+						<Dialog.Title>Like Us?</Dialog.Title>
+						<Dialog.Content>
+							Add our icon on homescreen to comeback easier. NO APP DOWNLOAD PROMISE!
+						</Dialog.Content>
+						<Dialog.Actions>
+							<Button colored={true} onClick={()=>{
+								this.a2hsDialog.close();
+								window.deferredPrompt.prompt();
+								window.deferredPrompt.userChoice.then(function(choiceResult) {
+									if(choiceResult.outcome == 'dismissed') {
+										ga('send', 'event', 'Engagement', 'A2HS', 'Dismissed');
+									}
+									else {
+										ga('send', 'event', 'Engagement', 'A2HS', 'Accepted');
+									}
+									// We no longer need the prompt.  Clear it up.
+									window.deferredPrompt = null;
+								});
+							}}>Yes!</Button>
+							<Button onClick={() => {
+								this.a2hsDialog.close();
+								window.deferredPrompt = null;
+								ga('send', 'event', 'Engagement', 'A2HS', 'Rejected');
+							}}>Hate you</Button>
 						</Dialog.Actions>
 					</Dialog>
 				</div>
