@@ -52,6 +52,7 @@
     right: 0;
 	text-align: center;
 	.mdl-progress{
+		margin: auto;
 		height: 3px;
 	}
 }
