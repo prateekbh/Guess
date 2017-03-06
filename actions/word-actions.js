@@ -20,10 +20,17 @@ function fetchNewWords(id){
                 newImages = newImages.concat(word.images);
             });
             try {
+                let allFetched = false;
+                setTimeout(()=>{
+                    if (!allFetched) {
+                        throw new Error("timeout fetching pics");
+                    }
+                },15000);
                 await Promise.all(fireImageFetchRequest(newImages));
+                allFetched = true;
             }
             catch(e) {
-
+                console.log(e);
             }
             dispatch({
                 type: FETCH_WORDS_SUCCESS,

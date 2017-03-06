@@ -21,6 +21,7 @@ class Play extends Component {
 		super();
 		this.state = {
 			won: false,
+			wordsGuessed: 0,
 			hint: {
 				charge: 5,
 				action: wordActions.GIVE_HINT
@@ -33,6 +34,7 @@ class Play extends Component {
 		});
 	}
 	componentDidMount(){
+		ga('send', 'pageview', location.pathname);
 		if(this.props.wordReducer.words[0] && !this.props.wordReducer.words[0].scrabbledLetters){
 			this.props.dispatch({
 				type: wordActions.SET_SCRABBLED_LETTERS,
@@ -72,7 +74,12 @@ class Play extends Component {
 			});
 			if(!this.state.won && this.props.wordReducer.words[0].word.toLowerCase() === guessedWord.toLowerCase()){
 				this.setState({
+					wordsGuessed: this.state.wordsGuessed + 1,
 					won: true,
+				}, () => {
+					if (this.state.wordsGuessed > 2 && window.deferredPrompt) {
+						this.a2hsDialog.showModal();
+					}
 				});
 			}
 		} else if (!this.props.wordReducer.lastWord) {
@@ -134,6 +141,7 @@ class Play extends Component {
 							this.props.dispatch({
 								type: gameActions.WORD_GUESSED,
 							});
+
 							if (this.props.wordReducer.words.length < 25) {
 								this.props.dispatch(wordActions.fetchNewWords(this.props.wordReducer.lastWord || 0));
 							}
@@ -154,6 +162,33 @@ class Play extends Component {
 							<Button onClick={() => {
 								this.hintDialog.close();
 							}}>No!</Button>
+						</Dialog.Actions>
+					</Dialog>
+					<Dialog ref={a2hsDialog => {this.a2hsDialog = a2hsDialog;}}>
+						<Dialog.Title>Like Us?</Dialog.Title>
+						<Dialog.Content>
+							Add our icon on homescreen to comeback easier. NO APP DOWNLOAD PROMISE!
+						</Dialog.Content>
+						<Dialog.Actions>
+							<Button colored={true} onClick={()=>{
+								this.a2hsDialog.close();
+								window.deferredPrompt.prompt();
+								window.deferredPrompt.userChoice.then(function(choiceResult) {
+									if(choiceResult.outcome == 'dismissed') {
+										ga('send', 'event', 'Engagement', 'A2HS', 'Dismissed');
+									}
+									else {
+										ga('send', 'event', 'Engagement', 'A2HS', 'Accepted');
+									}
+									// We no longer need the prompt.  Clear it up.
+									window.deferredPrompt = null;
+								});
+							}}>Yes!</Button>
+							<Button onClick={() => {
+								this.a2hsDialog.close();
+								window.deferredPrompt = null;
+								ga('send', 'event', 'Engagement', 'A2HS', 'Rejected');
+							}}>Hate you</Button>
 						</Dialog.Actions>
 					</Dialog>
 				</div>

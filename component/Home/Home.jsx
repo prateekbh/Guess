@@ -12,6 +12,9 @@ class Home extends Component {
 	constructor() {
 		super();
 	}
+	componentDidMount(){
+		ga('send', 'pageview', location.pathname);
+	}
 	componentDidUpdate(prevProps, state){
 		if(!prevProps.userReducer.name && this.props.userReducer.name && this.props.wordReducer.words.length < 25){
 			this.props.dispatch(actions.fetchNewWords(this.props.wordReducer.lastWord || 0));
