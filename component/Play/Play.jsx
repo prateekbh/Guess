@@ -76,10 +76,6 @@ class Play extends Component {
 				this.setState({
 					wordsGuessed: this.state.wordsGuessed + 1,
 					won: true,
-				}, () => {
-					if (this.state.wordsGuessed > 2 && window.deferredPrompt) {
-						this.a2hsDialog.showModal();
-					}
 				});
 			}
 		} else if (!this.props.wordReducer.lastWord) {
@@ -141,6 +137,9 @@ class Play extends Component {
 							this.props.dispatch({
 								type: gameActions.WORD_GUESSED,
 							});
+							if (this.state.wordsGuessed > 2 && window.deferredPrompt) {
+								this.a2hsDialog.showModal();
+							}
 
 							if (this.props.wordReducer.words.length < 25) {
 								this.props.dispatch(wordActions.fetchNewWords(this.props.wordReducer.lastWord || 0));
