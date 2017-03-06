@@ -1,5 +1,5 @@
-const swversion ='v4';
-importScripts('/sw/sw-helpers/sw-lib.js');
+const swversion ='v5';
+importScripts('/sw/sw-helpers/sw-lib.min.js');
 importScripts('/sw/sw-helpers/background-sync-queue.min.js');
 importScripts('/sw/sw-helpers/idb-keyval.js');
 importScripts('https://www.gstatic.com/firebasejs/3.6.9/firebase-app.js');
