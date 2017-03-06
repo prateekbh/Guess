@@ -21,6 +21,7 @@ class Play extends Component {
 		super();
 		this.state = {
 			won: false,
+			wordsGuessed: 0,
 			hint: {
 				charge: 5,
 				action: wordActions.GIVE_HINT
@@ -33,6 +34,7 @@ class Play extends Component {
 		});
 	}
 	componentDidMount(){
+		ga('send', 'pageview', location.pathname);
 		if(this.props.wordReducer.words[0] && !this.props.wordReducer.words[0].scrabbledLetters){
 			this.props.dispatch({
 				type: wordActions.SET_SCRABBLED_LETTERS,
@@ -72,7 +74,26 @@ class Play extends Component {
 			});
 			if(!this.state.won && this.props.wordReducer.words[0].word.toLowerCase() === guessedWord.toLowerCase()){
 				this.setState({
+					wordsGuessed: this.state.wordsGuessed + 1,
 					won: true,
+				}, () => {
+					if (this.state.wordsGuessed > 2 && window.deferredPrompt) {
+						deferredPrompt.prompt();
+
+						deferredPrompt.userChoice.then(function(choiceResult) {
+
+							if(choiceResult.outcome == 'dismissed') {
+								ga('send', 'event', 'Engagement', 'A2HS', 'Rejected');
+							}
+							else {
+								ga('send', 'event', 'Engagement', 'A2HS', 'Accepted');
+							}
+
+							// We no longer need the prompt.  Clear it up.
+							window.deferredPrompt = null;
+						});
+
+					}
 				});
 			}
 		} else if (!this.props.wordReducer.lastWord) {
@@ -134,6 +155,7 @@ class Play extends Component {
 							this.props.dispatch({
 								type: gameActions.WORD_GUESSED,
 							});
+
 							if (this.props.wordReducer.words.length < 25) {
 								this.props.dispatch(wordActions.fetchNewWords(this.props.wordReducer.lastWord || 0));
 							}

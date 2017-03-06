@@ -74,6 +74,17 @@
 			 loadCss('https://fonts.googleapis.com/icon?family=Material+Icons');
 			 loadCss('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
 			 loadCss('https://code.getmdl.io/1.3.0/material.teal-red.min.css');
+
+			 var deferredPrompt;
+
+			 window.addEventListener('beforeinstallprompt', function(e) {
+				console.log('beforeinstallprompt Event fired');
+				e.preventDefault();
+				ga('send', 'event', 'Engagement', 'Defer');
+				// Stash the event so it can be triggered later.
+				deferredPrompt = e;
+				return false;
+			 });
 		</script>
 	</body>
 </html>
