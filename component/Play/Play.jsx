@@ -137,7 +137,7 @@ class Play extends Component {
 							this.props.dispatch({
 								type: gameActions.WORD_GUESSED,
 							});
-							if (this.state.wordsGuessed > 2 && window.deferredPrompt) {
+							if (this.state.wordsGuessed > 1 && window.deferredPrompt) {
 								this.a2hsDialog.showModal();
 							}
 
