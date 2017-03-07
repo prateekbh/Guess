@@ -36,7 +36,7 @@ class Header extends Component {
 				messaging.getToken()
 				.then(function(token) {
 					that.hintsDialog.close();
-					ga('send', 'event', 'Engagement', 'Push', 'Subscribed');
+					ga('send', 'event', 'Engagement', 'Push', 'Push_Subscribed');
 					if (token) {
 						sendUserToken({token})
 							.then(data=>{
@@ -48,21 +48,21 @@ class Header extends Component {
 									message: 'Awesome! We\'ll send you daily hints from now on!'
 								});
 							}).catch(function(err) {
-								ga('send', 'event', 'Engagement', 'Push', 'Errored');
+								ga('send', 'event', 'Engagement', 'Push', 'Push_Errored');
 								window.snackbar && window.snackbar.base.MaterialSnackbar.showSnackbar({
 									message: 'Some error occoured while registering you for Daily Hints.'
 								});
 							});
 					}
 				}).catch(function(err) {
-					ga('send', 'event', 'Engagement', 'Push', 'Errored');
+					ga('send', 'event', 'Engagement', 'Push', 'Push_Rejected');
 					that.hintsDialog.close();
 					window.snackbar && window.snackbar.base.MaterialSnackbar.showSnackbar({
 						message: 'Some error occoured while registering you for Daily Hints.'
 					});
 				});
 			}).catch(()=>{
-				ga('send', 'event', 'Engagement', 'Push', 'Errored');
+				ga('send', 'event', 'Engagement', 'Push', 'Push_Errored');
 				that.hintsDialog.close();
 				window.snackbar && window.snackbar.base.MaterialSnackbar.showSnackbar({
 					message: 'Sorry but we won\'t be able to give you daily hint now!'
