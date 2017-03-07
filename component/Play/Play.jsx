@@ -62,6 +62,9 @@ class Play extends Component {
 		if (window.dialogPolyfill) {
 			dialogPolyfill.registerDialog(this.hintDialog.base);
 		}
+		setTimeout(()=>{
+			this.showAddToHomeScreen();
+		},5000)
 	}
 	componentDidUpdate(prevProps){
 		if(this.props.wordReducer.words[0] && !this.props.wordReducer.words[0].scrabbledLetters){
@@ -88,9 +91,6 @@ class Play extends Component {
 		} else if (!this.props.wordReducer.lastWord) {
 			route('/');
 		}
-		setTimeout(()=>{
-			this.showAddToHomeScreen();
-		},5000)
 	}
 	showAddToHomeScreen(){
 		if (window.deferredPrompt) {
