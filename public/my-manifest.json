@@ -1,11 +1,11 @@
 {
-  "0-2072522a65ee8572303a.js": "0-2072522a65ee8572303a.js",
-  "1-ea7f43593109228c9e6a.js": "1-ea7f43593109228c9e6a.js",
-  "2-c55d378c060ae1a9a370.js": "2-c55d378c060ae1a9a370.js",
-  "adminapp.css": "../css/adminapp-3c87815ef2b414adbdf3.css",
-  "adminapp.js": "adminapp-3c87815ef2b414adbdf3.js",
-  "analytics.js": "analytics-6131fc9a669f7503dff5.js",
-  "userapp.css": "../css/userapp-24ddc4aebcf753051306.css",
-  "userapp.js": "userapp-24ddc4aebcf753051306.js",
-  "vendor.js": "vendor-ecb59b04aa3cfa7ff651.js"
+  "0.js": "0.js",
+  "1.js": "1.js",
+  "2.js": "2.js",
+  "adminapp.css": "../css/adminapp.css",
+  "adminapp.js": "adminapp.js",
+  "analytics.js": "analytics.js",
+  "userapp.css": "../css/userapp.css",
+  "userapp.js": "userapp.js",
+  "vendor.js": "vendor.js"
 }

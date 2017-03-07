@@ -35,6 +35,7 @@ class Play extends Component {
 	}
 	componentDidMount(){
 		ga('send', 'pageview', location.pathname);
+		ga('send', 'event', 'Play', 'Word', 'Play_Screen_Shown');
 		if(this.props.wordReducer.words[0] && !this.props.wordReducer.words[0].scrabbledLetters){
 			this.props.dispatch({
 				type: wordActions.SET_SCRABBLED_LETTERS,
@@ -76,6 +77,8 @@ class Play extends Component {
 				this.setState({
 					wordsGuessed: this.state.wordsGuessed + 1,
 					won: true,
+				}, () => {
+					ga('send', 'event', 'Play', 'Word', 'Guessed_' + this.state.wordsGuessed);
 				});
 			}
 		} else if (!this.props.wordReducer.lastWord) {

@@ -1,15 +1,23 @@
 .screen-home{
-	.container-play{
+	.container-play, {
 		text-align: center;
 		margin-top: -30px;
+		.mdl-button{
+			font-size: 24px;
+			padding: 8px;
+			height: auto;
+			width: 200px;
+		}
 	}
-	.mdl-button{
-		font-size: 24px;
-		padding: 8px;
-		height: auto;
-		width: 200px;
-	}
-	.random{
-		display: auto;
+	.container-share {
+		margin-top: 20px;
+		.mdl-button{
+			width: 60px;
+			height: 60px;
+			position: absolute;
+			right: 20px;
+			bottom: 20px;
+			background: rgb(0,150,136);
+		}
 	}
 }
