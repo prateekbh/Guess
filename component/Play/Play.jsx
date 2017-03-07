@@ -19,6 +19,10 @@ import './Play.css';
 class Play extends Component {
 	constructor(){
 		super();
+
+		this.a2hsDone = false;
+		this.a2hsDone = true;
+		this.a2hsBucket = -1;
 		this.state = {
 			won: false,
 			wordsGuessed: 0,
@@ -84,6 +88,29 @@ class Play extends Component {
 		} else if (!this.props.wordReducer.lastWord) {
 			route('/');
 		}
+		setTimeout(()=>{
+			this.showAddToHomeScreen();
+		},5000)
+	}
+	showAddToHomeScreen(){
+		if (window.deferredPrompt) {
+			window.deferredPrompt.prompt();
+			window.deferredPrompt.userChoice.then(function(choiceResult) {
+				if(choiceResult.outcome == 'dismissed') {
+					ga('send', 'event', 'Engagement', 'A2HS', 'A2HS_Dismissed_' + this.a2hsBucket);
+				}
+				else {
+					ga('send', 'event', 'Engagement', 'A2HS', 'A2HS_Accepted_' + this.a2hsBucket);
+				}
+				// We no longer need the prompt.  Clear it up.
+				window.deferredPrompt = null;
+			});
+		} else {
+			ga('send', 'event', 'Engagement', 'A2HS', 'A2HS_NoPrompt_' + this.a2hsBucket);
+		}
+
+		this.a2hsDone = true;
+		this.a2hsDone = true;
 	}
 	render(){
 		if (this.props.wordReducer.words[0]){
@@ -141,8 +168,12 @@ class Play extends Component {
 								type: gameActions.WORD_GUESSED,
 							});
 							if (this.state.wordsGuessed > 0 && window.deferredPrompt) {
-								ga('send', 'event', 'Engagement', 'A2HS', 'Showing');
-								this.a2hsDialog.showModal();
+								const showDialog = Math.random() % 2;
+								this.a2hsBucket = showBucket;
+								ga('send', 'event', 'Engagement', 'A2HS', 'Showing_' + showDialog);
+
+								!this.a2hsDone && showDialog ? this.a2hsDialog.showModal() : this.showAddToHomeScreen();
+								this.a2hsDone = true;
 							}
 
 							if (this.props.wordReducer.words.length < 25) {
@@ -175,17 +206,7 @@ class Play extends Component {
 						<Dialog.Actions>
 							<Button colored={true} onClick={()=>{
 								this.a2hsDialog.close();
-								window.deferredPrompt.prompt();
-								window.deferredPrompt.userChoice.then(function(choiceResult) {
-									if(choiceResult.outcome == 'dismissed') {
-										ga('send', 'event', 'Engagement', 'A2HS', 'Dismissed');
-									}
-									else {
-										ga('send', 'event', 'Engagement', 'A2HS', 'Accepted');
-									}
-									// We no longer need the prompt.  Clear it up.
-									window.deferredPrompt = null;
-								});
+								this.showAddToHomeScreen();
 							}}>Yes!</Button>
 							<Button onClick={() => {
 								this.a2hsDialog.close();
