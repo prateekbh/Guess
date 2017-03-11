@@ -4,7 +4,6 @@ const mdb = require('./dbapi');
 const router = express.Router();
 const db = new mdb.Database();
 const config = require('./config');
-const request = require('superagent');
 const fs = require('mz/fs');
 
 // Pexel API search
@@ -152,12 +151,42 @@ router.get('/makegames', (req, res, next) => {
       return console.log(err);
     }
     data = data.replace(/(?:\r\n|\r|\n)/g, '').replace(/( )/g, '');
-    evalute(data, wordcount, res);
+    let dbLookupsPromises = checkIfWordAlreadyExists(data, wordcount);
+
+    let resData = {words: []};
+    Promise.all(dbLookupsPromises)
+    .then((results) => {
+      let pexelCalls = [];
+      for (var i = 0; i < results.length; i++) {
+        if (!results[i].found) {
+          // response object containing the word
+          resData.words.push({word: results[i].word, images: []});
+          // API calls to pexel
+          pexelCalls.push(pexelReq(results[i].word));
+          wordsProcessed += 1;
+        }
+      }
+      return Promise.all(pexelCalls); // return a promise instead of a list to allow chaining the promises
+    })
+    .then((results) => {
+      for (var j = 0; j < results.length; j++) {
+        if (!results[j].hasOwnProperty('photos')) continue;
+        // Get 1st 4 photos from the pexel api response
+        results[j].photos.slice(0, 4).forEach((item) => {
+          resData.words[j].images.push(item.src.medium);
+        });
+      }
+      res.send(JSON.stringify(resData));
+    })
+    .catch((err) => {
+      // log error
+      return res.status(500).send('Error Occurred');
+    });
   });
 });
 
 var wordsProcessed = 0;
-function evalute(data, wordcount, res) {
+function checkIfWordAlreadyExists(data, wordcount) {
   let words = data.split(',');
   let dbLookups = [];
   for (var i = wordsProcessed; i < words.length && dbLookups.length < wordcount; i++) {
@@ -173,34 +202,18 @@ function evalute(data, wordcount, res) {
       });
     }));
   }
-
-  Promise.all(dbLookups).then((results) => {
-    let resData = {words: []};
-    let pexelCalls = [];
-    for (var i = 0; i < results.length; i++) {
-      if (!results[i].found) {
-        resData.words.push({word: results[i].word, images: []});
-        // API calls to pexel
-        pexelCalls.push(pexelReq(results[i].word));
-        wordsProcessed += 1;
-      }
-    }
-    Promise.all(pexelCalls).then((results) => {
-      for (var j = 0; j < results.length; j++) {
-        if (!results[j].body.hasOwnProperty('photos')) continue;
-        results[j].body.photos.slice(0, 4).forEach((item) => {
-          resData.words[j].images.push(item.src.medium);
-        });
-      }
-      res.send(JSON.stringify(resData));
-    });
-  });
+  return dbLookups;
 }
 
 function pexelReq(word) {
-  return request
-    .get('http://api.pexels.com/v1/search?query=' + word + '&per_page=100&page=1')
-    .set('Authorization', process.env.PEXELS_KEY)
+  return fetch('http://api.pexels.com/v1/search?query=' + word + '&per_page=100&page=1', {
+    headers: {
+      'Authorization': process.env.PEXELS_KEY
+    }
+  })
+  .then((res) => {
+    return res.json();
+  });
 }
 
 // Helper Endpoints
