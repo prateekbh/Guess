@@ -19,8 +19,13 @@ import './Play.css';
 class Play extends Component {
 	constructor(){
 		super();
+
+		this.a2hsDone = false;
+		this.a2hsDone = true;
+		this.a2hsBucket = -1;
 		this.state = {
 			won: false,
+			wordsGuessed: 0,
 			hint: {
 				charge: 5,
 				action: wordActions.GIVE_HINT
@@ -33,6 +38,8 @@ class Play extends Component {
 		});
 	}
 	componentDidMount(){
+		ga('send', 'pageview', location.pathname);
+		ga('send', 'event', 'Play', 'Word', 'Play_Screen_Shown');
 		if(this.props.wordReducer.words[0] && !this.props.wordReducer.words[0].scrabbledLetters){
 			this.props.dispatch({
 				type: wordActions.SET_SCRABBLED_LETTERS,
@@ -55,6 +62,9 @@ class Play extends Component {
 		if (window.dialogPolyfill) {
 			dialogPolyfill.registerDialog(this.hintDialog.base);
 		}
+		setTimeout(()=>{
+			this.showAddToHomeScreen();
+		},5000)
 	}
 	componentDidUpdate(prevProps){
 		if(this.props.wordReducer.words[0] && !this.props.wordReducer.words[0].scrabbledLetters){
@@ -72,12 +82,35 @@ class Play extends Component {
 			});
 			if(!this.state.won && this.props.wordReducer.words[0].word.toLowerCase() === guessedWord.toLowerCase()){
 				this.setState({
+					wordsGuessed: this.state.wordsGuessed + 1,
 					won: true,
+				}, () => {
+					ga('send', 'event', 'Play', 'Word', 'Guessed_' + this.state.wordsGuessed);
 				});
 			}
 		} else if (!this.props.wordReducer.lastWord) {
 			route('/');
 		}
+	}
+	showAddToHomeScreen(){
+		if (window.deferredPrompt) {
+			window.deferredPrompt.prompt();
+			window.deferredPrompt.userChoice.then(function(choiceResult) {
+				if(choiceResult.outcome == 'dismissed') {
+					ga('send', 'event', 'Engagement', 'A2HS', 'A2HS_Dismissed_' + this.a2hsBucket);
+				}
+				else {
+					ga('send', 'event', 'Engagement', 'A2HS', 'A2HS_Accepted_' + this.a2hsBucket);
+				}
+				// We no longer need the prompt.  Clear it up.
+				window.deferredPrompt = null;
+			});
+		} else {
+			ga('send', 'event', 'Engagement', 'A2HS', 'A2HS_NoPrompt_' + this.a2hsBucket);
+		}
+
+		this.a2hsDone = true;
+		this.a2hsDone = true;
 	}
 	render(){
 		if (this.props.wordReducer.words[0]){
@@ -134,6 +167,15 @@ class Play extends Component {
 							this.props.dispatch({
 								type: gameActions.WORD_GUESSED,
 							});
+							if (this.state.wordsGuessed > 0 && window.deferredPrompt) {
+								const showDialog = Math.random() % 2;
+								this.a2hsBucket = showBucket;
+								ga('send', 'event', 'Engagement', 'A2HS', 'Showing_' + showDialog);
+
+								!this.a2hsDone && showDialog ? this.a2hsDialog.showModal() : this.showAddToHomeScreen();
+								this.a2hsDone = true;
+							}
+
 							if (this.props.wordReducer.words.length < 25) {
 								this.props.dispatch(wordActions.fetchNewWords(this.props.wordReducer.lastWord || 0));
 							}
@@ -154,6 +196,23 @@ class Play extends Component {
 							<Button onClick={() => {
 								this.hintDialog.close();
 							}}>No!</Button>
+						</Dialog.Actions>
+					</Dialog>
+					<Dialog ref={a2hsDialog => {this.a2hsDialog = a2hsDialog;}}>
+						<Dialog.Title>Like Us?</Dialog.Title>
+						<Dialog.Content>
+							Add our icon on homescreen to comeback easier. NO APP DOWNLOAD PROMISE!
+						</Dialog.Content>
+						<Dialog.Actions>
+							<Button colored={true} onClick={()=>{
+								this.a2hsDialog.close();
+								this.showAddToHomeScreen();
+							}}>Yes!</Button>
+							<Button onClick={() => {
+								this.a2hsDialog.close();
+								window.deferredPrompt = null;
+								ga('send', 'event', 'Engagement', 'A2HS', 'Rejected');
+							}}>Hate you</Button>
 						</Dialog.Actions>
 					</Dialog>
 				</div>

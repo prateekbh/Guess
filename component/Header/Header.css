@@ -8,14 +8,14 @@ header{
         flex: 2;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-start;
         .mdl-button{
             width: 64px;
             height: 64px;
         }
     }
     .logo {
-        flex: 6;
+        flex: 4;
         display: flex;
         align-self: center;
         justify-content: center;
@@ -24,11 +24,12 @@ header{
         display: flex;
         flex: 2;
         align-items: center;
-        justify-content: center;
+        justify-content: flex-end;
     }
     .userCoins{
         display: inline-block;
         padding: 8px;
+        padding-right: 16px;
         vertical-align: middle;
         font-size: 16px;
         font-weight: 300;

@@ -15,12 +15,21 @@
 		<link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
 		<link rel="icon" type="image/png" sizes="96x96" href="/images/favicon-96x96.png">
 		<link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
-		<link rel="manifest" href="/manifest.json">
+		<meta name="google-site-verification" content="rLPxwdtdPbaHboJsoq3KAcSgtSp6iLge2p0DMNbllbw" />
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1">
 		<meta name="mobile-web-app-capable" content="yes">
 		<meta name="msapplication-TileColor" content="#ffffff">
 		<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
 		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="An interactive game name Guess where you have to find what is common between the shown images. Works Offline!">
+		<meta name="keywords" content="Guess, Playguess, Game, Interactive, image game">
+		<meta property="og:image" content="https://playguess.herokuapp.com/images/logo.png"/>
+		<meta property="og:title" content="Guess - an images based game"/>
+		<meta property="og:url" content="https://playguess.herokuapp.com/"/>
+		<meta property="og:site_name" content="Guess"/>
+		<meta property="og:type" content="game"/>
+		<meta property="og:description" content="An interactive game name Guess where you have to find what is common between the shown images. Works Offline!"/></p>
+		<meta http-equiv="origin-trial" data-feature="Web Share" data-expires="04/17/17" content="As0ED9krmkUjA+d6tHR2qPWZNN/NpJYUBJ3dBVG/WB2k94DzVjXnM9XcWjhI3Lk4pwiSSFUHjcehGqbbo3lY5AwAAABZeyJvcmlnaW4iOiJodHRwczovL3BsYXlndWVzcy5oZXJva3VhcHAuY29tOjQ0MyIsImZlYXR1cmUiOiJXZWJTaGFyZSIsImV4cGlyeSI6MTQ5MjQ0MTgyOH0=">
 		<style>
 			{{{usercss}}}
 		</style>
@@ -66,6 +75,17 @@
 			 loadCss('https://fonts.googleapis.com/icon?family=Material+Icons');
 			 loadCss('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
 			 loadCss('https://code.getmdl.io/1.3.0/material.teal-red.min.css');
+
+			 var deferredPrompt;
+
+			 window.addEventListener('beforeinstallprompt', function(e) {
+				console.log('beforeinstallprompt Event fired');
+				e.preventDefault();
+				ga('send', 'event', 'Engagement', 'A2HS', 'Defer');
+				// Stash the event so it can be triggered later.
+				deferredPrompt = e;
+				return false;
+			 });
 		</script>
 	</body>
 </html>

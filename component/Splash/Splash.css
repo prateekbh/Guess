@@ -52,6 +52,15 @@
     right: 0;
 	text-align: center;
 	.mdl-progress{
+		margin: auto;
 		height: 3px;
+	}
+}
+
+@media (min-width: 800px) {
+	.screen-splash, .dummy-splash{
+		.logo-container{
+			margin-top: -10%;
+		}
 	}
 }

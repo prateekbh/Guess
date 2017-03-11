@@ -4,6 +4,3 @@
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
 ga('create', 'UA-91863394-1', 'auto');
-ga('send', 'pageview');
-
-console.log('GA started');
