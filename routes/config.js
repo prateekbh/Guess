@@ -7,7 +7,7 @@ module.exports = {
   mongoDbUrl: 'mongodb://localhost:27017/guess',
   WORD_COUNT: 25,
   SEND_ENCRYPTED_WORD: true,
-  WHITELISTED_ADMINS: ['93arpit@gmail.com', 'prateek89born@gmail.com'],
+  WHITELISTED_ADMINS: ['93arpit@gmail.com', 'prateek89born@gmail.com', 'meghasachdev12@gmail.com'],
 
   // API keys
   COOKIE_NAME: 'userid',
